@@ -301,6 +301,61 @@ e muito popular para versionamento de código.
 
 <!-- TODO: Volta ao estado anterior ao merge -->
 
+## Troubleshooting de Conflitos
+
+### Problemas Comuns
+
+<!-- TODO: Conflitos inesperados durante merge ou rebase -->
+
+Quando um conflito parece aparecer sem motivo, vale revisar se a branch local está desatualizada ou se o merge anterior foi interrompido no meio.
+
+### Reiniciar o Merge
+
+```bash
+git merge --abort
+```
+
+Use esse comando quando quiser cancelar o merge atual e voltar ao estado anterior para tentar novamente com mais calma.
+
+### Desfazer o Merge
+
+```bash
+git reset --merge HEAD~1
+```
+
+Esse caminho é útil quando você quer desfazer o merge e voltar um passo, mantendo apenas o necessário para recomeçar.
+
+### Merge Corrompido
+
+<!-- TODO: Quando o merge ficou em estado inconsistente -->
+
+Se o merge ficar corrompido ou travado, a abordagem mais segura costuma ser abortar, revisar o histórico e tentar o processo novamente depois de atualizar a branch.
+
+### Ferramentas de Ajuda
+
+```bash
+git mergetool
+git merge --continue
+```
+
+O `git mergetool` ajuda a visualizar e resolver conflitos com uma ferramenta externa. Depois de corrigir os arquivos, `git merge --continue` finaliza o merge.
+
+### Quando Pedir Ajuda
+
+<!-- TODO: Avisar o time quando a resolução não estiver clara -->
+
+Se a origem do conflito não estiver clara, comunique o time antes de forçar uma solução. É melhor alinhar a intenção do que aplicar uma correção que esconda um problema maior.
+
+### Logs para Debug
+
+```bash
+git status
+git log --oneline --graph --decorate -n 20
+git diff
+```
+
+Esses comandos ajudam a entender o que mudou, onde o conflito começou e qual foi o último estado válido da branch.
+
 ## Conflitos Complexos
 
 ### Múltiplos Arquivos

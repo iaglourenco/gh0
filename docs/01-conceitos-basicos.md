@@ -143,15 +143,95 @@
 
 <!-- TODO: Configure Git pela primeira vez -->
 
+Após instalar o Git, é fundamental configurar sua identidade. Essas informações serão associadas a cada *commit* que você realizar, permitindo identificar quem é o autor das alterações no projeto.
+
+#### 1. Configuração de Identidade
+
+Você deve configurar seu nome e e-mail. Existem dois níveis principais de configuração:
+* **Global:** Aplica-se a todos os repositórios do seu usuário na máquina.
+* **Local:** Aplica-se apenas ao repositório específico onde você está trabalhando.
+
+#### Configuração Global
+Para configurar em toda a sua máquina, utilize o parâmetro `--global`:
+
 ```bash
-# TODO: Adicione comandos para configurar nome e email
-# git config --global user.name "Seu Nome"
-# git config --global user.email "seu@email.com"
+# Define seu nome de exibição
+git config --global user.name "Seu Nome"
+
+# Define seu e-mail de contato
+git config --global user.email "seu.email@example.com"
 ```
+
+#### Configuração Local
+Se precisar usar um e-mail diferente para um projeto específico (ex: e-mail corporativo em um projeto da empresa), execute o comando dentro da pasta do projeto **sem** o `--global`:
+
+```bash
+git config user.name "Seu Nome Profissional"
+git config user.email "nome.sobrenome@empresa.com"
+```
+
+#### 2. Verificação das Configurações
+
+Para conferir se as informações foram gravadas corretamente, você pode listar as configurações atuais:
+
+```bash
+# Lista todas as configurações ativas (local + global)
+git config --list
+
+# Lista apenas as configurações globais
+git config --list --global
+```
+
+#### 3. Configurações Recomendadas (Opcional)
+
+Além da identidade, é recomendável ajustar o editor de texto padrão e o comportamento de quebra de linha.
+
+#### Editor de Texto
+Define qual editor abrirá quando o Git precisar que você escreva uma mensagem (ex: VS Code, Vim ou Notepad++):
+
+```bash
+# Exemplo para configurar o VS Code como editor padrão
+git config --global core.editor "code --wait"
+```
+
+#### Tratamento de Fim de Linha (autocrlf)
+Isso evita problemas de compatibilidade entre Windows (que usa CRLF) e sistemas Unix/Mac (que usam LF).
+
+```bash
+# Se você usa Windows:
+git config --global core.autocrlf true
+
+# Se você usa Mac ou Linux:
+git config --global core.autocrlf input
+```
+
+#### 4. Troubleshooting (Resolução de Problemas)
+
+* **Alterar uma configuração existente:** Basta executar o comando novamente com o novo valor. O Git sobrescreverá o anterior.
+* **Remover uma configuração (Reset):** Caso queira voltar ao padrão do sistema e remover uma entrada específica:
+
+```bash
+# Remove o e-mail global
+git config --global --unset user.email
+```
+
+
+**Obeservação:** Lembre-se que o Git prioriza sempre a configuração **Local** sobre a **Global**. Se você configurou um e-mail dentro da pasta do projeto, ele será usado em vez do e-mail geral da sua máquina.
+
+
 
 ### Por que Configurar Nome e Email?
 
 <!-- TODO: Explique a importância dessas configurações -->
+
+A configuração de nome e e-mail não é apenas burocrática; ela é o que garante a rastreabilidade do projeto. No Git, cada alteração (commit) é "assinada".
+
+* **Identificação de Autoria:** Em uma equipe, todos precisam saber quem fez cada modificação para tirar dúvidas ou revisar o código.
+* **Histórico de Contribuições:** Sites como GitHub e GitLab usam o e-mail configurado para vincular suas alterações ao seu perfil, gerando aquele gráfico de contribuições (os quadradinhos verdes).
+* **Segurança e Auditoria:** Ajuda a manter um registro claro de quando e por quem uma funcionalidade foi adicionada ou um erro foi introduzido.
+
+> **Importante:** O Git não verifica se o e-mail é real ou se você é o dono dele, mas se você usar um e-mail diferente do que está cadastrado no seu GitHub, o commit não aparecerá vinculado ao seu perfil de usuário.
+
 
 ## Criando uma Conta no GitHub
 

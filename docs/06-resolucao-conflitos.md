@@ -70,11 +70,7 @@ Pessoa A                     Pessoa B
 <!-- TODO: Explicar os marcadores -->
 
 ```
-<<<<<<< HEAD
-Seu código (versão atual)
-=======
 Código do outro branch
->>>>>>> nome-do-branch
 ```
 
 ### Entendendo Cada Parte
@@ -92,11 +88,7 @@ Código do outro branch
 ```markdown
 ## Introdução ao Git
 
-<<<<<<< HEAD
-Git é um sistema de controle de versão distribuído criado em 2005.
-=======
 Git é uma ferramenta de versionamento de código muito popular.
->>>>>>> feature/atualiza-intro
 ```
 
 ## Resolvendo Conflitos Manualmente

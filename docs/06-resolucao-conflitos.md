@@ -4,462 +4,334 @@
 
 ## 📋 Objetivos de Aprendizagem
 
-<!-- TODO: Objetivos sobre resolução de conflitos -->
+Ao final deste capítulo, você será capaz de:
+- Entender o que é um conflito de merge e por que ele acontece.
+- Identificar rapidamente quando o Git sinaliza que ocorreu um conflito.
+- Ler e compreender os marcadores visuais de conflito dentro de um arquivo.
+- Utilizar estratégias e ferramentas (como o VS Code) para resolver conflitos de forma segura.
+- Adotar práticas de trabalho em equipe para minimizar a ocorrência de conflitos.
 
 ## 🎯 Introdução
 
-<!-- TODO: Conflitos são normais e esperados! -->
-<!-- Não tenha medo - todo desenvolvedor lida com eles -->
+No começo, a tela do terminal indicando um "Merge Conflict" pode assustar. Parece que você quebrou o código ou fez algo de muito errado. Mas respire fundo: **conflitos são normais e esperados!** 
 
-### Mensagem Importante
-
-<!-- TODO: Encorajar alunos -->
-<!-- Conflitos não são erros - são oportunidades de aprendizado -->
+Não tenha medo deles. Todo desenvolvedor, do júnior ao sênior, lida com conflitos regularmente. Eles não são "erros" do sistema, mas sim uma rede de segurança do Git avisando: *"Ei, duas pessoas mexeram no mesmo lugar e eu não sou inteligente o suficiente para saber qual versão é a correta. Preciso que um humano decida."*
 
 ## O que São Conflitos de Merge?
 
-<!-- TODO: Definição -->
-<!-- Quando Git não consegue resolver automaticamente -->
+Um conflito de merge ocorre quando o Git é incapaz de resolver automaticamente as diferenças de código entre dois commits concorrentes. Na maioria das vezes, o Git faz o merge de alterações de forma perfeitamente automática. O conflito só surge quando a alteração é ambígua.
 
 ### Por que Conflitos Acontecem?
 
-<!-- TODO: Explicar causas -->
-
-1. <!-- Duas pessoas editam a mesma linha -->
-2. <!-- Mudanças em linhas próximas -->
-3. <!-- Um deleta arquivo que outro modificou -->
-4. <!-- Refatorações que afetam mesmo código -->
+O Git pedirá sua ajuda principalmente nestes cenários:
+1. Duas pessoas editaram a **mesma linha** do mesmo arquivo em branches diferentes.
+2. Uma pessoa alterou um arquivo, enquanto a outra pessoa deletou esse exato mesmo arquivo.
+3. Ocorreram mudanças em linhas imediatamente adjacentes que o Git não consegue mesclar com segurança.
+4. Refatorações estruturais (como mover uma pasta inteira) enquanto outra pessoa editava um arquivo dentro dessa pasta.
 
 ### Cenário Típico
 
-<!-- TODO: Exemplo visual de como conflito surge -->
+Veja como um conflito nasce no dia a dia de uma equipe:
 
-```
-Pessoa A                     Pessoa B
-   |                            |
-   |---edita linha 10           |
-   |                            |---edita linha 10
-   |                            |
-   |---commit                   |---commit
-   |                            |
-   |---push → main              |---push → CONFLITO!
+```text
+Pessoa A (na branch A)               Pessoa B (na branch B)
+         |                                     |
+         |--- edita a linha 10 do index.html   |
+         |                                     |--- edita a linha 10 do index.html
+         |--- faz o commit                     |
+         |--- faz o merge na main (Sucesso!)   |--- faz o commit
+                                               |--- tenta fazer o merge na main (CONFLITO!)
 ```
 
 ## Identificando Conflitos
 
-### Git Avisa
+### O Git Avisa
 
-<!-- TODO: Mensagens que indicam conflito -->
+Quando você tenta fazer um merge (ou dar um `git pull`) e há um conflito, o Git interrompe a operação imediatamente e exibe uma mensagem clara:
 
 ```bash
-# TODO: Exemplo de output quando há conflito
+$ git merge feature/novo-layout
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.
 ```
 
 ### Comandos para Verificar
 
+Se você se perder no meio de um processo, o `git status` é o seu melhor amigo. Ele listará exatamente quais arquivos precisam da sua atenção.
+
 ```bash
-# TODO: Como ver quais arquivos têm conflito
-# git status
-# git diff
+$ git status
+On branch main
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+        both modified:   index.html
 ```
 
 ## Anatomia de um Conflito
 
 ### Marcadores de Conflito
 
-<!-- TODO: Explicar os marcadores -->
+Quando você abre o arquivo conflitante (`index.html` no nosso exemplo) no seu editor de código, você verá que o Git modificou o arquivo e injetou "marcadores visuais" estranhos.
 
-```
+```text
 <<<<<<< HEAD
-Seu código (versão atual)
+<h1>Bem-vindo ao Meu Site!</h1>
 =======
-Código do outro branch
->>>>>>> nome-do-branch
+<h1>Bem-vindo ao Nosso Novo App!</h1>
+>>>>>>> feature/novo-layout
 ```
 
 ### Entendendo Cada Parte
 
-<!-- TODO: Explicar detalhadamente -->
-
-- `<<<<<<< HEAD`: <!-- Início do seu código -->
-- `=======`: <!-- Separador -->
-- `>>>>>>> nome-do-branch`: <!-- Fim do código do outro branch -->
-
-### Exemplo Completo
-
-<!-- TODO: Exemplo real de conflito -->
-
-```markdown
-## Introdução ao Git
-
-<<<<<<< HEAD
-Git é um sistema de controle de versão distribuído criado em 2005.
-=======
-Git é uma ferramenta de versionamento de código muito popular.
->>>>>>> feature/atualiza-intro
-```
+- `<<<<<<< HEAD`: Indica o início do bloco de conflito. O código logo abaixo desta linha é o código **atual** da branch em que você está (geralmente a `main` recebendo o merge).
+- `=======`: É a linha divisória. Ela separa a sua versão atual da versão que está tentando entrar.
+- `>>>>>>> feature/novo-layout`: Indica o fim do bloco de conflito. O código logo acima desta linha é a modificação vinda da outra branch.
 
 ## Resolvendo Conflitos Manualmente
+
+Resolver um conflito significa simplesmente editar o arquivo de texto para que ele fique com a versão final desejada, e apagar as marcações do Git.
 
 ### Passo a Passo
 
 #### 1. Identificar Arquivos com Conflito
-
-```bash
-# TODO: git status mostra arquivos em conflito
-```
+Rode `git status` e veja a lista sob "Unmerged paths".
 
 #### 2. Abrir Arquivo no Editor
-
-<!-- TODO: Escolher editor (VS Code, Sublime, etc.) -->
+Abra o arquivo no seu editor preferido (VS Code, Sublime, Bloco de Notas).
 
 #### 3. Analisar as Versões
-
-<!-- TODO: Entender AMBAS as mudanças -->
+Leia as duas versões propostas pelo Git (acima e abaixo dos `=======`). Tente entender o que seu colega tentou fazer na versão dele e o que você fez na sua.
 
 #### 4. Decidir o que Manter
-
-<!-- TODO: Opções -->
-
-- Manter apenas sua versão
-- Manter apenas a versão do outro
-- Combinar ambas as versões
-- Escrever algo completamente novo
+Você tem controle total. Pode:
+- Manter apenas a versão atual (a de cima).
+- Manter apenas a versão que está entrando (a de baixo).
+- Manter ambas (combinar o código).
+- Apagar tudo e escrever um código inteiramente novo que acomode as duas ideias.
 
 #### 5. Editar o Arquivo
-
-<!-- TODO: Remover marcadores, deixar código final -->
+Neste exemplo, vamos decidir combinar as ideias para uma frase melhor:
 
 ```markdown
-# Resolução: Combinar ambas as versões
-## Introdução ao Git
+# Antes (com marcadores):
+<<<<<<< HEAD
+<h1>Bem-vindo ao Meu Site!</h1>
+=======
+<h1>Bem-vindo ao Nosso Novo App!</h1>
+>>>>>>> feature/novo-layout
 
-Git é um sistema de controle de versão distribuído, criado em 2005,
-e muito popular para versionamento de código.
+# Depois (minha edição final manual):
+<h1>Bem-vindo ao Nosso Novo App e Site!</h1>
 ```
 
 #### 6. Remover TODOS os Marcadores
-
-<!-- TODO: <<<<<<, =======, >>>>>>> devem ser deletados -->
+É crucial garantir que você apagou as linhas `<<<<<<< HEAD`, `=======` e `>>>>>>> branch`. Se você esquecer, elas vão virar código e quebrar sua aplicação!
 
 #### 7. Testar
-
-<!-- TODO: Verificar que o código/documento está correto -->
+Salve o arquivo e rode a aplicação localmente para garantir que não quebrou nada.
 
 #### 8. Marcar como Resolvido
-
+No terminal, diga ao Git que aquele arquivo específico foi consertado:
 ```bash
-# TODO: git add para marcar resolução
-# git add arquivo-resolvido.md
+git add index.html
 ```
 
 #### 9. Completar o Merge
-
+Quando não houver mais arquivos em conflito (verifique com `git status`), finalize a operação:
 ```bash
-# TODO: git commit para finalizar merge
-# git commit -m "resolve: merge de feature X"
+git commit -m "Merge branch 'feature/novo-layout', resolvendo conflito no título"
 ```
 
-## Estratégias de Resolução
+## Estratégias de Resolução Automática
+
+Se você tem 100% de certeza de qual versão deve prevalecer, não precisa abrir o arquivo para apagar marcações. Pode usar a linha de comando:
 
 ### Aceitar Completamente Uma Versão
 
 ```bash
-# TODO: Usar theirs ou ours
-# git checkout --ours arquivo.md
-# git checkout --theirs arquivo.md
+# Mantém a versão da branch que ESTÁ RECEBENDO o merge (onde você está)
+git checkout --ours arquivo-conflitante.txt
+
+# Mantém a versão da branch QUE ESTÁ ENTRANDO
+git checkout --theirs arquivo-conflitante.txt
+
+# Depois faça o add e commit
+git add arquivo-conflitante.txt
+git commit
 ```
-
-### Combinar Mudanças
-
-<!-- TODO: Quando faz sentido mesclar -->
-
-### Reescrever
-
-<!-- TODO: Quando nenhuma versão está ideal -->
 
 ## Ferramentas de Merge
 
-### Editor de Texto
-
-<!-- TODO: Resolver manualmente -->
+Resolver conflitos no bloco de notas é sofrido. Use as ferramentas modernas!
 
 ### VS Code
 
-<!-- TODO: Interface visual do VS Code -->
-<!-- Botões: Accept Current, Accept Incoming, Accept Both -->
+O Visual Studio Code detecta os marcadores do Git e coloca botões clicáveis super práticos logo acima do conflito:
+- **Accept Current Change:** Mantém o que já estava lá (sua versão).
+- **Accept Incoming Change:** Aceita o que está vindo da outra branch.
+- **Accept Both Changes:** Mantém as duas linhas juntas.
+- **Compare Changes:** Abre uma tela dividida comparando o arquivo inteiro.
 
-### Git GUI Tools
+### Git GUI Tools (GitKraken / SourceTree)
 
-#### GitKraken
-
-<!-- TODO: Interface de merge do GitKraken -->
-
-#### SourceTree
-
-<!-- TODO: Interface de merge do SourceTree -->
-
-### git mergetool
-
-```bash
-# TODO: Configurar e usar mergetool
-```
+Interfaces gráficas de Git costumam ter editores visuais de resolução de três vias (Three-way merge tool), mostrando sua branch na esquerda, a do colega na direita, e o resultado final no meio.
 
 ### Configurando Merge Tool
 
+Se você prefere ferramentas dedicadas (como Meld ou KDiff3), pode configurá-las no Git:
 ```bash
-# TODO: Configurar ferramenta padrão
-# git config --global merge.tool vimdiff
-# git config --global merge.tool meld
+# Configura o Meld como ferramenta padrão de resolução
+git config --global merge.tool meld
+
+# Quando der conflito, basta rodar:
+git mergetool
 ```
 
 ## Tipos de Conflitos
 
 ### Conflito de Conteúdo
-
-<!-- TODO: Mais comum - mesmas linhas editadas -->
+O clássico que vimos acima: edição da mesma linha em duas branches.
 
 ### Conflito de Renomeação
-
-<!-- TODO: Arquivo renomeado em branches diferentes -->
+Você editou um arquivo, mas seu colega renomeou esse arquivo na outra branch.
 
 ### Conflito de Deleção
-
-<!-- TODO: Um deleta, outro modifica -->
-
-### Conflito de Estrutura
-
-<!-- TODO: Mudanças em estrutura de pastas -->
+Você atualizou um arquivo de estilos, mas seu colega decidiu deletar esse arquivo porque reestruturou o layout.
+O Git perguntará: "Queremos manter a sua edição ou deletar o arquivo como seu colega sugeriu?"
 
 ## Prevenindo Conflitos
 
-### Comunicação
+A melhor resolução é não ter o conflito.
 
-<!-- TODO: Avisar equipe sobre mudanças grandes -->
+### Comunicação
+A regra de ouro: converse com sua equipe. Se você vai fazer uma grande refatoração que renomeia várias pastas, avise no chat do time para que as pessoas não mexam ali naquelas horas.
 
 ### Pull/Fetch Frequente
-
-<!-- TODO: Manter branch atualizada -->
-
+Nunca trabalhe dias seguidos isolado na sua branch. Atualize-a com o que a equipe está fazendo na `main`.
 ```bash
-# TODO: Atualizar frequentemente
-# git fetch origin
-# git merge origin/main
+git fetch origin
+git merge origin/main
 ```
 
 ### Commits Pequenos e Frequentes
-
-<!-- TODO: Menos mudanças = menos conflitos -->
+Branches de vida curta (que duram um ou dois dias) raramente dão conflitos massivos, pois não dá tempo do projeto original mudar tanto assim.
 
 ### Dividir Trabalho
-
-<!-- TODO: Trabalhar em partes diferentes do código -->
-
-### Feature Flags
-
-<!-- TODO: Evitar branches de longa duração -->
+Arquiteturas de software bem feitas, baseadas em pequenos módulos ou componentes independentes, reduzem a chance de duas pessoas precisarem editar o mesmo arquivo simultaneamente.
 
 ## Resolvendo Conflitos em Pull Requests
 
 ### Conflitos no GitHub
+Quando você abre um PR e o GitHub diz que há conflitos, o botão de Merge fica desativado e cinza.
 
-<!-- TODO: GitHub mostra conflitos em PRs -->
-
-### Método 1: Resolver Localmente
-
-```bash
-# TODO: Passos para resolver localmente
-# 1. git fetch upstream
-# 2. git merge upstream/main
-# 3. Resolver conflitos
-# 4. git push
-```
-
-### Método 2: GitHub Interface
-
-<!-- TODO: Resolver na interface web (se simples) -->
-
-### Atualizar Branch com Main
+### Método Recomendado: Resolver Localmente
+Nunca tente resolver conflitos grandes de código pela interface web do GitHub. Faça na sua máquina para poder testar.
 
 ```bash
-# TODO: Manter PR atualizado
+# 1. Vá para a sua branch do PR
+git switch minha-branch
+
+# 2. Traga as últimas novidades da branch principal
+git pull origin main 
+# (Isto vai disparar o conflito na sua máquina)
+
+# 3. Resolva os conflitos no VS Code
+# 4. Adicione e comite
+git add .
+git commit -m "Merge origin/main e resolve conflitos"
+
+# 5. Mande de volta pro GitHub
+git push
+# O PR atualizará sozinho e o botão ficará verde!
 ```
 
 ## Abortando um Merge
 
-### Quando Abortar
-
-<!-- TODO: Se você  fez algo errado ou quer recomeçar -->
-
-### Como Abortar
+Se você tentou fazer um merge, gerou uma teia de conflitos terríveis em 20 arquivos, entrou em pânico e quer desistir e voltar ao estado seguro anterior:
 
 ```bash
-# TODO: git merge --abort
+git merge --abort
 ```
-
-### Efeito
-
-<!-- TODO: Volta ao estado anterior ao merge -->
+O Git limpa toda a tentativa de merge e restaura seus arquivos exatamente como estavam antes de você rodar o comando `git merge`.
 
 ## Conflitos Complexos
 
 ### Múltiplos Arquivos
-
-<!-- TODO: Resolver um por vez -->
-
-### Conflitos Grandes
-
-<!-- TODO: Estratégias para muitos conflitos -->
+Se o `git status` mostrar 5 arquivos em conflito, não se desespere. Resolva e faça `git add` em um de cada vez. É um trabalho metódico.
 
 ### Quando Pedir Ajuda
-
-<!-- TODO: Não tenha medo de pedir ajuda -->
-<!-- Professor, colegas, issue no projeto -->
-
-## Exemplos Práticos
-
-### Exemplo 1: Conflito Simples
-
-<!-- TODO: Demonstração passo a passo -->
-
-```
-Cenário:
-- Você edita README linha 5
-- Colega edita README linha 5
-- Colega faz merge primeiro
-- Você tenta merge → conflito
-```
-
-<!-- TODO: Resolução completa -->
-
-### Exemplo 2: Conflito em Múltiplos Arquivos
-
-<!-- TODO: Como organizar a resolução -->
-
-### Exemplo 3: Conflito de Código
-
-<!-- TODO: Exemplo com código (não apenas docs) -->
+Se o conflito envolver uma lógica de negócio complexa escrita por um colega que você não entende completamente, **não adivinhe**. Chame o colega para uma ligação rápida e resolvam o conflito juntos ("Pair Programming"). Melhor gastar 10 minutos conversando do que introduzir um bug silencioso em produção.
 
 ## Dicas e Truques
 
 ### Usar Git Log para Contexto
-
+Se não entende de onde veio a mudança conflitante:
 ```bash
-# TODO: Ver histórico para entender mudanças
-# git log --oneline --graph
-```
-
-### Git Diff para Ver Mudanças
-
-```bash
-# TODO: Comparar versões
+git log --oneline --graph --all
 ```
 
 ### Git Blame para Rastrear
-
+Descubra quem foi o autor da linha que está entrando em conflito com você para saber a quem perguntar:
 ```bash
-# TODO: Ver quem mudou o quê
-# git blame arquivo.md
+git blame arquivo-com-problema.js
 ```
-
-### Comunicar com o Autor
-
-<!-- TODO: Perguntar intenção das mudanças -->
-
-## Fluxo de Trabalho Anti-Conflito
-
-<!-- TODO: Workflow que minimiza conflitos -->
-
-1. <!-- Fetch regularmente -->
-2. <!-- Merge main na sua branch frequentemente -->
-3. <!-- PRs pequenos -->
-4. <!-- Comunicação -->
-5. <!-- Feature flags -->
 
 ## Erros Comuns
 
-### Erro 1: Não Remover Marcadores
-
-<!-- TODO: Deixar <<<<< no código -->
-
-### Erro 2: Marcar como Resolvido Sem Testar
-
-<!-- TODO: Resolver mas código quebrado -->
-
-### Erro 3: Aceitar Mudanças Sem Entender
-
-<!-- TODO: Importância de entender AMBAS as versões -->
-
-### Erro 4: Fazer Force Push
-
-<!-- TODO: Perigo em branches compartilhadas -->
-
-## Conflitos em Diferentes Arquivos
-
-### Markdown
-
-<!-- TODO: Conflitos em documentação -->
-
-### Código
-
-<!-- TODO: Conflitos em código fonte -->
-
-### JSON/YAML
-
-<!-- TODO: Arquivos de configuração -->
-
-### Binários
-
-<!-- TODO: Imagens, PDFs - escolher uma versão -->
+1. **Não Remover Marcadores:** Comitar os sinais `<<<<<<<` junto com o código. Isso fatalmente causará um erro de sintaxe e derrubará a aplicação.
+2. **Marcar como Resolvido Sem Testar:** Só porque você apagou os marcadores, não significa que a lógica conjunta dos dois códigos faz sentido. Teste o projeto.
+3. **Aceitar Mudanças Sem Entender:** Clicar "Accept Both Changes" cegamente só para se livrar do erro.
+4. **Fazer Force Push após um Merge problemático:** Pode corromper o histórico do repositório remoto.
 
 ## Exercícios
 
-<!-- TODO: Exercícios práticos com conflitos -->
-
-1. <!-- Criar conflito intencional e resolver -->
-2. <!-- Resolver conflito simulado -->
-3. <!-- Usar mergetool -->
-4. <!-- Resolver conflito em PR -->
+1. Crie uma branch `teste-conflito-1`. Altere a primeira linha do arquivo `README.md` e faça o commit.
+2. Volte para a `main`, crie outra branch chamada `teste-conflito-2`. Altere a MESMA primeira linha do `README.md` escrevendo algo diferente, e faça commit.
+3. Vá para a `main`. Faça o merge de `teste-conflito-1` (Sucesso).
+4. Tente fazer o merge de `teste-conflito-2` (Conflito!).
+5. Abra o arquivo, veja os marcadores, resolva o texto manualmente, faça o `add` e finalize o commit.
 
 ## Checklist de Resolução
 
-<!-- TODO: Passo a passo para sempre seguir -->
-
-- [ ] Identificar arquivos em conflito
-- [ ] Entender ambas as versões
-- [ ] Decidir abordagem
-- [ ] Editar arquivo
-- [ ] Remover marcadores
-- [ ] Testar mudanças
-- [ ] git add
-- [ ] git commit
-- [ ] Verificar que tudo funciona
+Sempre siga este fluxo para não se perder:
+- [ ] Identificar a interrupção (Git avisou do conflito).
+- [ ] Rodar `git status` para listar os arquivos problemáticos.
+- [ ] Abrir o editor e ler ambas as versões do conflito (HEAD vs Incoming).
+- [ ] Decidir a resolução lógica final.
+- [ ] Apagar todos os marcadores (`<<<<`, `====`, `>>>>`).
+- [ ] Salvar o arquivo e testar a aplicação.
+- [ ] Rodar `git add <arquivo>`.
+- [ ] Rodar `git commit` para selar a resolução.
 
 ## Recursos Adicionais
 
-<!-- TODO: Links sobre resolução de conflitos -->
-
-- [Git Merge Conflicts](https://git-scm.com/docs/git-merge#_how_conflicts_are_presented)
-- [GitHub Resolving Conflicts](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts)
-- <!-- Mais recursos -->
+- [Documentação Oficial Git sobre Conflitos](https://git-scm.com/docs/git-merge#_how_conflicts_are_presented)
+- [Tutorial Interativo de Resolução no GitHub](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts)
 
 ## Resumo
 
-<!-- TODO: Pontos principais sobre resolução de conflitos -->
-
 ### Lembre-se
+- **Conflitos são normais e frequentes.** Não há motivo para pânico.
+- O Git confia em você para tomar a decisão correta quando não há certeza matemática.
+- Entenda sempre a intenção da sua mudança e a intenção da mudança do seu colega antes de misturá-las.
+- Comunique-se intensamente com a equipe para manter sua branch atualizada e os conflitos raros e pequenos.
 
-- Conflitos são normais
-- Não tenha medo
-- Entenda ambas as versões
-- Teste antes de finalizar
-- Peça ajuda se precisar
 
 ---
 
+<div align="center">
+
+[⬅️ Capítulo Anterior: 05. Boas Práticas](./05-boas-praticas.md)
+ | 
+[Capítulo Seguinte: 07. Workflows no GitHub ➡️](./07-workflows-github.md)
+
+</div>
+
 ## 👥 Contribuidores
 
-<!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
-<!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
--->
+Este conteúdo é colaborativo. Contribuidores deste arquivo:
+- [@bigauke](https://github.com/bigauke) (Antonio Daniel de Souza Linhares) - Preenchimento do conteúdo sobre Resolução de Conflitos.

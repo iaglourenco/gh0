@@ -73,6 +73,25 @@
 
 ### VS Code
 
+O VS Code permite instalar extensões para adicionar novos recursos ao editor, como integração com Git, suporte a linguagens de programação, temas, atalhos, ferramentas de produtividade e integração com plataformas como o GitHub.
+
+Para instalar uma extensão no VS Code:
+
+1. Abra o **Visual Studio Code**;
+2. Clique no ícone de **Extensions** na barra lateral esquerda;
+3. Ou use o atalho `Ctrl + Shift + X`;
+4. Pesquise pelo nome da extensão desejada;
+5. Clique em **Install**;
+6. Após a instalação, algumas extensões podem pedir para reiniciar o VS Code ou configurar opções adicionais.
+
+Também é possível instalar extensões diretamente pelo terminal usando o comando:
+
+```bash
+code --install-extension nome-da-extensao
+code --install-extension eamodio.gitlens
+```
+
+
 #### GitLens
 
 Extensão popular para o VS Code que melhora a integração com o Git, permitindo visualizar informações detalhadas sobre commits, autores, histórico de arquivos e alterações no código diretamente no editor.
@@ -91,6 +110,24 @@ Extensão para o VS Code que permite visualizar o histórico de commits do repos
 #### GitHub Pull Requests
 
 Extensão do VS Code que permite gerenciar **Pull Requests** e **Issues** do GitHub diretamente no editor. Com ela, é possível visualizar PRs, revisar alterações, comentar trechos de código, aprovar ou solicitar mudanças e acompanhar discussões sem precisar sair do VS Code.
+
+#### Settings e Keybindings para Git
+
+Além de instalar extensões, o VS Code permite configurar preferências e atalhos relacionados ao Git. Por exemplo, é possível criar atalhos para abrir o Git Graph, acessar o painel de controle de versão, visualizar histórico de arquivos ou abrir rapidamente a Command Palette.
+
+Alguns atalhos úteis são:
+
+- `Ctrl + Shift + G`: abrir o painel de Source Control;
+- `Ctrl + Shift + P`: abrir a Command Palette;
+- `Ctrl + Shift + X`: abrir a aba de extensões;
+- `Ctrl + '` : abrir o terminal integrado.
+
+#### Ganhos de produtividade
+
+O uso dessas extensões aumenta a produtividade porque reduz a necessidade de executar comandos Git manualmente no terminal para tarefas visuais e repetitivas. O GitLens facilita a análise de autoria e histórico, o Git Graph melhora a visualização dos commits, o GitHub Pull Requests centraliza revisões de código no editor e o Gitmoji ajuda a padronizar mensagens de commit.
+
+Dessa forma, o desenvolvedor consegue trabalhar com mais organização, rapidez e clareza dentro do próprio VS Code.
+
 
 ### JetBrains IDEs
 

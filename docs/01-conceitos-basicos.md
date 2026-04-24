@@ -278,6 +278,7 @@ A configuração de nome e e-mail não é apenas burocrática; ela é o que gara
 
 - [Git Documentation](https://git-scm.com/doc)
 - [GitHub Guides](https://guides.github.com/)
+- [Tutorial de Configuração Git (Atlassian)](https://www.atlassian.com/br/git/tutorials/setting-up-a-repository/git-config)
 - <!-- Adicione mais recursos -->
 
 ## Glossário

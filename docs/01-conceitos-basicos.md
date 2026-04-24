@@ -141,8 +141,6 @@
 
 ## Configuração Inicial
 
-<!-- TODO: Configure Git pela primeira vez -->
-
 Após instalar o Git, é fundamental configurar sua identidade. Essas informações serão associadas a cada *commit* que você realizar, permitindo identificar quem é o autor das alterações no projeto.
 
 #### 1. Configuração de Identidade
@@ -216,13 +214,11 @@ git config --global --unset user.email
 ```
 
 
-**Obeservação:** Lembre-se que o Git prioriza sempre a configuração **Local** sobre a **Global**. Se você configurou um e-mail dentro da pasta do projeto, ele será usado em vez do e-mail geral da sua máquina.
+**Observação:** Lembre-se que o Git prioriza sempre a configuração **Local** sobre a **Global**. Se você configurou um e-mail dentro da pasta do projeto, ele será usado em vez do e-mail geral da sua máquina.
 
 
 
 ### Por que Configurar Nome e Email?
-
-<!-- TODO: Explique a importância dessas configurações -->
 
 A configuração de nome e e-mail não é apenas burocrática; ela é o que garante a rastreabilidade do projeto. No Git, cada alteração (commit) é "assinada".
 

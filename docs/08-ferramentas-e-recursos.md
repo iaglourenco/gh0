@@ -704,3 +704,4 @@ Conteúdo oculto
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+[@camiwr](https://github.com/camiwr) - Seção Extensions e Plugins & GitHub Features

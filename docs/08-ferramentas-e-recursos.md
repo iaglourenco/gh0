@@ -75,14 +75,14 @@
 
 #### GitLens
 
-<!-- TODO: Extensão popular para Git -->
+Extensão popular para o VS Code que melhora a integração com o Git, permitindo visualizar informações detalhadas sobre commits, autores, histórico de arquivos e alterações no código diretamente no editor.
 
 ##### Recursos
 
-- <!-- Blame inline -->
-- <!-- Histórico de arquivo -->
-- <!-- Comparações -->
-- <!-- Graph -->
+- **Blame inline:** mostra, ao lado de cada linha do código, quem fez a última alteração, quando ela foi feita e em qual commit.
+- **Histórico de arquivo:** permite visualizar todas as alterações feitas em um arquivo ao longo do tempo.
+- **Comparações:** facilita comparar versões diferentes de um arquivo, commits ou branches.
+- **Graph:** exibe um grafo visual do histórico do repositório, mostrando commits, branches, merges e tags.
 
 #### Git Graph
 

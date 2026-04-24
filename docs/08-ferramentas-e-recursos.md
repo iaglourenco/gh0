@@ -90,7 +90,7 @@ Também é possível instalar extensões diretamente pelo terminal usando o coma
 code --install-extension nome-da-extensao
 code --install-extension eamodio.gitlens
 ```
-
+**Fonte:** [Documentação oficial do VS Code sobre extensões](https://code.visualstudio.com/docs/getstarted/extensions)
 
 #### GitLens
 
@@ -107,6 +107,8 @@ Extensão popular para o VS Code que melhora a integração com o Git, permitind
 >
 > - **IntelliJ IDEA:** possui recursos nativos parecidos com o GitLens, como histórico de arquivos, comparação entre versões, visualização de commits e o recurso **Annotate**, que mostra quem alterou cada linha do código.
 > - **Sublime Text / Sublime Merge:** o Sublime Text pode ser usado junto com o **Sublime Merge** para visualizar histórico, commits, branches e alterações do repositório de forma gráfica.
+
+**Fonte:** [GitLens no Visual Studio Marketplace](https://marketplace.visualstudio.com/itemdetails?itemName=eamodio.gitlens)
 
 #### Git Graph
 
@@ -125,6 +127,8 @@ Extensão para o VS Code que permite visualizar o histórico de commits do repos
 > - **IntelliJ IDEA:** possui a aba **Git Log**, que permite visualizar commits, branches, merges e tags em formato gráfico, funcionando como uma alternativa ao Git Graph.
 > - **Sublime Text / Sublime Merge:** o **Sublime Merge** oferece uma visualização gráfica do histórico do repositório, mostrando commits, branches e merges de forma clara e organizada.
 
+**Fonte:** [Git Graph no Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
+
 #### GitHub Pull Requests
 
 Extensão do VS Code que permite gerenciar **Pull Requests** e **Issues** do GitHub diretamente no editor. Com ela, é possível visualizar PRs, revisar alterações, comentar trechos de código, aprovar ou solicitar mudanças e acompanhar discussões sem precisar sair do VS Code.
@@ -141,6 +145,9 @@ Extensão do VS Code que permite gerenciar **Pull Requests** e **Issues** do Git
 >
 > - **IntelliJ IDEA:** possui integração com GitHub, permitindo visualizar Pull Requests, revisar alterações, comentar código e acompanhar branches diretamente pela IDE.
 > - **Sublime Text / Sublime Merge:** o fluxo de Pull Requests costuma ser feito com apoio do navegador ou do GitHub Desktop. O **Sublime Merge** pode auxiliar na visualização dos commits, branches e alterações antes de abrir ou revisar um PR no GitHub.
+
+**Fontes:** [GitHub Pull Requests no VS Code](https://code.visualstudio.com/blogs/2018/09/10/introducing-github-pullrequests); [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
+
 
 #### Settings e Keybindings para Git
 
@@ -578,6 +585,8 @@ git commit -m "✨ feat: adiciona autenticação com GitHub"
 >
 > - **IntelliJ IDEA:** o Gitmoji pode ser usado diretamente no campo de mensagem de commit, junto com o padrão de escrita definido pela equipe, como `✨ feat: adiciona nova funcionalidade`.
 > - **Sublime Text / Sublime Merge:** também permite escrever mensagens de commit com emojis. O uso do Gitmoji não depende de uma extensão específica, pois está relacionado à forma como o desenvolvedor escreve e padroniza os commits.
+
+**Fonte:** [Gitmoji — An emoji guide for your commit messages](https://gitmoji.dev/)
 
 ### Markdown Tips
 

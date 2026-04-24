@@ -86,7 +86,7 @@ Extensão popular para o VS Code que melhora a integração com o Git, permitind
 
 #### Git Graph
 
-<!-- TODO: Visualizar grafo de commits -->
+Extensão para o VS Code que permite visualizar o histórico de commits do repositório em formato de grafo. Ela ajuda a entender melhor a evolução do projeto, mostrando branches, merges, tags e commits de maneira visual e organizada.
 
 #### GitHub Pull Requests
 

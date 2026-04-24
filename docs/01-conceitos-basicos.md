@@ -302,3 +302,4 @@ A configuração de nome e e-mail não é apenas burocrática; ela é o que gara
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+- [Rafael Ziani de Carvalho](https://github.com/steinbukken7321) - Configuração Inicial do Git

@@ -370,10 +370,12 @@
 
 ### Cheat Sheets
 
-<!-- TODO: Links para cheat sheets -->
+Aqui estão algumas das melhores "colas" (cheat sheets) gratuitas para você salvar nos favoritos ou imprimir, servindo como uma referência rápida para os comandos mais utilizados:
 
-- [GitHub Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)
-- [Atlassian Git Cheat Sheet](https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet)
+- [GitHub Git Cheat Sheet Oficial](https://training.github.com/downloads/pt_BR/github-git-cheat-sheet/)
+- [Atlassian Git Cheat Sheet](https://www.atlassian.com/br/git/tutorials/atlassian-git-cheatsheet)
+- [Git Tower Cheat Sheet](https://www.git-tower.com/learn/cheat-sheets/git-pt)
+- [Git Flow Cheat Sheet](https://danielkummer.github.io/git-flow-cheatsheet/index.pt_BR.html)
 
 ### Video Courses
 
@@ -611,6 +613,5 @@ Conteúdo oculto
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
-<!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
--->
+<!-- Adicione seu nome quando contribuir: -->
+- [@idarlandias](https://github.com/idarlandias) - Seção Cheat Sheets

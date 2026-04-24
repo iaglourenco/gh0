@@ -137,39 +137,107 @@
 
 ## git commit
 
-<!-- TODO: Explique git commit -->
+O comando `git commit` cria um registro permanente das mudanças que foram
+adicionadas à área de staging com `git add`. Cada commit funciona como um ponto
+salvo na história do projeto, contendo um identificador único, autor, data,
+mensagem descritiva e o conjunto de alterações incluídas.
+
+Use commits para dividir o trabalho em etapas pequenas e compreensíveis. Assim,
+fica mais fácil revisar mudanças, desfazer problemas e entender a evolução do
+código ao longo do tempo.
+## git commit
+
+O comando `git commit` salva as alterações da *staging area* no histórico do repositório, criando um novo ponto na linha do tempo do projeto.
 
 ### Sintaxe
 
 ```bash
-# TODO: Formas de fazer commit
-# git commit -m "mensagem"
-# git commit (abre editor)
-# git commit -am "mensagem"
+git commit -m "Mensagem"
+git commit -am "Mensagem"
 ```
 
-### Anatomia de um Bom Commit
+- `-m`: define a mensagem do commit  
+- `-a`: adiciona automaticamente arquivos já rastreados
 
-<!-- TODO: O que é um bom commit? -->
+---
 
-### Mensagens de Commit
+### Componentes de um commit
 
-<!-- TODO: Como escrever boas mensagens -->
-<!-- Ver também capítulo 05 sobre boas práticas -->
+Cada commit contém:
+
+- SHA-1 hash (identificador único)
+- Autor e email
+- Timestamp
+- Mensagem
+- Alterações realizadas
+
+---
+
+### Boas práticas de mensagem
+
+- Use verbo no imperativo: "Add", "Fix", "Update"  
+- Seja claro e descritivo  
+- Limite a 72 caracteres  
+
+Exemplos:
+
+Boa:
+```text
+Add login button
+Fix authentication bug
+```
+
+Ruim:
+```text
+Fix stuff
+Update things
+```
+
+---
+
+### Opções úteis
 
 ```bash
-# Exemplo de BOA mensagem
-# TODO: Adicione exemplos
-
-# Exemplo de MÁ mensagem
-# TODO: Adicione exemplos ruins
+git commit --amend
 ```
 
-### Exemplo Prático
+Permite alterar o último commit.
+
+---
+
+### Commit vazio
 
 ```bash
-# TODO: Fluxo completo: modificar → add → commit
+git commit --allow-empty -m "Mensagem"
 ```
+
+Usado para marcar eventos ou disparar pipelines.
+
+---
+
+### Verificação
+
+```bash
+git log
+```
+
+Exibe o histórico de commits.
+
+---
+
+### Atomicidade
+
+Um commit deve representar uma única mudança lógica.
+
+---
+
+### Conceitos
+
+- Mensagem de commit  
+- Atomicidade  
+- Rastreabilidade  
+- Histórico limpo
+
 
 ## git log
 
@@ -366,3 +434,4 @@
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+- [@Giseleptbr](https://github.com/Giseleptbr) - Seção git commit

@@ -487,7 +487,24 @@ Extensão do VS Code que permite gerenciar **Pull Requests** e **Issues** do Git
 
 ### Emoji in Commits
 
-<!-- TODO: Gitmoji, conventional commits -->
+O uso de emojis em commits ajuda a identificar rapidamente o tipo de alteração feita no projeto. Uma das convenções mais conhecidas é o **Gitmoji**, que associa cada emoji a uma intenção específica do commit.
+
+Essa prática pode ser combinada com **Conventional Commits**, deixando as mensagens mais padronizadas, legíveis e fáceis de entender no histórico do Git.
+
+Exemplos:
+
+- ✨ `feat: adiciona nova funcionalidade`
+- 🐛 `fix: corrige bug no login`
+- 📝 `docs: atualiza documentação`
+- 🎨 `style: melhora formatação do código`
+- ♻️ `refactor: reorganiza estrutura interna`
+- ✅ `test: adiciona testes unitários`
+
+Exemplo completo:
+
+```bash
+git commit -m "✨ feat: adiciona autenticação com GitHub"
+```
 
 ### Markdown Tips
 

@@ -90,7 +90,7 @@ Extensão para o VS Code que permite visualizar o histórico de commits do repos
 
 #### GitHub Pull Requests
 
-<!-- TODO: Gerenciar PRs no VS Code -->
+Extensão do VS Code que permite gerenciar **Pull Requests** e **Issues** do GitHub diretamente no editor. Com ela, é possível visualizar PRs, revisar alterações, comentar trechos de código, aprovar ou solicitar mudanças e acompanhar discussões sem precisar sair do VS Code.
 
 ### JetBrains IDEs
 

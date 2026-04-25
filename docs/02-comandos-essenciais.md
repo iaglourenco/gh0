@@ -84,36 +84,50 @@
 
 ## git add
 
-<!-- TODO: Explique o comando git add -->
-<!-- Staging area concept -->
+O comando `git add` é usado para selecionar quais arquivos modificados você quer preparar para o seu próximo commit. Ele move as alterações do seu diretório de trabalho para a **Staging Area** (Área de Preparação).
 
 ### Sintaxe
 
 ```bash
-# TODO: Diferentes formas de usar git add
-# git add <arquivo>
-# git add .
-# git add -A
-# git add -u
+# Adiciona um arquivo específico:
+git add nome-do-arquivo.txt
+
+# Adiciona todos os arquivos modificados e novos na pasta atual:
+git add .
+
+# Adiciona TODAS as alterações no repositório inteiro (incluindo arquivos apagados):
+git add -A
+# ou
+git add --all
 ```
 
 ### Staging Area
 
-<!-- TODO: O que é staging area? -->
-<!-- Por que existe? Qual sua utilidade? -->
+A **Staging Area** é como se fosse uma "caixa" ou "sala de espera" onde você coloca os arquivos que farão parte do seu próximo commit.
+Ela existe para que você tenha um controle preciso do que será salvo. Em vez de salvar todas as modificações do seu projeto de uma vez, você pode agrupar alterações relacionadas (criando *commits seletivos*).
 
 ### Exemplos
 
+Imagine que você modificou 3 arquivos, mas 2 deles são sobre o formulário de contato e 1 é um ajuste no rodapé. Você pode "commitar" de forma organizada:
+
 ```bash
-# TODO: Exemplos práticos
-# Adicionar um arquivo específico
-# Adicionar todos os arquivos
-# Adicionar arquivos por padrão
+# 1. Verifique as mudanças
+git status
+
+# 2. Adicione apenas os dois arquivos do formulário:
+git add formulario.html
+git add css/form.css
+
+# 3. Se precisar ver o que já está na Staging Area (pronto para o commit):
+git diff --staged
+
+# 4. Caso tenha adicionado um arquivo por engano, você pode desfazer o add:
+git restore --staged css/form.css
 ```
 
 ### Boas Práticas
 
-<!-- TODO: Quando adicionar arquivos específicos vs. tudo -->
+Evite usar `git add .` se você modificou muitas coisas diferentes que não têm relação entre si. Prefira adicionar os arquivos um a um (`git add <arquivo>`) ou em pequenos grupos para garantir que seus commits contem uma história lógica e bem dividida.
 
 ## git status
 
@@ -363,6 +377,5 @@
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
-<!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
--->
+<!-- Adicione seu nome quando contribuir: -->
+- [@idarlandias](https://github.com/idarlandias) - Seção Comando git add

@@ -734,3 +734,4 @@ main → feature branch → PR → review → merge → deploy
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+- [@ASCCJR](https://github.com/ASCCJR) - Seção Segurança

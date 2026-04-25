@@ -328,27 +328,265 @@ git push --force
 
 <!-- TODO: Interface de releases do GitHub -->
 
-## Segurança
+## Segurança: Nunca Commitar Secrets
 
-### Nunca Commitar Secrets
+### O que são secrets?
 
-<!-- TODO: Senhas, keys, tokens -->
+Secrets são informações sensíveis que dão acesso a sistemas, serviços ou dados protegidos. Se alguém obtém um secret seu, pode usar em seu nome — e o estrago pode ser real e imediato.
 
-### O que Evitar
+Exemplos comuns de secrets:
 
-<!-- TODO: Lista de arquivos perigosos -->
+- **Chaves de API** — `GROQ_API_KEY=gsk_abc123...`, `OPENAI_API_KEY=sk-...`
+- **Senhas de banco de dados** — `DATABASE_URL=postgres://user:senha@host/db`
+- **Tokens de autenticação** — tokens OAuth, JWT secrets, tokens de bot (Telegram, Discord)
+- **Chaves privadas** — arquivos `.pem`, `.key`, certificados SSL
+- **Credenciais de cloud** — AWS Access Keys, Google Cloud service accounts
 
-- `.env` com credenciais
-- `config.json` com passwords
-- Chaves SSH privadas
-- Tokens de API
-- Certificados
+### Por que é tão perigoso?
 
-### Se Commitou Por Engano
+Bots automatizados varrem repositórios públicos do GitHub **continuamente**, procurando chaves de API e senhas expostas. Quando encontram, exploram em segundos — não em horas, em segundos.
 
-<!-- TODO: Como remover do histórico -->
-<!-- git filter-branch, BFG Repo-Cleaner -->
-<!-- Regenerar secrets comprometidos! -->
+Cenários reais:
+
+- Uma chave da AWS commitada por acidente gerou uma fatura de **US$ 14.000** em mineração de criptomoedas em poucas horas
+- Tokens de bot do Telegram expostos permitiram que atacantes enviassem spam para milhares de usuários
+- Chaves de API de serviços pagos (OpenAI, Google Cloud) são consumidas até estourar o limite de crédito
+
+**Regra absoluta:** se um secret foi commitado — mesmo que por 1 segundo, mesmo que você tenha deletado logo depois — **assuma que foi comprometido**. O histórico do Git preserva tudo, e bots já podem ter capturado.
+
+### Como prevenir: .gitignore
+
+A primeira e mais simples defesa é o arquivo `.gitignore`. Ele diz ao Git quais arquivos **nunca** devem ser rastreados.
+
+Adicione estas linhas ao `.gitignore` do seu projeto **antes do primeiro commit**:
+
+```gitignore
+# === SECRETS — NUNCA commitar ===
+.env
+.env.*
+!.env.example
+
+# Arquivos de configuração com credenciais
+config.local.json
+secrets/
+*.key
+*.pem
+
+# Credenciais de cloud
+.aws/
+.gcloud/
+service-account*.json
+```
+
+Explicação das linhas importantes:
+
+- `.env` — o arquivo principal de variáveis de ambiente (onde ficam as chaves)
+- `.env.*` — cobre variantes como `.env.local`, `.env.production`, `.env.development`
+- `!.env.example` — o `!` é uma exceção: este arquivo **deve** ser commitado (veja abaixo por quê)
+- `secrets/` — ignora uma pasta inteira de secrets
+- `*.key` e `*.pem` — ignora chaves privadas e certificados
+
+### O padrão .env + .env.example
+
+Este é o padrão que toda equipe profissional usa:
+
+**`.env`** (ignorado pelo Git — só existe na sua máquina):
+
+```
+GROQ_API_KEY=gsk_abc123_sua_chave_real_aqui
+DATABASE_URL=postgres://admin:senha_secreta@localhost:5432/meubanco
+```
+
+**`.env.example`** (commitado no Git — mostra quais variáveis são necessárias):
+
+```
+GROQ_API_KEY=sua_chave_aqui
+DATABASE_URL=postgres://usuario:senha@host:porta/banco
+```
+
+Quando um novo membro clona o repositório, ele:
+
+1. Copia o arquivo: `cp .env.example .env`
+2. Preenche com suas próprias credenciais
+3. Pronto — o `.env` real nunca sai da máquina dele
+
+### Usando variáveis de ambiente no código
+
+Em vez de escrever a chave direto no código, carregue das variáveis de ambiente:
+
+**Python:**
+
+```python
+import os
+
+# ERRADO — chave exposta no código
+api_key = "gsk_abc123_minha_chave_secreta"
+
+# CERTO — carrega da variável de ambiente
+api_key = os.getenv("GROQ_API_KEY")
+```
+
+Com a biblioteca `python-dotenv`, o `.env` é carregado automaticamente:
+
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Carrega variáveis do arquivo .env
+api_key = os.getenv("GROQ_API_KEY")
+```
+
+**No Google Colab**, use o recurso de Secrets (ícone de chave no painel lateral):
+
+```python
+from google.colab import userdata
+api_key = userdata.get("GROQ_API_KEY")
+```
+
+### O que fazer se commitou um secret por acidente
+
+Não entre em pânico, mas aja rápido. Siga estes passos na ordem:
+
+**Passo 1 — Revogar o secret imediatamente**
+
+Vá ao painel do serviço (Groq Console, AWS, Google Cloud, etc.) e **gere uma nova chave**. A antiga deve ser desativada. Não espere, não torça pra ninguém ter visto. Faça agora.
+
+**Passo 2 — Remover o arquivo do rastreamento do Git**
+
+```bash
+# Remove o arquivo do Git mas mantém no disco
+git rm --cached .env
+
+# Adiciona ao .gitignore
+echo ".env" >> .gitignore
+
+# Commita a remoção
+git commit -m "fix: remove .env do rastreamento do Git"
+git push
+```
+
+**Passo 3 — Limpar o histórico do Git**
+
+Mesmo depois de remover, o secret ainda está no histórico de commits. Para repositórios públicos, é necessário limpar:
+
+```bash
+# Usando git-filter-repo (ferramenta moderna recomendada)
+pip install git-filter-repo
+git filter-repo --path .env --invert-paths
+git push --force --all
+```
+
+Alternativa com BFG Repo-Cleaner:
+
+```bash
+# Baixe o BFG: https://rtyley.github.io/bfg-repo-cleaner/
+java -jar bfg.jar --delete-files .env
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+git push --force
+```
+
+### Ferramentas de prevenção
+
+#### git-secrets
+
+Ferramenta da AWS que bloqueia commits contendo padrões de secrets:
+
+```bash
+# Instalação
+brew install git-secrets  # macOS
+# ou
+git clone https://github.com/awslabs/git-secrets.git
+cd git-secrets && make install
+
+# Configurar no repositório
+git secrets --install
+git secrets --register-aws  # Adiciona padrões de chaves AWS
+
+# Agora, se tentar commitar uma chave AWS, o commit é bloqueado
+```
+
+#### Pre-commit hooks
+
+Hooks são scripts que rodam automaticamente antes de cada commit. Você pode configurar um hook que escaneia por secrets:
+
+```bash
+# Instalar o framework pre-commit
+pip install pre-commit
+
+# Criar arquivo .pre-commit-config.yaml na raiz do projeto
+```
+
+```yaml
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+```
+
+```bash
+# Ativar
+pre-commit install
+
+# Agora, a cada commit, os arquivos são escaneados automaticamente
+```
+
+#### GitHub Push Protection
+
+O próprio GitHub escaneia pushes e **bloqueia automaticamente** se detectar tokens conhecidos (AWS, Google, Stripe, etc.). Está ativo por padrão em repositórios públicos desde 2023.
+
+### Variáveis de ambiente em CI/CD
+
+Em pipelines de CI/CD (GitHub Actions, GitLab CI), **nunca** coloque secrets no código do workflow. Use os mecanismos nativos:
+
+**GitHub Actions:**
+
+1. Vá em Settings > Secrets and variables > Actions
+2. Clique em "New repository secret"
+3. Adicione o nome (ex: `GROQ_API_KEY`) e o valor
+4. No workflow, acesse com `${{ secrets.GROQ_API_KEY }}`
+
+```yaml
+# .github/workflows/deploy.yml
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Usar a chave
+        env:
+          API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python meu_script.py
+```
+
+Os secrets ficam criptografados e nunca aparecem nos logs — mesmo se você tentar imprimi-los.
+
+### Educando o time
+
+A segurança de secrets não é só técnica — é cultural. Boas práticas para equipes:
+
+- **Onboarding:** Todo novo membro recebe orientação sobre o `.gitignore` e o padrão `.env.example` no primeiro dia
+- **Revisão de PRs:** Revisores devem verificar se há secrets expostos em cada Pull Request
+- **Rotação periódica:** Trocar chaves a cada 90 dias reduz o impacto de vazamentos não detectados
+- **Princípio do menor privilégio:** Cada pessoa/serviço recebe apenas as permissões mínimas necessárias
+- **Nunca compartilhar secrets por chat:** Nada de mandar chave de API pelo Slack, WhatsApp ou email. Use password managers (1Password, Bitwarden) ou o próprio mecanismo de secrets do GitHub
+
+### Checklist de segurança
+
+Antes de fazer qualquer push, verifique:
+
+- [ ] `.env` está no `.gitignore`?
+- [ ] `.env.example` existe com valores fictícios?
+- [ ] Nenhuma chave de API está hardcoded no código?
+- [ ] Variáveis sensíveis são carregadas via `os.getenv()` ou equivalente?
+- [ ] O repositório tem pre-commit hooks ou git-secrets configurado?
+- [ ] Secrets de CI/CD estão nos Settings do GitHub, não no código do workflow?
+
+---
+
+**Lembre-se:** Um secret exposto não pode ser "desexposto". A internet nunca esquece, e bots não dormem. Prevenir é infinitamente mais fácil do que remediar.
+
 
 ## Fluxo de Trabalho
 
@@ -496,3 +734,4 @@ main → feature branch → PR → review → merge → deploy
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+- [@ASCCJR](https://github.com/ASCCJR) - Seção Segurança

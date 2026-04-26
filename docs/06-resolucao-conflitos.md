@@ -209,10 +209,10 @@ e o arquivo terá na linha 10 onde houve conflito.
 >>>>>>> teste
 ```
 
-troque para:
+troque para (não esquecendo a identação):
 
 ```python
-resultado = f"Média: {media}"
+    resultado = f"Média: {media}"
 ```
 
 e faça um commit para resolver o conflito:

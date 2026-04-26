@@ -253,22 +253,54 @@ git cherry-pick --abort
 
 ### git rebase
 
-<!-- TODO: Reescrever histórico -->
+O `git rebase` é uma ferramenta avançada para integrar alterações de uma branch em outra. A grande diferença dele para o `git merge` é que o rebase **reescreve o histórico** do projeto.
+
+Em vez de criar um "commit de merge" (que junta duas linhas do tempo e deixa o gráfico com ramificações), o rebase pega os commits da sua branch atual, os "levanta", e os aplica um a um exatamente no topo da branch de destino. O resultado final é um histórico perfeitamente linear, como se você tivesse começado a trabalhar a partir da versão mais recente do código.
 
 #### Rebase Interativo
 
+A flag `-i` (interativo) transforma o rebase em uma verdadeira máquina do tempo. Ele permite que você edite, junte, reorganize ou exclua commits antigos da sua branch antes de enviá-la para o repositório remoto.
+
 ```bash
-# TODO: git rebase -i
-# Squash, reword, edit, drop
+# Inicia o rebase interativo focando nos últimos 3 commits da branch atual
+git rebase -i HEAD~3
+
+# =========================================================================
+# O Git abrirá seu editor de texto padrão com uma lista (do mais antigo no topo 
+# para o mais recente embaixo). Por padrão, todos vêm com a palavra 'pick':
+# =========================================================================
+# pick 1a2b3c4 Adiciona o componente de botão
+# pick 5d6e7f8 Corrige erro de digitação na cor do botão
+# pick 9g0h1i2 Atualiza o README.md
+
+# Você deve alterar a palavra 'pick' para a ação que deseja realizar:
+
+# 1. REWORD (r): Altera apenas a mensagem do commit (o código fica intacto)
+# Ex: r 1a2b3c4 Adiciona o componente de botão (o Git pedirá a nova mensagem depois)
+
+# 2. SQUASH (s): Junta este commit com o commit imediatamente acima dele
+# Ex: s 5d6e7f8 Corrige erro de digitação (este código será fundido com o 1a2b3c4)
+
+# 3. EDIT (e): Pausa o rebase neste ponto para você modificar arquivos no código
+# Ex: e 9g0h1i2 Atualiza o README.md (após editar, rode 'git commit --amend' e 'git rebase --continue')
+
+# 4. DROP (d): Exclui o commit permanentemente do seu histórico
+# Ex: d 9g0h1i2 Atualiza o README.md (joga o commit inteiro no lixo)
 ```
 
 #### Quando Usar
 
-<!-- TODO: Limpar histórico antes de PR -->
+A principal utilidade do rebase é limpar e organizar o seu histórico local antes de abrir um Pull Request (PR) ou enviar o código para a equipe.
+
+Se durante o seu desenvolvimento você fez dezenas de commits quebrados ou com mensagens ruins (ex: "wip", "teste", "agora vai"), você pode usar o git rebase -i para fazer um squash, transformando toda essa bagunça em um único commit limpo, funcional e bem documentado. Além disso, o rebase é ótimo para manter sua branch de trabalho atualizada com a main sem poluir o histórico com dezenas de "commits de merge" desnecessários.
 
 #### Quando NÃO Usar
 
-<!-- TODO: Nunca em branches públicas -->
+A Regra de Ouro do Git: Nunca faça rebase em branches públicas ou compartilhadas!
+
+Jamais faça rebase na main, develop ou em uma branch (feature) que outro colega esteja trabalhando junto com você. Como o rebase destrói os commits antigos e cria novos commits (com novos hashes), se você fizer isso em um histórico que já foi baixado por outras pessoas, o Git de todos da equipe vai quebrar e entrar em conflito.
+
+O rebase deve ser usado estritamente no seu ambiente local (na sua branch isolada) antes de compartilhá-la com o mundo.
 
 ### git stash
 

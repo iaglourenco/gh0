@@ -146,15 +146,15 @@ joao-silva/feature/adiciona-busca
 
 <!-- TODO: main, develop, release branches -->
 
-# .gitignore
+## .gitignore
 
-## O que É
+### O que É
 
 O `.gitignore` é um arquivo de configuração do Git que lista padrões de arquivos e diretórios que devem ser **ignorados pelo controle de versão**. Qualquer arquivo ou pasta que corresponda a um padrão listado não será rastreado pelo Git, ou seja, não aparecerá como modificação e não poderá ser commitado acidentalmente.
 
 ---
 
-## Por que Usar
+### Por que Usar
 
 Nem tudo que existe no seu projeto deve ir para o repositório. Os principais motivos para ignorar arquivos são:
 
@@ -167,7 +167,7 @@ Nem tudo que existe no seu projeto deve ir para o repositório. Os principais mo
 
 ---
 
-## Exemplos Comuns
+### Exemplos Comuns
 
 ```gitignore
 # Dependências
@@ -210,7 +210,7 @@ O `.gitignore` usa **glob patterns** para definir quais arquivos ignorar:
 
 ---
 
-## Templates
+### Templates
 
 Não precisa escrever tudo do zero. O site **[gitignore.io](https://www.toptal.com/developers/gitignore)** gera automaticamente um `.gitignore` completo baseado na linguagem, framework ou ferramenta que você está usando.
 
@@ -218,7 +218,7 @@ Exemplos de templates disponíveis: `Python`, `Node`, `Java`, `React`, `Django`,
 
 ---
 
-## Arquivo já Commitado
+### Arquivo já Commitado
 
 Se você acidentalmente já commitou um arquivo que deveria ser ignorado, apenas adicionar o padrão ao `.gitignore` **não resolve** — o Git continua rastreando o arquivo. Para removê-lo do rastreamento sem deletar do disco:
 

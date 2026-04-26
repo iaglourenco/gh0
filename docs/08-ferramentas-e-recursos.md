@@ -405,10 +405,40 @@ git stash clear
 
 ### git reflog
 
-<!-- TODO: Histórico de referências -->
+O `git reflog` (Reference Logs) é a sua **rede de segurança definitiva** no Git. Ele funciona como uma "caixa preta" ou um diário oculto que registra absolutamente *todas* as movimentações que você faz no seu repositório local (mudanças de branch, commits, resets, rebases, etc.).
+
+Diferente do `git log`, que mostra apenas o histórico "oficial" da branch atual, o reflog registra por onde o seu ponteiro `HEAD` (onde você estava trabalhando) passou ao longo do tempo. 
+
+**Por que isso é incrível?** No Git, quase nada é deletado de verdade imediatamente. Se você deletar uma branch por acidente, fizer um `reset --hard` no lugar errado, ou destruir seu histórico com um `rebase` mal feito, os seus commits não somem; eles apenas ficam "órfãos" no limbo do Git. O `git reflog` permite que você encontre o *hash* desses commits perdidos e os traga de volta à vida.
+
+> **Nota:** O reflog é estritamente local e individual. Ele registra apenas as ações feitas no seu computador e é limpo automaticamente pelo Git após um período (geralmente de 30 a 90 dias).
+
+#### Recuperando commits "perdidos"
+
+Aqui está o passo a passo de como usar o reflog para salvar o seu dia quando algo der muito errado:
 
 ```bash
-# TODO: Recuperar commits "perdidos"
+# 1. Visualize o diário de todas as suas ações recentes
+git reflog
+
+# =========================================================================
+# O Git mostrará uma lista parecida com esta (do mais recente para o mais antigo):
+# =========================================================================
+# 5a2b1c3 (HEAD -> main) HEAD@{0}: reset: moving to HEAD~1
+# 9g0h1i2 HEAD@{1}: commit: Adiciona funcionalidade de pagamento <-- (O COMMIT PERDIDO!)
+# 5a2b1c3 HEAD@{2}: checkout: moving from feature-pagamento to main
+# =========================================================================
+
+# 2. Identifique o hash do commit que você quer recuperar na lista (ex: 9g0h1i2).
+
+# 3. RECUPERAÇÃO (OPÇÃO A): Criar uma nova branch a partir do commit perdido.
+# Esta é a opção mais segura, pois salva o código sem alterar a sua branch atual.
+git checkout -b branch-salvadora 9g0h1i2
+
+# 3. RECUPERAÇÃO (OPÇÃO B): Forçar a sua branch atual a voltar para aquele commit.
+# Use com cautela! Isso fará a sua branch atual "viajar no tempo" de volta
+# para o estado exato daquele commit.
+git reset --hard 9g0h1i2
 ```
 
 ### git clean

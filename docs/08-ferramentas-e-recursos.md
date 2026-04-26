@@ -846,7 +846,72 @@ Conteúdo oculto
 
 ### Para Avançados
 
-<!-- TODO: CLI + tig + custom aliases -->
+⚠️ **AVISO - ZONA DE PERIGO:** As ferramentas e configurações desta seção são voltadas para *Power Users*. Elas assumem que você entende profundamente a arquitetura interna do Git (ponteiros, reflogs, árvores e a diferença real entre as áreas de *stage* e *working directory*). Com grande poder, vem a responsabilidade de poder destruir seu histórico local se você não souber o que está fazendo. Proceda com cautela!
+
+#### O Poder Supremo da CLI
+
+Enquanto interfaces gráficas (GUIs) como GitKraken ou a aba de controle de versão do VS Code são excelentes e confortáveis, um usuário avançado de Git domina o terminal. A Interface de Linha de Comando (CLI) é o único lugar onde você tem 100% de acesso às ferramentas de baixo nível (*plumbing* commands) do Git, sem as abstrações ou "travas de segurança" que as ferramentas visuais impõem.
+
+#### Tig: O Canivete Suíço do Terminal
+
+Se você quer a visualização de uma GUI sem sair do terminal, o `tig` é a resposta. Ele é uma interface em modo texto (ncurses) para o Git, que funciona como um navegador de repositório ultrarrápido.
+
+* **Por que usar?** É absurdamente rápido para investigar o histórico de commits, fazer `blame` em arquivos e, principalmente, realizar o *staging* interativo de blocos de código específicos (adicionar apenas algumas linhas de um arquivo modificado ao invés do arquivo inteiro).
+
+```bash
+# Nota: O tig precisa ser instalado separadamente (via brew, apt-get, choco, etc).
+
+# Abre um navegador de histórico interativo e colorido (substitui o git log)
+# Use as setas para navegar e 'Enter' para dividir a tela e ver os diffs do commit
+tig
+
+# Abre a visualização de status (perfeito para staging interativo cirúrgico)
+# Use 'u' para adicionar (update) arquivos inteiros ou partes do código (chunks) ao stage
+tig status
+
+# Inspeciona rapidamente o que foi alterado entre duas branches
+tig main..minha-feature
+```
+
+#### Custom Aliases (Modo Turbo)
+
+Digitar comandos longos repetidamente é perda de tempo. Usuários avançados moldam o Git para o seu próprio fluxo de trabalho configurando Aliases (atalhos personalizados).
+
+Você pode configurá-los editando manualmente o seu arquivo `~/.gitconfig` ou rodando os comandos abaixo no terminal. Aqui estão os atalhos definitivos para acelerar seu fluxo:
+
+```bash
+# ==========================================
+# 1. A Árvore Perfeita (git lg)
+# ==========================================
+# Esqueça o 'git log' padrão. Este alias cria um gráfico colorido, 
+# mostrando branches, datas relativas e autores de forma incrivelmente legível.
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+# Uso: git lg
+# Uso com limite: git lg -10 (mostra os últimos 10)
+
+# ==========================================
+# 2. Correção Rápida (git amend)
+# ==========================================
+# Esqueceu de adicionar um arquivo no último commit? Adicione-o no stage
+# e use este atalho para mesclá-lo ao último commit sem abrir o editor de texto.
+git config --global alias.amend "commit --amend --no-edit"
+
+# ==========================================
+# 3. O Botão de Arrependimento (git undo)
+# ==========================================
+# Desfaz o seu último commit instantaneamente, mas joga todas as suas 
+# modificações de volta na área de stage prontas para uso.
+git config --global alias.undo "reset --soft HEAD~1"
+
+# ==========================================
+# 4. A Opção Nuclear (git nuke) ☢️
+# ==========================================
+# Limpa completamente o seu diretório de trabalho. Ele reseta tudo para 
+# o último commit e DELETA todos os arquivos novos/não rastreados (untracked).
+# CUIDADO: Arquivos não rastreados apagados aqui NÃO vão para o reflog!
+git config --global alias.nuke "!git reset --hard HEAD && git clean -fd"
+```
 
 ## Resumo
 

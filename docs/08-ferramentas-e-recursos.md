@@ -237,12 +237,70 @@
 
 ### git stash
 
-<!-- TODO: Já mencionado em cap 03, detalhes aqui -->
+Como mencionado no Capítulo 03, o `git stash` funciona como uma "gaveta temporária" para o seu código. 
+
+Ele é extremamente útil quando você está trabalhando em uma funcionalidade, mas precisa trocar de branch rapidamente (para corrigir um bug crítico, por exemplo) e não quer fazer um commit de um código incompleto. O `git stash` guarda essas alterações inacabadas com segurança e deixa o seu diretório de trabalho limpo, exatamente no estado do último commit.
 
 #### Comandos Stash
 
+Abaixo estão os principais comandos para gerenciar o seu stash, com exemplos práticos:
+
+**1. Salvando alterações (stash)**
+Guarda as suas modificações atuais (arquivos modificados e na área de *stage*).
+
 ```bash
-# TODO: stash, pop, apply, list, drop, clear
+# Salva as alterações rapidamente (o Git cria uma mensagem automática)
+git stash
+
+# Salva as alterações com uma mensagem descritiva (recomendado)
+git stash push -m "WIP: validação do formulário de contato"
+
+# Salva incluindo arquivos novos que ainda não são rastreados pelo Git (untracked)
+git stash -u
+#### Comandos Stash
+```
+
+**2. Listando o que está guardado (list)**
+```bash
+# Lista todos os stashes armazenados
+git stash list
+
+# Saída de exemplo que aparecerá no terminal: 
+# stash@{0}: On main: WIP: validação do formulário de contato
+# stash@{1}: On develop: Ajustes no CSS do cabeçalho
+```
+
+**3. Recuperando e removendo o código (pop)**
+```bash
+# Aplica e remove o stash mais recente (stash@{0})
+git stash pop
+
+# Aplica e remove um stash específico da lista
+git stash pop stash@{1}
+```
+
+**4. Recuperando sem remover da lista (apply)**
+```bash
+# Aplica o stash mais recente sem apagá-lo da lista
+git stash apply
+
+# Aplica um stash específico sem apagá-lo da lista
+git stash apply stash@{1}
+```
+
+**5. Descartando um stash (drop)**
+```bash
+# Apaga apenas o stash mais recente
+git stash drop
+
+# Apaga um stash específico
+git stash drop stash@{1}
+```
+
+**6. Limpando todos os stashes (clear)**
+```bash
+# Esvazia a "gaveta" completamente (use com cautela!)
+git stash clear
 ```
 
 ### git reflog

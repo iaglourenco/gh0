@@ -451,10 +451,41 @@ git reset --hard 9g0h1i2
 
 ### git reset
 
-<!-- TODO: Desfazer commits -->
+O comando `git reset` é o "botão de desfazer" do Git. Diferente do `rebase` (que reorganiza) ou do `revert` (que cria um novo commit desfazendo algo), o `reset` literalmente **volta no tempo**. 
+
+Ele pega o ponteiro da sua branch atual (onde você está trabalhando) e o arrasta para um commit anterior no histórico, como se os commits que vieram depois nunca tivessem existido.
+
+O comportamento do `reset` muda drasticamente dependendo da *flag* (opção) que você usa. Ele possui três níveis de intensidade: `--soft`, `--mixed` e `--hard`.
+
+#### Os 3 Níveis de Reset
+
+Entender a diferença entre eles é a chave para não perder código acidentalmente.
+
+* **`--soft` (O mais gentil):** Volta no tempo, mas mantém todas as suas alterações na área de *stage* (prontas para serem commitadas novamente). Ótimo para quando você fez um commit pequeno demais e quer desfazê-lo apenas para adicionar mais um arquivo ao mesmo pacote.
+* **`--mixed` (O padrão):** Volta no tempo e tira as alterações da área de *stage*. Seus arquivos continuam modificados no seu computador (Diretório de Trabalho), mas você terá que rodar `git add` de novo. É excelente para quando você quer refazer os commits de uma forma diferente.
+* **`--hard` (O destruidor):** ⚠️ **Cuidado!** Volta no tempo e apaga **absolutamente tudo** o que foi feito depois daquele commit. O seu Diretório de Trabalho ficará idêntico ao que era no passado. Use apenas quando tiver certeza de que quer jogar as alterações recentes no lixo.
 
 ```bash
-# TODO: --soft, --mixed, --hard
+# Volta 1 commit para trás, mas mantém as mudanças no stage (prontas para commit)
+git reset --soft HEAD~1
+
+# Volta 1 commit para trás e tira as mudanças do stage (você não perde o código)
+# Como o --mixed é o padrão, omitir a flag tem o mesmo efeito
+git reset --mixed HEAD~1
+git reset HEAD~1
+
+# Volta 1 commit para trás e DELETA todas as mudanças daquele commit
+# Seu código voltará exatamente para o estado do commit anterior
+git reset --hard HEAD~1
+
+# ==========================================
+# Usando Hashes em vez de atalhos (HEAD~):
+# ==========================================
+# Se você quer voltar para um ponto específico no tempo, você pode 
+# usar o hash do commit desejado.
+
+# Descarta todos os commits até o hash '5a2b1c3' (jogando as alterações fora)
+git reset --hard 5a2b1c3
 ```
 
 #### Diferença reset vs revert

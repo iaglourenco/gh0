@@ -202,10 +202,43 @@
 
 ### git bisect
 
-<!-- TODO: Debugging binário para encontrar bugs -->
+O `git bisect` é uma ferramenta de **busca binária** (binary search) usada para encontrar exatamente qual commit introduziu um bug no seu projeto. 
+
+Imagine que você descobriu um bug no código hoje, mas tem certeza de que a aplicação estava funcionando perfeitamente há duas semanas (uns 50 commits atrás). Em vez de testar esses 50 commits um por um para descobrir onde o código quebrou, o `git bisect` automatiza essa busca. Ele divide o histórico pela metade repetidamente, reduzindo drasticamente o número de testes que você precisa fazer.
+
+#### Exemplo de Uso (Passo a Passo)
+
+Para começar a investigação, você precisa de duas referências: um ponto no histórico onde o bug existe (geralmente o commit atual) e um commit mais antigo onde você tem certeza de que o bug não existia.
 
 ```bash
-# TODO: Exemplo de uso
+# 1. Inicie o modo de investigação do bisect
+git bisect start
+
+# 2. Diga ao Git que o commit atual está quebrado (tem o bug)
+git bisect bad
+
+# 3. Informe o hash de um commit antigo que você sabe que estava bom (sem o bug)
+git bisect good 5a2b1c3
+
+# =========================================================================
+# A partir daqui, o Git fará uma "viagem no tempo" e mudará o seu código 
+# para um commit exatamente na metade do caminho entre o bom e o ruim.
+# =========================================================================
+
+# 4. Teste o seu código manualmente (rode o app, execute testes locais, etc.).
+# Se o bug AINDA estiver acontecendo nessa versão, diga ao Git:
+git bisect bad
+
+# Se o bug NÃO estiver acontecendo (o código está funcionando), diga ao Git:
+git bisect good
+
+# O Git repetirá o processo, cortando as opções pela metade e pedindo para
+# você testar novamente, até isolar o commit exato. Quando terminar, ele 
+# exibirá uma mensagem como: "1a2b3c4 is the first bad commit".
+
+# 5. Após descobrir o commit culpado (ou se quiser cancelar a investigação), 
+# encerre o bisect para que o Git devolva seu projeto ao estado atual (HEAD):
+git bisect reset
 ```
 
 ### git cherry-pick

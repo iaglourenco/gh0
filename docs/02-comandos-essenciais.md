@@ -258,26 +258,56 @@
 
 ## Fluxo de Trabalho Básico
 
-<!-- TODO: Diagrama ou descrição do fluxo -->
+O fluxo de trabalho no Git segue três etapas principais: **modificar**, **adicionar** e **commitar**. Entender esse ciclo é fundamental para usar o Git de forma eficiente.
 
+### As Três Etapas
+
+```mermaid
+graph LR
+    A[Working Directory] -->|git add| B[Staging Area]
+    B -->|git commit| C[Repository]
+    
+    A -.-|Editando arquivos| A
+    B -.-|Preparando mudanças| B
+    C -.-|Histórico salvo| C
 ```
-1. Modificar arquivos (Working Directory)
-2. git add (Staging Area)
-3. git commit (Repository)
-4. Repetir
-```
+
+1. **Working Directory**: Onde você edita seus arquivos
+2. **Staging Area**: Área de preparação - marca o que vai no commit
+3. **Repository**: Histórico permanente dos projetos
 
 ### Exemplo Completo
 
 ```bash
-# TODO: Exemplo de fluxo completo
-# 1. Clonar/criar repositório
-# 2. Fazer mudanças
-# 3. Ver status
-# 4. Adicionar
-# 5. Committar
-# 6. Ver log
+# 1. Clone ou crie o repositório
+git clone https://github.com/usuario/repositorio.git
+# ou
+git init
+
+# 2. Faça mudanças nos arquivos
+# (edite, crie ou delete arquivos)
+
+# 3. Verifique o status
+git status
+
+# 4. Adicione as mudanças à staging area
+git add .
+# ou adicione um arquivo específico
+git add arquivo.md
+
+# 5. Faça o commit
+git commit -m "Descrição clara do que foi feito"
+
+# 6. Verifique o histórico
+git log
 ```
+
+### Dicas Práticas
+
+- Sempre verifique o `git status` antes de commitar
+- Use `git add .` para adicionar todos os arquivos
+- Use `git add arquivo-especifico.md` para adicionar apenas um arquivo
+- Commite frequentemente com mensagens descritivas
 
 ## Comandos de Consulta
 

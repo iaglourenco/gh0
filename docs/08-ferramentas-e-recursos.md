@@ -502,10 +502,50 @@ git reset --hard 5a2b1c3
 
 ### git tag
 
-<!-- TODO: Criar tags para releases -->
+O comando `git tag` funciona como um marcador de página definitivo ou uma "etiqueta" colada em um momento específico do seu histórico. 
+
+Diferente das branches (que se movem para a frente a cada novo commit), uma tag é estática; ela sempre apontará para o mesmo commit. Por causa dessa característica, as tags são o padrão universal da comunidade de desenvolvimento para **marcar pontos de lançamento (releases)** ou versões estáveis do seu software (ex: `v1.0.0`, `v2.1.3`, `beta-v1`).
+
+Existem dois tipos principais de tags:
+* **Lightweight (Leves):** É apenas um nome apontando para um commit. Ideal para marcações temporárias e uso pessoal.
+* **Annotated (Anotadas):** São as recomendadas para lançamentos oficiais. Elas guardam o nome de quem criou, a data, o e-mail e uma mensagem (exatamente como um commit).
+
+#### Criando e Gerenciando Tags
+
+Abaixo estão os comandos para criar tags anotadas (recomendado) e compartilhá-las com a sua equipe:
 
 ```bash
-# TODO: git tag -a v1.0.0 -m "Release 1.0"
+# ==========================================
+# 1. Criando Tags para Releases
+# ==========================================
+# Cria uma tag anotada (flag -a) na sua branch/commit atual, 
+# incluindo uma mensagem descritiva (flag -m)
+git tag -a v1.0.0 -m "Release 1.0: Lançamento inicial para produção"
+
+# Se você esqueceu de taguear e já fez outros commits, 
+# pode aplicar a tag em um commit passado usando o hash dele:
+git tag -a v0.9.0 5a2b1c3 -m "Versão Beta"
+
+# ==========================================
+# 2. Listando e Visualizando
+# ==========================================
+# Lista todas as tags que existem no seu repositório local
+git tag
+
+# Mostra os detalhes de uma tag específica (autor, data e o código do commit)
+git show v1.0.0
+
+# ==========================================
+# 3. Enviando Tags para o Remoto (GitHub/GitLab)
+# ==========================================
+# ATENÇÃO: O comando 'git push' normal NÃO envia tags automaticamente!
+# Você precisa enviá-las de forma explícita.
+
+# Envia uma tag específica para o repositório remoto
+git push origin v1.0.0
+
+# Envia TODAS as suas tags locais de uma só vez para o remoto
+git push origin --tags
 ```
 
 ## Aliases Úteis

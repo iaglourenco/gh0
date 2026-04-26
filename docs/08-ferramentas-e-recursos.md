@@ -936,5 +936,5 @@ git config --global alias.nuke "!git reset --hard HEAD && git clean -fd"
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
 <!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+- [@Xantanio](https://github.com/Xantanio) - Seção X
 -->

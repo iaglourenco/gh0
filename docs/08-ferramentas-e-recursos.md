@@ -210,10 +210,45 @@
 
 ### git cherry-pick
 
-<!-- TODO: Aplicar commits específicos -->
+O comando `git cherry-pick` permite que você escolha um commit específico de uma branch e o aplique em outra, sem precisar fazer o *merge* (mesclagem) de toda a branch. 
+
+Imagine que você está em uma árvore e quer pegar apenas uma cereja específica, e não o galho inteiro. É exatamente isso que o comando faz! Ele é extremamente útil em situações como:
+* Você corrigiu um bug em uma branch de desenvolvimento e quer levar **apenas** essa correção para a branch principal (main/produção).
+* Você fez um commit na branch errada por acidente e quer copiá-lo para a branch correta.
+
+#### Comandos Cherry-pick
+
+Para usar este comando, você precisa saber o **hash** (o código de identificação único) do commit que deseja "pescar". Você pode encontrar esse hash usando o comando `git log`.
+
+Veja as principais formas de utilizá-lo:
 
 ```bash
-# TODO: Sintaxe e exemplos
+# Aplica um único commit específico na sua branch atual
+git cherry-pick 5a2b1c3
+
+# Aplica múltiplos commits específicos de uma só vez (separados por espaço)
+git cherry-pick 5a2b1c3 8f4d9e2
+
+# Aplica um intervalo de commits (do commit mais antigo ao mais recente)
+# Nota: O primeiro commit (A) não é incluído por padrão na cópia.
+git cherry-pick commitA..commitB
+
+# Para incluir o commitA no intervalo, adicione o acento circunflexo (^)
+git cherry-pick commitA^..commitB
+```
+
+**Lidando com conflitos**
+Assim como em um merge, o Git pode encontrar conflitos ao tentar aplicar o código (se as mesmas linhas tiverem sido alteradas de formas diferentes nas branches). Quando isso acontece, o Git pausa o processo para você resolver.
+```bash
+# 1. Resolva os conflitos manualmente no seu editor de código.
+# 2. Adicione os arquivos resolvidos na área de stage:
+git add arquivo-resolvido.js
+
+# 3. Diga ao Git para continuar a aplicar o cherry-pick:
+git cherry-pick --continue
+
+# Caso desista no meio do conflito e queira cancelar tudo, voltando ao estado anterior:
+git cherry-pick --abort
 ```
 
 ### git rebase

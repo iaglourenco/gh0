@@ -146,21 +146,30 @@ joao-silva/feature/adiciona-busca
 
 <!-- TODO: main, develop, release branches -->
 
-## .gitignore
+# .gitignore
 
-### O que É
+## O que É
 
-<!-- TODO: Arquivo para ignorar arquivos -->
+O `.gitignore` é um arquivo de configuração do Git que lista padrões de arquivos e diretórios que devem ser **ignorados pelo controle de versão**. Qualquer arquivo ou pasta que corresponda a um padrão listado não será rastreado pelo Git, ou seja, não aparecerá como modificação e não poderá ser commitado acidentalmente.
 
-### Por que Usar
+---
 
-<!-- TODO: Evitar commit de arquivos desnecessários -->
-<!-- Senhas, builds, dependências, etc. -->
+## Por que Usar
 
-### Exemplos Comuns
+Nem tudo que existe no seu projeto deve ir para o repositório. Os principais motivos para ignorar arquivos são:
+
+- **Secrets e credenciais**: arquivos como `.env`, `*.key` e `credentials.json` contêm senhas, tokens e chaves de API que não devem ser expostos publicamente.
+- **Dependências**: pastas como `node_modules/` e `venv/` são instaladas localmente e podem ser recriadas a qualquer momento — commitá-las aumenta o repositório sem necessidade.
+- **Binários e builds**: arquivos gerados (como `dist/`, `build/`, `*.exe`) são produtos do código-fonte e não precisam ser versionados.
+- **Arquivos de sistema e IDEs**: `.DS_Store`, `Thumbs.db`, `.vscode/`, `.idea/` são específicos do ambiente do desenvolvedor e não fazem parte do projeto em si.
+
+> **Regra de ouro**: se um arquivo pode ser gerado, instalado ou contém informação sensível, ele provavelmente não deveria estar no repositório.
+
+---
+
+## Exemplos Comuns
 
 ```gitignore
-# TODO: Padrões comuns
 # Dependências
 node_modules/
 venv/
@@ -185,17 +194,47 @@ credentials.json
 *.swp
 ```
 
-### Templates
+### Globbing Patterns
 
-<!-- TODO: gitignore.io, templates do GitHub -->
+O `.gitignore` usa **glob patterns** para definir quais arquivos ignorar:
 
-### Arquivo já Commitado
+| Padrão | O que ignora |
+|---|---|
+| `*.log` | Todos os arquivos com extensão `.log` |
+| `build/` | O diretório `build` e todo seu conteúdo |
+| `!important.log` | **Exceção**: não ignora este arquivo específico |
+| `**/temp` | Diretório `temp` em qualquer nível da árvore |
+| `doc/*.txt` | Arquivos `.txt` diretamente dentro de `doc/` |
 
-<!-- TODO: Como ignorar arquivo já no repositório -->
+> **Ordem importa**: coloque padrões mais **específicos antes dos mais genéricos**. Uma regra de exceção (`!`) só funciona se vier depois da regra que ignora o padrão.
+
+---
+
+## Templates
+
+Não precisa escrever tudo do zero. O site **[gitignore.io](https://www.toptal.com/developers/gitignore)** gera automaticamente um `.gitignore` completo baseado na linguagem, framework ou ferramenta que você está usando.
+
+Exemplos de templates disponíveis: `Python`, `Node`, `Java`, `React`, `Django`, `Unity`, entre muitos outros.
+
+---
+
+## Arquivo já Commitado
+
+Se você acidentalmente já commitou um arquivo que deveria ser ignorado, apenas adicionar o padrão ao `.gitignore` **não resolve** — o Git continua rastreando o arquivo. Para removê-lo do rastreamento sem deletar do disco:
 
 ```bash
-# TODO: git rm --cached
+git rm --cached <nome-do-arquivo>
 ```
+
+Para remover um diretório inteiro:
+
+```bash
+git rm -r --cached <nome-do-diretório>/
+```
+
+Depois, adicione o padrão ao `.gitignore`, faça o commit da remoção e o arquivo deixará de ser rastreado.
+
+> ⚠️ **Atenção**: se o arquivo continha dados sensíveis (como senhas), considere rotacionar as credenciais, pois o histórico do Git ainda o conterá.
 
 ## README.md
 

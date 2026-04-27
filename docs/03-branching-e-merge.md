@@ -41,40 +41,108 @@ feature:        E---F
 
 ### Listar Branches
 
-```bash
-# TODO: Comando para listar branches
-# git branch
-# git branch -a (incluindo remotas)
-```
+    git branch       # lista branches locais
+    git branch -a    # lista todas (locais + remotas)
+    git branch -r    # lista apenas branches remotas
+
+---
 
 ### Criar uma Nova Branch
 
-```bash
-# TODO: Como criar branch
-# git branch <nome-da-branch>
-# Convenções de nomenclatura
-```
+    git branch minha-feature
+
+Esse comando cria uma nova branch, mas **não muda automaticamente para ela**.
 
 #### Boas Práticas de Nomenclatura
 
-<!-- TODO: Padrões de nomes de branches -->
-<!-- Exemplos: feature/login, fix/bug-123, docs/readme -->
+- feature/login → nova funcionalidade  
+- fix/bug-123 → correção de bug  
+- docs/readme → documentação  
+- hotfix/erro-critico → correção urgente  
+
+---
 
 ### Trocar de Branch
 
-```bash
-# TODO: Como mudar de branch
-# git checkout <branch>
-# git switch <branch> (comando novo recomendado)
-```
+    git checkout minha-feature
+
+Ou usando o comando mais novo (recomendado):
+
+    git switch minha-feature
+
+---
 
 ### Criar e Trocar em Um Comando
 
-```bash
-# TODO: Atalho para criar e trocar
-# git checkout -b <nome>
-# git switch -c <nome>
-```
+    git checkout -b minha-feature
+
+Ou com a sintaxe moderna:
+
+    git switch -c minha-feature
+
+---
+
+### Deletando Branches
+
+    git branch -d minha-feature   # deleta branch local (seguro)
+    git branch -D minha-feature   # força deleção
+    git push origin --delete minha-feature   # deleta branch remota
+
+---
+
+### Enviando Branch para o Repositório Remoto
+
+    git push origin minha-feature
+
+Esse comando envia a branch local para o repositório remoto (GitHub, por exemplo).
+
+---
+
+### Renomeando Branch
+
+    git branch -m novo-nome
+
+Ou renomeando uma específica:
+
+    git branch -m nome-antigo novo-nome
+
+---
+
+### Branch Local vs Remota
+
+- Local: existe apenas na sua máquina  
+- Remota: existe no servidor (ex: GitHub)  
+- Para compartilhar trabalho, é necessário fazer git push  
+
+---
+
+## Exemplo Prático: Feature Branch Workflow
+
+    # 1. Criar e entrar na branch
+    git checkout -b feature/login
+
+    # 2. Fazer alterações no código
+    git add .
+    git commit -m "feat: adiciona tela de login"
+
+    # 3. Enviar a branch para o repositório remoto
+    git push origin feature/login
+
+    # 4. Voltar para a branch principal
+    git checkout main
+
+    # 5. (Após merge) deletar a branch local
+    git branch -d feature/login
+
+---
+
+## Conceitos Importantes
+
+- Criar branch: permite desenvolver de forma isolada  
+- Listar branches: visualizar locais e remotas  
+- Navegar entre branches: alternar contexto de trabalho  
+- Deletar branches: manter o repositório organizado  
+- Local vs remoto: entender onde sua branch existe
 
 ## Estados do Working Directory
 

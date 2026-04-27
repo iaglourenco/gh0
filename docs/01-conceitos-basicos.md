@@ -57,19 +57,25 @@
 
 ## O que é GitHub?
 
-<!-- TODO: Explique o que é GitHub -->
-<!-- Dicas:
-- Plataforma de hospedagem de código
-- Baseada em Git
-- Ferramentas de colaboração
-- Maior plataforma de código aberto do mundo
-- Não é a mesma coisa que Git!
--->
+O GitHub é uma **plataforma web de hospedagem de código** baseada em Git. Ela pega tudo que o Git faz localmente, ou seja, rastreia mudanças, cria histórico e gerencia branches, mas adiciona uma camada de colaboração, revisão de código e automação acessível pelo navegador. Fundado em **abril de 2008** por Tom Preston-Werner, Chris Wanstrath e PJ Hyett, o GitHub se tornou rapidamente o lar da maioria dos projetos open source do mundo. Em **junho de 2018**, a **Microsoft adquiriu o GitHub por US$ 7,5 bilhões**, mantendo-o independente e expandindo os recursos gratuitos, incluindo repositórios privados ilimitados para contas gratuitas. Hoje em dia, o GitHub é muito mais do que um lugar para guardar código, é onde equipes colaboram de forma distribuída, empresas constroem produtos e desenvolvedores mostram seu trabalho, esse modelo de desenvolvimento aberto e colaborativo ficou conhecido como **social coding**. É usado por desenvolvedores individuais como portfólio técnico, por equipes no dia a dia de desenvolvimento e por grandes projetos open source como Linux, React e Python. A plataforma está disponível em **[github.com](https://github.com)**, basta criar uma conta gratuita para começar.
+
+> **Git ≠ GitHub.** Git é a ferramenta de controle de versão; GitHub é a plataforma que usa Git por baixo dos panos. Você pode usar Git sem o GitHub, mas não o contrário
+
+O plano **Free** já inclui repositórios públicos e privados ilimitados e é mais do que suficiente para a maioria dos desenvolvedores. Para equipes, o plano **Team** (US$ 4/usuário/mês) adiciona revisões obrigatórias e permissões avançadas. Consulte os valores atualizados em [github.com/pricing](https://github.com/pricing).
+
+Além do GitHub, existem alternativas que valem conhecer: o **[GitLab](https://gitlab.com)** se destaca pela opção de self-hosting e CI/CD robusto; o **[Bitbucket](https://bitbucket.org)** é popular em equipes que usam o ecossistema Atlassian (Jira, Confluence); e o **[Gitea](https://gitea.io)** é uma opção leve e open source para quem quer controle total da infraestrutura.
+
 
 ### Recursos do GitHub
 
-<!-- TODO: Liste os principais recursos do GitHub -->
-<!-- Exemplos: repositórios, issues, pull requests, actions, pages, etc. -->
+- **Repositórios remotos** — hospeda seu código na nuvem, servindo como fonte
+  de verdade compartilhada para toda a equipe
+- **Pull Requests (PRs)** — mecanismo para propor, revisar e discutir alterações
+  antes de incorporá-las ao código principal
+- **Issues** — sistema integrado para rastrear bugs, tarefas e sugestões
+- **GitHub Actions** — plataforma de CI/CD nativa que roda testes e deploys
+  automaticamente a cada push ou PR
+- **GitHub Pages** — hospedagem gratuita de sites estáticos direto de um repositório
 
 ## Diferença entre Git e GitHub
 

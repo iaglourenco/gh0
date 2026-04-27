@@ -34,6 +34,12 @@
 <!-- TODO: Explique o comando git init -->
 <!-- O que faz? Quando usar? O que acontece nos bastidores? -->
 
+O comando `git init` é o primeiro passo para começar a versionar um projeto. Ele cria um novo repositório Git local ou transforma um diretório já existente, que não possui versionamento, em um repositório Git.
+
+**Como usar:**
+No terminal, dentro da pasta do seu projeto, digite:
+`git init`
+
 ### Sintaxe
 
 ```bash

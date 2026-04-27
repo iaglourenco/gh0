@@ -17,9 +17,10 @@
 <!-- Conflitos não são erros - são oportunidades de aprendizado -->
 
 ## O que São Conflitos de Merge?
+   Um conflito de merge ocorre quando o Git, apesar de sua inteligência algorítmica, encontra uma ambiguidade que não pode ser resolvida automaticamente. Isso acontece tipicamente quando duas ramificações (branches) distintas alteram a mesma linha de um arquivo de formas diferentes, ou quando uma branch deleta um arquivo que outra modificou. 
 
-<!-- TODO: Definição -->
-<!-- Quando Git não consegue resolver automaticamente -->
+<!-- Quando Git não consegue resolver automaticamente 
+Tecnicamente, o Git falha ao tentar aplicar um 'Three-way merge', pois as mudanças são divergentes a partir do ancestral comum, exigindo que a inteligência humana intervenha para decidir qual estado final preserva a integridade lógica do sistema. -->
 
 ### Por que Conflitos Acontecem?
 
@@ -173,12 +174,15 @@ e muito popular para versionamento de código.
 ```bash
 # git merge -Xtheirs nome-da-branch
 ```
+   Em cenários onde a escala de mudanças é massiva, a resolução manual linha a linha torna-se inviável. As estratégias de estratégia de recursão permitem automatizar essa decisão. A opção -Xours orienta o Git a favorecer sistematicamente a versão da branch atual (aquela em que você está), sendo ideal para proteger configurações locais ou códigos core que não podem ser alterados. Já a -Xtheirs prioriza a branch que está sendo integrada, sendo a escolha correta quando você está absorvendo uma 'hotfix' ou uma atualização crítica de terceiros que deve sobrescrever o estado atual.
 
 ```bash
 # TODO: Usar theirs ou ours
 # git checkout --ours arquivo.md
 # git checkout --theirs arquivo.md
 ```
+
+
 
 ### Combinar Mudanças
 
@@ -192,7 +196,7 @@ e muito popular para versionamento de código.
 
 ### Editor de Texto
 
-<!-- TODO: Resolver manualmente -->
+   A resolução de conflitos via terminal em arquivos complexos (como códigos ou grandes datasets JSON) é propensa a erros. O uso do git difftool atua na fase de pré-análise, permitindo uma inspeção visual comparativa antes de qualquer alteração. Uma vez identificada a colisão, o git mergetool invoca uma interface gráfica (GUI) que segmenta o arquivo em três painéis: a base comum, a versão local e a versão remota. Essa visualização tripartida é fundamental para que o desenvolvedor possa compor uma solução híbrida que aproveite o melhor de ambas as versões.
 
 ### VS Code
 
@@ -253,6 +257,8 @@ e muito popular para versionamento de código.
 
 ## Prevenindo Conflitos
 
+Embora ferramentas ajudem a resolver, a melhor prática é a prevenção através de fluxos de trabalho inteligentes. Commits pequenos e atômicos, aliados a Pull/Fetch frequentes, garantem que a divergência entre a sua branch e a main seja mínima. Em sistemas de missão crítica, como os desenvolvidos em eletrônica aeroespacial, a fragmentação de tarefas em arquivos distintos e o uso de interfaces bem definidas são as defesas primárias contra colisões de código massivas.
+
 ### Comunicação
 
 <!-- TODO: Avisar equipe sobre mudanças grandes -->
@@ -306,6 +312,8 @@ e muito popular para versionamento de código.
 ```
 
 ## Abortando um Merge
+
+A resolução de conflitos pode se tornar excessivamente complexa se houver muitos arquivos alterados simultaneamente. Nestes casos, o comando git merge --abort funciona como um 'botão de pânico'. Ele interrompe o processo de integração e restaura o repositório ao estado exato em que estava antes do comando de merge ser disparado. É uma prática recomendada usar o abort sempre que houver dúvida sobre a integridade da resolução manual, permitindo ao desenvolvedor reavaliar a estratégia de integração sem deixar o repositório em um estado 'sujo' ou quebrado.
 
 ### Retorna ao estado anterior caso o merge esteja muito complexo
 ```bash
@@ -390,6 +398,8 @@ Cenário:
 ### Comunicar com o Autor
 
 #### Use o git blame para identificar quem editou a linha e converse com o autor para entender a intenção do código original.
+
+   A resolução técnica de um conflito é apenas metade do trabalho. A outra metade é política/social. O comando git blame deve ser usado como uma ferramenta de rastreabilidade para identificar o autor da mudança divergente. Antes de concluir o merge, uma breve consulta ao autor evita a deleção de lógicas intencionais (edge cases) que podem não ser óbvias à primeira vista.
 
 <!-- TODO: Perguntar intenção das mudanças -->
 
@@ -487,6 +497,6 @@ Cenário:
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
-<!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+<!-- Adicione seu nome quando contribuir: Filipe Alves de Sousa
+- [@seu-usuario](https://github.com/filipe19) - Estratégias e Ferramentas de Resolução (#46)
 -->

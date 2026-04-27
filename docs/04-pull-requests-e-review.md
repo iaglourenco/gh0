@@ -47,40 +47,117 @@
 
 ### Pré-requisitos
 
-<!-- TODO: O que você precisa antes de abrir PR -->
+Antes de abrir um PR, certifique-se de ter:
+
+- Uma conta no GitHub
+- Um repositório com pelo menos uma branch diferente da `main` (ou um fork com uma branch)
+- Commits feitos nessa branch com as suas alterações
+- Permissão de escrita no repositório, ou um fork próprio
 
 ### Passo a Passo
 
 #### 1. Fazer Push da Branch
 
+Envie sua branch local para o GitHub com o comando:
+
 ```bash
-# TODO: Comando para push
-# git push origin nome-da-branch
+git push origin nome-da-branch
+```
+
+Se for a primeira vez que você envia essa branch, o Git pode sugerir o comando completo:
+
+```bash
+git push --set-upstream origin nome-da-branch
 ```
 
 #### 2. Abrir PR no GitHub
 
-<!-- TODO: Interface do GitHub -->
-<!-- Botão "Compare & pull request" -->
-<!-- Descrição da tela de criação de PR -->
+Após o push, acesse o repositório no GitHub. Você verá um **banner amarelo** no topo da página com uma mensagem como:
+
+> "sua-branch had recent pushes X seconds ago"
+
+Clique no botão verde **"Compare & pull request"** para iniciar a criação do PR.
+
+Caso o banner não apareça, você também pode:
+1. Clicar na aba **Pull requests**
+2. Clicar em **New pull request**
+3. Selecionar a branch de origem no menu **compare**
+
+**Ao abrir a tela de criação do PR, verifique:**
+
+- **Base branch**: a branch que vai *receber* as mudanças (geralmente `main`)
+- **Compare branch**: a sua branch com as mudanças que você quer propor
+
+**Criando PR a partir de um Fork:**
+
+Se você está contribuindo para um repositório que não é seu (como neste projeto), o fluxo é o mesmo, mas você deve:
+
+1. Navegar ao repositório **original** (upstream)
+2. Clicar em **Compare & pull request** no banner
+3. Clicar em **compare across forks**
+4. Selecionar o repositório base (original) e a branch de destino
+5. Selecionar o seu fork e a sua branch de origem
 
 #### 3. Preencher Informações
 
-<!-- TODO: Título, descrição, reviewers, labels, etc. -->
+Após confirmar as branches, preencha as informações do PR nos campos à direita:
+
+- **Reviewers**: pessoas que você quer que revisem (ex: colegas, professor)
+- **Assignees**: a pessoa responsável pelo PR (geralmente você mesmo)
+- **Labels**: categorias como `documentation`, `bug`, `enhancement`
+- **Milestone**: sprint ou marco relacionado
 
 ##### Título do PR
 
-<!-- TODO: Boas práticas para título -->
+O título deve ser curto, descritivo e escrito no **imperativo** (como se fosse um comando):
+
+```
+✅ "Adiciona explicação sobre git commit"
+✅ "Corrige typo na seção de branching"
+✅ "Preenche conteúdo da seção git init"
+
+❌ "Minha contribuição"
+❌ "atualizei o arquivo"
+❌ "WIP"
+```
 
 ##### Descrição
 
-<!-- TODO: O que incluir na descrição -->
-<!-- Contexto, mudanças, screenshots, etc. -->
+A descrição é o lugar para **explicar o contexto e as mudanças**. Um bom modelo:
+
+```markdown
+## O que este PR faz?
+Descreva o propósito principal das mudanças.
+
+## O que mudou?
+- Item 1 que foi alterado
+- Item 2 que foi adicionado
+
+## Como testar?
+Passo a passo para verificar que as mudanças funcionam.
+
+## Issues relacionadas
+Closes #Número-da-issue
+```
+
+> Se ainda não estiver pronto para revisão, clique na seta ao lado de **"Create pull request"** e selecione **"Create Draft Pull Request"**. PRs em rascunho não podem ser mergeados até serem marcados como prontos.
 
 #### 4. Referenciar Issues
 
-<!-- TODO: Como linkar issues -->
-<!-- Closes #123, Fixes #456, etc. -->
+Você pode vincular seu PR a uma issue usando palavras-chave especiais na descrição. Quando o PR for mergeado, a issue será fechada automaticamente:
+
+```markdown
+Closes #123
+Fixes #456
+Resolves #789
+```
+
+Você pode referenciar múltiplas issues e de outros repositórios:
+
+```markdown
+Closes #123, Fixes #456
+Closes usuario/repositorio#789
+```
 
 ## Anatomia de um Bom Pull Request
 
@@ -317,7 +394,33 @@
 
 ### Exemplo 1: Primeiro Pull Request
 
-<!-- TODO: Passo a passo completo para iniciante -->
+Cenário: você quer contribuir com o projeto `gh0` preenchendo uma seção de um arquivo de documentação.
+
+```bash
+# Passo 1: Fazer fork do repositório no GitHub (botão Fork)
+
+# Passo 2: Clonar seu fork
+git clone https://github.com/SEU-USUARIO/gh0.git
+cd gh0
+
+# Passo 3: Configurar o upstream
+git remote add upstream https://github.com/iaglourenco/gh0.git
+
+# Passo 4: Criar uma branch descritiva
+git switch -c seu-nome/adiciona-secao-git-init
+
+# Passo 5: Fazer as alterações no arquivo indicado na issue
+# (editar docs/02-comandos-essenciais.md, por exemplo)
+
+# Passo 6: Adicionar e fazer commit
+git add docs/02-comandos-essenciais.md
+git commit -m "docs: adiciona explicação sobre git init"
+
+# Passo 7: Enviar a branch para o seu fork
+git push origin seu-nome/adiciona-secao-git-init
+```
+
+Agora acesse o GitHub, clique em **"Compare & pull request"** no banner amarelo, preencha o título, a descrição (com `Closes #Número-da-issue`) e clique em **"Create pull request"**.
 
 ### Exemplo 2: Revisando um PR
 
@@ -366,7 +469,46 @@
 
 ## Workflow Diagram
 
-<!-- TODO: Diagrama visual do fluxo de PR -->
+Fluxo completo de uma contribuição via Pull Request:
+
+```
+[Repositório Original]
+        |
+        | fork
+        ↓
+ [Seu Fork no GitHub]
+        |
+        | git clone
+        ↓
+ [Seu Computador (local)]
+        |
+        | git switch -c feature/minha-contribuicao
+        ↓
+  [Nova Branch local]
+        |
+        | editar arquivos
+        | git add + git commit
+        ↓
+  [Commits na Branch]
+        |
+        | git push origin feature/minha-contribuicao
+        ↓
+ [Branch no Seu Fork]
+        |
+        | Abrir Pull Request no GitHub
+        ↓
+  [Pull Request Aberto]
+        |
+        |--- CI/CD checks (automático)
+        |--- Revisão por pares
+        |--- Discussão e ajustes
+        ↓
+     [Aprovado]
+        |
+        | Merge
+        ↓
+[Repositório Original (main)]
+```
 
 ## Recursos Adicionais
 
@@ -374,11 +516,29 @@
 
 - [GitHub Pull Request Documentation](https://docs.github.com/en/pull-requests)
 - [Code Review Best Practices](https://google.github.io/eng-practices/review/)
+- [Beginner's Guide to GitHub: Creating a Pull Request](https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/)
+- [Creating a Pull Request from a Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
 - <!-- Mais recursos -->
 
 ## Resumo
 
-<!-- TODO: Pontos principais sobre PRs e code review -->
+Um **Pull Request** é a principal forma de colaborar no GitHub. Ele não é um comando Git, mas uma funcionalidade da plataforma que permite propor, revisar e discutir mudanças antes de integrá-las ao projeto.
+
+**Para criar um PR:**
+1. Crie uma branch, faça commits e envie com `git push origin nome-da-branch`
+2. No GitHub, clique em **Compare & pull request** no banner amarelo
+3. Selecione a **branch de destino** (base) e a **branch de origem** (compare)
+4. Preencha um título descritivo, uma descrição clara e vincule a issue com `Closes #Número`
+5. Clique em **Create pull request** (ou **Draft** se ainda não estiver pronto)
+6. Aguarde revisão, responda aos comentários e atualize o PR com novos commits
+7. Após aprovado, o mantenedor faz o merge
+
+**Boas práticas essenciais:**
+- PRs pequenos e focados são melhores do que PRs grandes
+- Descreva bem o que foi feito e por quê
+- Teste as mudanças antes de abrir o PR
+- Seja responsivo: responda comentários em tempo hábil
+- Revisores: sejam construtivos, empáticos e expliquem o porquê das sugestões
 
 ---
 
@@ -388,3 +548,5 @@
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+
+- [@gomesgeorgelucas](https://github.com/gomesgeorgelucas) - Passo a passo de como criar um Pull Request

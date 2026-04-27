@@ -530,7 +530,7 @@ main → feature branch → PR → review → merge → deploy
 ---
 
 ## 👥 Contribuidores
-
+-  [@ffogacalemos](https://github.com/ffogacalemos) - Seção boas práticas: .gitignor
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X

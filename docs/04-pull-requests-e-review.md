@@ -162,29 +162,103 @@
 
 ### Como Autor do PR
 
+Quando você abre um Pull Request, outras pessoas podem revisar sua contribuição e deixar comentários, sugestões ou pedidos de alteração. Isso é normal em projetos colaborativos e faz parte do processo de melhoria do conteúdo.
+
+O objetivo da revisão não é apontar erros de forma negativa mas ajudar para que o Pull Request fique mais claro, correto e útil para todos que vão ler a documentação.
+
 <!-- TODO: Como lidar com feedback -->
 
 #### Recebendo Feedback
+
+Ao receber feedback, leia cada comentário com calma antes de responder. Muitas vezes, o revisor está tentando ajudar a melhorar uma explicação, corrigir um detalhe ou deixar o texto mais fácil de entender para iniciantes.
+
+A revisão deve ser vista como uma oportunidade de aprendizado. Mesmo que seja necessário fazer ajustes, isso não significa que sua contribuição está ruim. Significa apenas que ela pode ficar ainda melhor.
+
+Boas práticas ao receber feedback:
+
+- agradeça pelas sugestões;
+- responda com educação;
+- pergunte quando não entender algum comentário;
+- aceite ajustes que deixem o conteúdo mais claro;
+- mantenha o foco na melhoria do Pull Request.
+
+Exemplo de resposta adequada:
+
+```text
+Obrigado pela sugestão! Vou ajustar essa parte para deixar a explicação mais clara.
+```
 
 <!-- TODO: Atitude positiva, não defensiva -->
 
 #### Discutindo Construtivamente
 
+Nem sempre o autor do Pull Request vai concordar imediatamente com uma sugestão. Nesses casos, é importante conversar de forma respeitosa e explicar o motivo da sua escolha.
+
+Uma boa discussão deve focar no conteúdo, não na pessoa. Em vez de apenas recusar uma sugestão, tente explicar seu ponto de vista e abrir espaço para uma solução melhor.
+
+Exemplo de resposta construtiva:
+
+```text
+Entendi sua sugestão. Eu escrevi dessa forma para deixar o exemplo mais simples para iniciantes. Você acha melhor manter assim ou detalhar um pouco mais?
+```
+
+Evite respostas curtas ou defensivas, como:
+
+```text
+Não vou mudar.
+```
+
+ou:
+
+```text
+Está certo do meu jeito.
+```
+
+Esse tipo de resposta pode dificultar a colaboração. O ideal é manter um diálogo educado e buscar a melhor solução para o projeto.
+
+
 <!-- TODO: Quando discordar respeitosamente -->
 
 #### Fazendo Alterações
 
+Quando uma revisão solicitar mudanças, faça os ajustes na mesma branch usada para abrir o Pull Request. Não é necessário criar outro Pull Request.
+
+Depois de editar o arquivo solicitado, use o Git para registrar e enviar as alterações novamente.
+
+Fluxo básico:
+
 ```bash
-# TODO: Como atualizar o PR
-# 1. Fazer mudanças localmente
-# 2. Commit
-# 3. Push (atualiza PR automaticamente)
+# veja o que foi alterado
+git status
+
+# adicione o arquivo modificado
+git add docs/04-pull-requests-e-review.md
+
+# faça um novo commit
+git commit -m "docs: ajusta seção sobre code review"
+
+# envie para seu fork
+git push origin fnd-lip/responde-code-review
 ```
+
+Depois do `git push`, o Pull Request será atualizado automaticamente no GitHub. Isso significa que o revisor verá as novas alterações no mesmo PR, sem que você precise abrir outro.
 
 #### Marcar Conversas como Resolvidas
 
+Depois de corrigir um comentário da revisão, responda explicando o que foi alterado. Em seguida marque a conversa como resolvida no GitHub.
+
+Exemplo de resposta:
+
+```text
+Ajustei a explicação conforme sugerido e adicionei um exemplo prático.
+```
+
+Marcar conversas como resolvidas ajuda revisores e professores a acompanharem o que já foi corrigido e o que ainda precisa de atenção.
 <!-- TODO: Quando resolver threads de discussão -->
 
+Para se aprofundar no fluxo de colaboração com Git e GitHub, consulte:
+
+- [Pro Git Book (PT-BR)](https://git-scm.com/book/pt-br/v2)
 ## Estados de um Pull Request
 
 ### Draft (Rascunho)

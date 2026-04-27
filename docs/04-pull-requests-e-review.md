@@ -137,7 +137,7 @@ Descreva o propósito principal das mudanças.
 Passo a passo para verificar que as mudanças funcionam.
 
 ## Issues relacionadas
-Fecha #Número-da-issue
+Closes #Número-da-issue
 ```
 
 > Se ainda não estiver pronto para revisão, clique na seta ao lado de **"Create pull request"** e selecione **"Create Draft Pull Request"**. PRs em rascunho não podem ser mergeados até serem marcados como prontos.

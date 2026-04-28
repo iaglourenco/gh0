@@ -91,32 +91,45 @@ feature:        E---F
 
 ### O que é Merge?
 
-<!-- TODO: Integrar mudanças de uma branch em outra -->
+Merge é o processo de integrar as alterações de uma branch em outra no Git.
+
+Ele é necessário porque permite desenvolver funcionalidades de forma isolada em feature branches, testar as mudanças e depois incorporá-las à branch principal de forma controlada. A branch que recebe o merge é chamada de branch base.
+
+Um fluxo comum é: criar branch -> implementar -> testar -> fazer merge -> deletar a branch. Alguns cenários comuns são `feature` -> `main`, `hotfix` -> `main` e merge em `staging` antes de enviar para `production`.
+
+O resultado pode ser um fast-forward ou um novo commit de merge, dependendo do histórico das branches.
 
 ### Sintaxe Básica
 
 ```bash
-# TODO: Como fazer merge
-# git merge <nome-da-branch>
-# Primeiro checkout para branch destino, depois merge
+git switch main
+git merge <nome-da-branch>
 ```
+
+Para realizar um merge:
+
+1. Acesse a branch de destino (branch base)
+2. Execute o comando `git merge` com o nome da branch de origem
 
 ### Exemplo de Merge
 
 ```bash
-# TODO: Exemplo completo
-# 1. Criar feature branch
-# 2. Fazer commits
-# 3. Voltar para main
-# 4. Fazer merge
+git switch -c feature/login
+# faz alterações e commits
+
+git switch main
+git merge feature/login
 ```
+
+Nesse processo, o Git integra o histórico da branch `feature/login` na branch `main`.
 
 ## Tipos de Merge
 
 ### Fast-Forward Merge
 
-<!-- TODO: O que é fast-forward -->
-<!-- Quando acontece: quando não há commits divergentes -->
+O fast-forward merge acontece quando a branch base não possui commits novos em relação à branch que será mesclada.
+
+Nesse caso, o Git apenas "avança" o ponteiro da branch, sem criar um novo commit de merge.
 
 ```
 Antes:
@@ -130,8 +143,9 @@ main:    A---B---C---D
 
 ### Three-Way Merge
 
-<!-- TODO: O que é three-way merge -->
-<!-- Quando acontece: quando há commits em ambas as branches -->
+Ocorre quando existem commits diferentes em ambas as branches.
+
+Nesse caso, o Git cria um novo commit de merge para unir os históricos.
 
 ```
 Antes:
@@ -145,10 +159,11 @@ main:    A---B---C---F
 feature:       D---E
 ```
 
+Esse novo commit (`F`) é chamado de merge commit.
+
 ### Merge Commit
 
-<!-- TODO: O que é um merge commit -->
-<!-- Tem dois parents -->
+Um merge commit registra a união de duas branches. Ele tem dois parents: um da branch base e outro da branch que foi integrada.
 
 ## Estratégias de Merge
 

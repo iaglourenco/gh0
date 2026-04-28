@@ -447,7 +447,6 @@ Este capítulo cobriu a base operacional da linha de comando. Aqui estão os pon
 
 ```bash
 git commit -m "Criei o Guia Completo sobre Comandos Essenciais do Git"
-[Comandos Essenciais do GIT](docs\assets\Comandos_git_init.png)
 ```
 
 ## 👥 Contribuidores

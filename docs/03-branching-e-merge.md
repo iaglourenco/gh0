@@ -36,7 +36,7 @@ Commit:    A        B        C        D        (main)
               └─ Another-branch (ponteiro para C)
 ```
 
-Cada branch armazena apenas o hash do commit mais recente. O Git entãofollow a cadeia de commits pais para construir o histórico completo.
+Cada branch armazena apenas o hash do commit mais recente. O Git então segue a cadeia de commits pais para construir o histórico completo.
 
 ### Por que Usar Branches?
 
@@ -205,7 +205,7 @@ Quando você troca de branch, o Git altera o conteúdo do seu diretório de trab
 Se você tiver alterações não salvas (não commitadas) e tentar trocar de branch, o Git impedirá a troca para evitar perda de trabalho.
 
 ```bash
-# Você estar em main com mudanças não commitadas
+# Você está em main com mudanças não commitadas
 $ git status
 On branch main
 Changes not staged for commit:
@@ -333,18 +333,37 @@ feature:       D---E
 
 ## Deletando Branches
 
-```bash
-# TODO: Como deletar branch local
-# git branch -d <branch> (seguro)
-# git branch -D <branch> (forçado)
+### Deletar uma Branch Local
 
+```bash
+# Deletar branch local (apenas se já foi merged)
+git branch -d <nome-da-branch>
+
+# Forçar deleção (use com cuidado)
+git branch -D <nome-da-branch>
+
+# Exemplo
+git branch -d feature/login
+git branch -d bugfix/erro-correcao
+```
+
+### Deletar uma Branch Remota
+
+```bash
 # Deletar branch remota
-# git push origin --delete <branch>
+git push origin --delete <nome-da-branch>
+
+# Exemplo
+git push origin --delete feature/nova-funcionalidade
 ```
 
 ### Quando Deletar Branches
 
-<!-- TODO: Após merge, branches antigas, etc. -->
+- Após fazer merge na branch principal
+- Quando a funcionalidade foi abandonada
+- Para manter o repositório limpo
+
+> **Nota:** Use `-d` (minúsculo) apenas se a branch já foi mesclada. Use `-D` (maiúsculo) para forçar a deleção.
 
 ## Visualizando o Grafo
 

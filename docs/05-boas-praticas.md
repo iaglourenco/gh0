@@ -80,17 +80,49 @@ Referências: #123, #456
 
 ### O que São
 
-<!-- TODO: Um commit = uma mudança lógica -->
+Commits atômicos representam **uma única mudança lógica** no projeto. Ao invés de agrupar várias alterações não relacionadas em um commit gigante, você divide o trabalho em pequenos commits, cada um com um propósito claro e específico.
+
+Um commit atômico deve:
+- Fazer uma coisa só (ex: adicionar uma função, corrigir um bug, atualizar documentação)
+- Ser independente – pode ser aplicado ou desfeito sem quebrar outras funcionalidades
+- Ter uma mensagem que descreva exatamente o que foi mudado e por quê
 
 ### Por que Usar
 
-<!-- TODO: Facilita review, revert, cherry-pick, debug -->
+Manter commits atômicos traz benefícios significativos para o histórico do projeto:
+
+- **Facilita o code review** – Revisores entendem rapidamente cada mudança isolada
+- **Permite reverter seletivamente** – Se um bug aparecer, você pode reverter apenas o commit problemático (`git revert`)
+- **Ajuda no `cherry-pick`** – Você pode aplicar uma funcionalidade específica em outra branch sem trazer tudo
+- **Facilita o `bisect`** – Encontrar o commit que introduziu um bug fica muito mais rápido com commits pequenos
+- **Histórico limpo e compreensível** – `git log --oneline` mostra uma linha do tempo clara e significativa, sem poluição de mudanças misturadas
 
 ### Como Fazer
 
-<!-- TODO: Dividir trabalho em pequenos commits coesos -->
+Para criar commits atômicos na prática:
+
+1. **Planeje antes de codificar** – Divida mentalmente a tarefa em etapas menores
+2. **Use `git add -p`** – Adicione apenas partes específicas de um arquivo (interactive staging)
+3. **Commite com frequência** – Sempre que uma pequena unidade de trabalho estiver pronta
+4. **Não tenha medo de muitos commits** – Commits locais são baratos; você pode reorganizá-los depois com `rebase -i`
+5. **Combine com squash** – Se exagerou nos commits muito pequenos, agrupe os relacionados antes de compartilhar
 
 ### Exemplos
+
+```bash
+# ✅ BOM: commits separados por responsabilidade
+git commit -m "feat: adiciona validação de formato de email"
+git commit -m "feat: adiciona validação de força de senha"
+git commit -m "docs: documenta novas validações no README"
+
+# ❌ RUIM: tudo em um commit (mudanças não relacionadas)
+git commit -m "adiciona validações e atualiza documentação e corrige typo"
+
+# ✅ BOM: mesmo arquivo, partes diferentes
+git add -p src/auth.js   # seleciona apenas a parte da validação de email
+git commit -m "feat: valida formato de email"
+git add -p src/auth.js   # agora a parte da senha
+git commit -m "feat: valida força da senha"
 
 ```bash
 # ✅ BOM: commits separados

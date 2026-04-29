@@ -124,7 +124,7 @@ Utilize templates de PR (se o repositório tiver um) e não deixe a descrição 
 
 ### Testes
 
-Utilize templates de PR (se o repositório tiver um) e não deixe a descrição em branco. O revisor precisa entender seu raciocínio antes de ler as linhas de código.
+Sempre teste as suas alterações localmente antes de abrir um Pull Request. Certifique-se de que a nova funcionalidade está rodando conforme o esperado e que nenhuma outra parte do sistema quebrou. Se o projeto possuir testes automatizados, execute-os na sua máquina para garantir que todos estão passando com sucesso.
 
 ## Code Review: Revisando PRs
 
@@ -216,7 +216,7 @@ Para atualizar um PR com as mudanças solicitadas pelo revisor, basta alterar o 
 # Faça as modificações nos arquivos
 git add .
 git commit -m "refactor: ajusta lógica conforme revisão de código"
-git push origin sua-branchte)
+git push origin sua-branch
 ```
 
 #### Marcar Conversas como Resolvidas
@@ -495,9 +495,9 @@ Local                   Remoto (GitHub)
 
 Para aprofundar seu conhecimento na gestão do repositório, consulte estes links oficiais e guias de mercado:
 
-- [Convevtional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/)
+- [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/)
 
-- [eng-pratices](https://google.github.io/eng-practices/review/)
+- [eng-practices](https://google.github.io/eng-practices/review/)
 
 - [GitHub Pull Request Documentation](https://docs.github.com/en/pull-requests)
 - [Code Review Best Practices](https://google.github.io/eng-practices/review/)

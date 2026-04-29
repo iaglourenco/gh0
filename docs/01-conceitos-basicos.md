@@ -116,28 +116,89 @@
 
 ## Instalação do Git
 
+O Git pode ser instalado em todos os principais sistemas operacionais. Abaixo você encontra o guia de instalação para Windows, macOS e Linux, incluindo o uso de gerenciadores de pacotes.
+
 ### Windows
 
-<!-- TODO: Como instalar Git no Windows -->
-<!-- Link para download: https://git-scm.com/download/win -->
+**Opção 1: Instalador Oficial (Recomendado para iniciantes)**
+1. Acesse o site oficial: [https://git-scm.com/download/win](https://git-scm.com/download/win)
+2. Baixe a versão correspondente ao seu sistema (geralmente 64-bit Git for Windows Setup).
+3. Execute o instalador e siga o assistente (pode deixar as opções padrão marcadas).
+4. Após a instalação, você terá acesso ao Git Bash, um terminal que emula o ambiente Linux no Windows, facilitando o uso dos comandos.
+**Opção 2: Usando Package Managers (Avançado)**
+Se você usa gerenciadores de pacotes no Windows, pode instalar via terminal:
+
+Via **Winget**:
+```powershell
+winget install --id Git.Git -e --source winget
+```
+
+Via **Chocolatey**:
+```powershell
+choco install git
+```
 
 ### macOS
 
-<!-- TODO: Como instalar Git no macOS -->
-<!-- Homebrew, Xcode, download direto -->
+A maneira mais comum e recomendada de instalar o Git no macOS é através do gerenciador de pacotes **Homebrew**.
+
+1. Se não tiver o Homebrew instalado, instale-o com:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+2. Instale o Git executando:
+```bash
+brew install git
+```
+
+*Alternativa:* Você também pode baixar o instalador oficial em [https://git-scm.com/download/mac](https://git-scm.com/download/mac).
 
 ### Linux
 
-<!-- TODO: Como instalar Git no Linux -->
-<!-- Comandos para Ubuntu/Debian, Fedora, Arch -->
+No Linux, a instalação é feita diretamente pelo terminal usando o gerenciador de pacotes da sua distribuição.
+
+**Debian / Ubuntu / Linux Mint:**
+```bash
+sudo apt update
+sudo apt install git
+```
+
+**Fedora:**
+```bash
+sudo dnf install git
+```
+*(Se estiver usando uma versão mais antiga do Fedora, pode usar `sudo yum install git`)*
+
+**Arch Linux:**
+```bash
+sudo pacman -S git
+```
 
 ### Verificando a Instalação
 
-<!-- TODO: Como verificar se o Git foi instalado corretamente -->
+Independentemente do seu sistema operacional, após a instalação, abra o seu terminal (Prompt de Comando, PowerShell, Terminal do macOS ou Linux) e digite o seguinte comando para confirmar que o Git foi instalado com sucesso:
 
 ```bash
-# TODO: Adicione o comando para verificar versão do Git
+git --version
 ```
+
+**Output de exemplo esperado:**
+```text
+git version 2.44.0
+```
+*(O número da versão pode variar dependendo de quando você instalou, mas deve mostrar "git version...")*
+
+### Troubleshooting (Problemas Comuns)
+
+Se você receber um erro como:
+> `'git' não é reconhecido como um comando interno ou externo, um programa operável ou um arquivo em lotes.` (Windows)
+> **ou**
+> `bash: git: command not found` (Linux/macOS)
+
+**Como resolver:**
+1. **Reinicie o terminal:** O terminal precisa ser fechado e aberto novamente para recarregar as variáveis de ambiente.
+2. **Verifique o PATH (Windows):** Se você usou o instalador manual e desmarcou a opção de adicionar o Git ao PATH, o terminal não saberá onde ele está. Reinstale o Git e certifique-se de marcar a opção *"Git from the command line and also from 3rd-party software"*.
+3. **Permissões (Linux/macOS):** Se a instalação falhar por erro de permissão, lembre-se de usar `sudo` antes dos comandos de instalação com `apt`, `dnf` ou `pacman`.
 
 ## Configuração Inicial
 

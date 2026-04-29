@@ -287,14 +287,214 @@ credentials.json
 
 ## Histórico Limpo
 
+Manter um histórico limpo no Git significa organizar commits e branches de forma que qualquer pessoa consiga entender facilmente a evolução do projeto. Um bom histórico facilita debugging, code review, manutenção e colaboração em equipe.
+
+Um histórico limpo geralmente possui:
+
+- Commits pequenos e organizados por responsabilidade
+- Mensagens claras e descritivas
+- Poucos commits “ruído” como `fix typo`, `teste`, `wip`
+- Branches organizadas antes do merge
+- Linha do tempo compreensível no `git log --oneline`
+
 ### Rebasing
 
-<!-- TODO: Quando e como usar rebase -->
-<!-- (Detalhes em capítulos avançados) -->
+`git rebase` reaplica commits de uma branch sobre outra, criando um histórico mais linear e fácil de ler.
+
+Diferente do `merge`, o rebase evita commits extras de merge e mantém a linha do tempo mais limpa.
+
+#### Rebase vs Merge
+Quando usar `rebase`
+
+Use rebase quando:
+
+- Você quer atualizar sua branch com a `main`
+- Ainda está trabalhando localmente
+- Deseja reorganizar ou limpar commits antes do Pull Request
+- Quer um histórico linear
+
+```bash
+# Atualiza sua branch com a main
+git fetch upstream
+git rebase upstream/main
+```
+
+Quando usar `merge`
+
+Use merge quando:
+
+- A branch já foi compartilhada com outras pessoas
+- Você quer preservar o histórico exato das integrações
+- Está trabalhando em branches colaborativas
+
+```bash
+git merge upstream/main
+```
+
+#### Exemplo Visual
+##### Histórico com merge
+
+```
+A---B---C main
+     \   
+      D---E feature
+           \
+            M
+```
+
+##### Histórico com rebase
+
+```
+A---B---C---D'---E' feature
+```
+
+O histórico com rebase costuma ficar mais simples de navegar usando:
+
+```bash
+git log --oneline --graph
+```
 
 ### Squashing Commits
 
-<!-- TODO: Combinar commits relacionados -->
+Durante o desenvolvimento é normal criar commits intermediários como:
+
+```bash
+fix typo
+ajuste
+teste
+wip
+```
+
+Antes de abrir um Pull Request, o ideal é combinar commits relacionados usando squash. Isso reduz ruído e deixa o histórico mais profissional.
+
+#### Exemplo
+
+##### Antes do squash
+
+```
+feat: adiciona autenticação
+fix: corrige typo
+wip
+ajuste login
+docs: atualiza exemplo
+```
+
+##### Depois do squash
+
+```
+feat: adiciona autenticação com validação de login
+docs: atualiza documentação da autenticação
+```
+
+### Interactive Rebase
+
+O git `rebase -i` (interactive rebase) permite reorganizar, editar, remover ou combinar commits.
+
+É uma das ferramentas mais importantes para limpar o histórico antes de compartilhar código.
+
+```bash
+# Reorganiza os últimos 5 commits
+git rebase -i HEAD~5
+```
+
+Ao executar o comando, o Git abrirá uma lista semelhante a esta:
+
+```
+pick a1b2c3 feat: adiciona login
+pick d4e5f6 fix typo
+pick g7h8i9 ajuste login
+```
+
+Você pode alterar os comandos:
+
+```
+pick a1b2c3 feat: adiciona login
+squash d4e5f6 fix typo
+squash g7h8i9 ajuste login
+```
+
+Principais opções:
+
+- `pick` → mantém o commit
+- `squash` → combina com o commit anterior
+- `reword` → altera a mensagem
+- `drop` → remove o commit
+
+### Evite Reescrever Histórico Publicado
+
+Reescrever histórico altera hashes de commits. Isso pode causar conflitos e problemas para outras pessoas que já baixaram a branch.
+
+Por isso:
+
+- ✅ É seguro usar `rebase -i` em branches locais/pessoais
+- ⚠️ Evite rebase em branches compartilhadas
+- ❌ Nunca reescreva histórico de branches públicas como main
+
+Cuidado com `push --force`
+
+Após um rebase, às vezes é necessário forçar o push:
+
+```bash
+git push --force
+```
+
+Isso sobrescreve o histórico remoto e pode apagar commits de outras pessoas.
+
+Prefira:
+
+```bash
+git push --force-with-lease
+```
+
+O `--force-with-lease` adiciona uma camada de segurança e evita sobrescrever alterações remotas inesperadamente.
+
+### Recovery com Reflog
+
+O `git reflog` registra todas as movimentações do HEAD, incluindo commits perdidos, rebases e resets.
+
+Ele é extremamente útil para recuperar trabalho aparentemente perdido.
+
+#### Exemplo
+
+```bash
+git reflog
+```
+
+Saída:
+
+```
+a1b2c3 HEAD@{0}: rebase finished
+d4e5f6 HEAD@{1}: commit: adiciona autenticação
+g7h8i9 HEAD@{2}: reset: moving to HEAD~1
+```
+
+Se você perdeu um commit após um reset ou rebase:
+
+```bash
+git reset --hard d4e5f6
+```
+
+Ou criar uma branch de recuperação:
+
+```bash
+git switch -c recovery-branch d4e5f6
+```
+
+### Resumo
+
+Um histórico limpo melhora significativamente a colaboração e a manutenção do projeto.
+
+Boas práticas importantes:
+
+- Faça commits atômicos
+- Use mensagens descritivas
+- Evite commits “ruído”
+- Faça squash antes do merge
+- Use `rebase -i` para organizar commits locais
+- Não reescreva histórico publicado
+- Use `reflog` para recuperar alterações perdidas
+
+Com isso, comandos como `git log --oneline` passam a contar a história do projeto de forma clara e organizada.
 
 ### Evitar Force Push
 

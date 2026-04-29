@@ -124,7 +124,7 @@ O Git pode ser instalado em todos os principais sistemas operacionais. Abaixo vo
 1. Acesse o site oficial: [https://git-scm.com/download/win](https://git-scm.com/download/win)
 2. Baixe a versão correspondente ao seu sistema (geralmente 64-bit Git for Windows Setup).
 3. Execute o instalador e siga o assistente (pode deixar as opções padrão marcadas).
-
+4. Após a instalação, você terá acesso ao Git Bash, um terminal que emula o ambiente Linux no Windows, facilitando o uso dos comandos.
 **Opção 2: Usando Package Managers (Avançado)**
 Se você usa gerenciadores de pacotes no Windows, pode instalar via terminal:
 

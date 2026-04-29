@@ -4,58 +4,98 @@
 
 ## 📋 Objetivos de Aprendizagem
 
-<!-- TODO: Objetivos sobre ferramentas e recursos -->
+* Identificar as diferenças entre clientes Git GUI (Gráficos) e CLI (Linha de Comando).
+* Compreender quando escolher entre ferramentas pagas (GitKraken) e gratuitas (SourceTree).
+* Dominar o uso de ferramentas de visualização de grafos, Blame e Stash.
+* Configurar um ambiente de trabalho produtivo com extensões e aliases.
 
 ## 🎯 Introdução
 
-<!-- TODO: Git além da linha de comando -->
-<!-- Ecossistema Rico de ferramentas -->
+O ecossistema Git é vasto. Embora a linha de comando (CLI) seja a base técnica, o uso de ferramentas visuais (GUI) proporciona uma compreensão clara de históricos complexos, facilitando ações que seriam propensas a erros manuais, como a resolução de conflitos e o gerenciamento de múltiplas ramificações.
 
 ## Git GUI Tools
 
 ### GitHub Desktop
-
-<!-- TODO: Cliente oficial do GitHub -->
+O cliente oficial do GitHub, ideal para quem busca simplicidade e uma curva de aprendizado baixa.
 
 #### Características
-
-<!-- TODO: Interface simples, integração GitHub -->
+* **Interface Simples:** Focada nas operações mais comuns do dia a dia.
+* **Integração Nativa:** Sincronização imediata com repositórios e Pull Requests do GitHub.
 
 #### Quando Usar
-
-<!-- TODO: Iniciantes, operações básicas -->
+Indicado para **iniciantes** ou para desenvolvedores que realizam apenas operações básicas (push, pull, commit) e preferem não lidar com a complexidade de árvores de commits detalhadas.
 
 #### Download
+Disponível em: [desktop.github.com](https://desktop.github.com/)
 
-<!-- TODO: Link e instruções -->
+---
 
 ### GitKraken
-
-<!-- TODO: Cliente visual poderoso -->
+Uma ferramenta profissional premium, extremamente poderosa e visualmente rica.
 
 #### Características
+* **Graph Visualization:** Um dos grafos mais intuitivos do mercado, facilitando o entendimento de merges e rebases.
+* **Recursos Integrados:** Possui ferramentas próprias de Diff, Blame e um editor de conflitos de merge de alta precisão.
 
-<!-- TODO: Graph visual, merge tool, integrações -->
+#### Planos e Licenças
+* **GitKraken Pro (Pago):** Necessário para uso em repositórios privados e contextos comerciais.
+* **GitKraken Free:** Disponível apenas para repositórios públicos e aprendizado.
 
-#### Recursos Avançados
+#### Quando Escolher
+Escolha o GitKraken se você trabalha em **projetos grandes e complexos**, onde a visualização clara de branches e a resolução rápida de conflitos justificam o investimento na licença.
 
-<!-- TODO: GitFlow integrado, resolução de conflitos -->
-
-#### Planos
-
-<!-- TODO: Free vs Pro -->
+---
 
 ### SourceTree
-
-<!-- TODO: Cliente da Atlassian -->
+Desenvolvido pela Atlassian, é um cliente robusto, gratuito e muito utilizado em ambientes corporativos.
 
 #### Características
+* **Gratuito:** Sem custo para uso pessoal ou comercial, incluindo repositórios privados.
+* **Suporte a Git Flow:** Interface dedicada para gerenciar branches de feature, release e hotfix de forma padronizada.
 
-<!-- TODO: Gratuito, Git Flow, visualização -->
+#### Quando Escolher
+Ideal para desenvolvedores que precisam de uma **ferramenta completa e gratuita** que ofereça controle total sobre stashes, submodulos e histórico, sem a necessidade de uma assinatura paga.
 
-#### Plataformas
+---
 
-<!-- TODO: Windows e macOS -->
+## Workflow: Visual vs CLI
+
+| Característica | Git GUI (Visual) | Git CLI (Linha de Comando) |
+| :--- | :--- | :--- |
+| **Velocidade** | Mais lento (cliques em menus) | Mais rápido (comandos curtos/aliases) |
+| **Visualização** | Excelente para ver o grafo de branches | Limitada (mesmo com logs formatados) |
+| **Precisão** | Ótima para selecionar linhas no Diff | Requer comandos específicos |
+| **Curva de Aprendizado** | Baixa e Intuitiva | Média/Alta |
+
+---
+
+### git cherry-pick
+Permite aplicar um commit específico de uma branch em outra. Útil para "trazer" correções pontuais sem fazer o merge de toda a branch.
+
+```bash
+# Aplica o commit 'abc1234' na sua branch atual
+git cherry-pick abc1234
+```
+
+### Git Blame
+Utilizado para identificar quem alterou cada linha de um arquivo e em qual commit isso ocorreu.
+
+```bash
+# Exemplo prático: Ver quem alterou o arquivo de configuração
+git blame config.js
+```
+
+### Git Stash
+Permite "guardar" suas alterações temporárias em uma pilha, limpando o diretório de trabalho sem a necessidade de criar um commit incompleto.
+
+```bash
+# Exemplo: Você está no meio de uma tarefa e precisa mudar de branch urgente
+git stash                # Salva o trabalho atual
+git checkout main        # Muda de branch
+# ... faz o que precisa ...
+git checkout feature-xyz # Volta para a sua branch
+git stash pop            # Recupera o trabalho guardado e remove da pilha
+```
 
 ### Tower
 

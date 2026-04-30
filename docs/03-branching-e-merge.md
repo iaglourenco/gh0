@@ -267,18 +267,28 @@ git stash pop
 
 ### Fast-Forward Merge
 
-<!-- TODO: O que é fast-forward -->
+O **Fast-Forward Merge** é o tipo de merge mais simples do Git. Ele ocorre quando a branch de destino (ex: `main`) não possui nenhum commit novo desde que a branch de origem (ex: `feature`) foi criada a partir dela. Em outras palavras, a branch de origem está simplesmente "na frente" da branch de destino, sem nenhuma divergência no histórico.
 
-<!-- Quando acontece: quando não há commits divergentes -->
+Nesse cenário, o Git não precisa criar um novo "merge commit" para unir os históricos. Ele simplesmente avança (fast-forward) o ponteiro da branch de destino para apontar para o mesmo commit da branch de origem. O resultado é um histórico perfeitamente linear.
 
+**Quando ocorre:** Ao finalizar uma feature em uma base de código onde a branch `main` não sofreu alterações concorrentes.
+
+**Comando:** O Git tenta fazer isso automaticamente por padrão quando você roda:
+```bash
+git merge <nome-da-branch>
 ```
-Antes:
+
+**Diagrama Conceitual:**
+
+```text
+Antes do merge:
 main:    A---B
               \
 feature:       C---D
 
-Depois (fast-forward):
+Depois do fast-forward merge (ponteiro main apenas avançou):
 main:    A---B---C---D
+feature:             ^ (main agora aponta aqui)
 ```
 
 ### Three-Way Merge
@@ -309,18 +319,22 @@ feature:       D---E
 
 ### --ff (Fast-Forward)
 
-<!-- TODO: Comportamento padrão -->
+Este é o comportamento padrão do Git. Se for possível fazer um fast-forward, o Git fará. Se houver divergência de histórico, ele fará um merge commit tradicional (three-way merge).
 
 ```bash
-# TODO: Explicar opção --ff
+git merge --ff <nome-da-branch>
 ```
 
 ### --no-ff (No Fast-Forward)
 
-<!-- TODO: Forçar merge commit -->
+A opção `--no-ff` força o Git a **sempre criar um merge commit**, mesmo que um fast-forward seja perfeitamente possível. 
+
+**Vantagem (Histórico limpo vs Rastreabilidade):** 
+Enquanto o fast-forward mantém o histórico perfeitamente linear (limpo), ele esconde o fato de que aqueles commits faziam parte de uma branch de feature específica. Ao usar `--no-ff`, você preserva a rastreabilidade, deixando claro no histórico onde a feature começou e onde ela foi integrada, agrupando visualmente os commits relacionados.
 
 ```bash
-# TODO: Quando usar --no-ff
+# Força a criação de um merge commit para manter a rastreabilidade da feature
+git merge --no-ff <nome-da-branch>
 ```
 
 ### --squash
@@ -511,3 +525,4 @@ git push origin --delete feature/nova-funcionalidade
 Este conteúdo é colaborativo. Contribuidores deste arquivo:
 
 - [@daniballester](https://github.com/daniballester) - Issue #19 - Seção "O que são Branches"
+- [@hailtonDavid](https://github.com/hailtonDavid) - Issue #22 - Seção "Fast-Forward Merge"

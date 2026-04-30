@@ -263,26 +263,85 @@ Um commit deve representar uma única mudança lógica.
 
 ## git diff
 
-<!-- TODO: Explique git diff -->
+O comando `git diff` é essencial para visualizar as diferenças entre várias versões do seu projeto. Ele mostra exatamente o que mudou (linhas adicionadas, modificadas ou removidas) entre o diretório de trabalho (*working directory*), a área de preparação (*staging area*), commits específicos ou branches.
 
-### Tipos de Diff
+### Tipos de Diff e Casos de Uso
+
+Existem diferentes formas de usar o `git diff` dependendo do que você deseja comparar:
 
 ```bash
-# TODO: Diferentes usos de git diff
-# git diff (working directory vs staged)
-# git diff --staged (staged vs último commit)
-# git diff HEAD (working vs último commit)
-# git diff <commit1> <commit2>
+# 1. Compara Working Directory vs Staging Area
+# Mostra mudanças que você fez mas ainda NÃO adicionou com 'git add'
+git diff
+
+# 2. Compara Staging Area vs Último Commit (HEAD)
+# Mostra o que vai entrar no próximo commit
+git diff --staged
+# (Nota: 'git diff --cached' é um sinônimo exato)
+
+# 3. Compara Working Directory vs Último Commit
+# Mostra TODAS as mudanças desde o último commit (staged ou não)
+git diff HEAD
+
+# 4. Compara dois commits específicos
+git diff <commit-id-1> <commit-id-2>
+
+# 5. Compara duas branches
+git diff main..feature-branch
 ```
 
-### Lendo a Saída
+### Opções Úteis
 
-<!-- TODO: Como interpretar a saída do diff -->
-<!-- + verde = adicionado, - vermelho = removido -->
+Você pode refinar a saída do `git diff` com algumas opções importantes:
 
-### Exemplo Prático
+```bash
+# Mostra apenas um resumo das mudanças (arquivos alterados e total de linhas)
+git diff --stat
 
-<!-- TODO: Exemplo de uso -->
+# Mostra apenas os nomes dos arquivos que mudaram
+git diff --name-only
+
+# Compara as mudanças de um arquivo específico em dois commits
+git diff <commit1> <commit2> -- caminho/do/arquivo.txt
+
+# Atalho: Compara com o commit anterior ao atual
+git diff HEAD~1
+```
+
+### Lendo a Saída (Unified Diff Format)
+
+O `git diff` usa o formato *Unified Diff*. Entender sua estrutura é fundamental:
+
+```diff
+diff --git a/index.html b/index.html
+index 8b3c4f..3d1a2c 100644
+--- a/index.html
++++ b/index.html
+@@ -10,4 +10,5 @@
+     <h1>Bem-vindo</h1>
+-    <p>Texto antigo</p>
++    <p>Texto atualizado</p>
++    <button>Clique aqui</button>
+ </body>
+```
+
+**Como interpretar:**
+
+- `--- a/arquivo`: Versão original/antiga.
+- `+++ b/arquivo`: Versão nova/modificada.
+- `@@ -10,4 +10,5 @@`: Contexto. Indica que as mudanças começam ao redor da linha 10.
+- Linhas começando com `-` (geralmente em vermelho): Foram **removidas**.
+- Linhas começando com `+` (geralmente em verde): Foram **adicionadas**.
+- Linhas sem sinal: Contexto inalterado para ajudar na localização.
+
+### Ferramentas Visuais
+
+Se a leitura no terminal for difícil em mudanças muito grandes, você pode usar ferramentas visuais (GUI) configuradas previamente:
+
+```bash
+# Abre a ferramenta visual de diff configurada (ex: VSCode, Meld, KDiff3)
+git difftool
+```
 
 ## git restore
 
@@ -435,3 +494,4 @@ Um commit deve representar uma única mudança lógica.
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
 - [@Giseleptbr](https://github.com/Giseleptbr) - Seção git commit
+- [@hailtonDavid](https://github.com/hailtonDavid) - Seção git diff

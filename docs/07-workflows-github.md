@@ -340,19 +340,31 @@ Projetos que utilizam deploy contínuo (Continuous Deployment) e precisam de agi
 
 ### O que É
 
-<!-- TODO: Regras para proteger branches -->
+As **Branch Protection Rules** (Regras de Proteção de Branch) são configurações do GitHub que impedem ações destrutivas ou não revisadas em branches críticas do repositório (geralmente `main` ou `master`). Elas garantem que todo código integrado passe por um processo de revisão e testes antes de ser aceito, protegendo a estabilidade do projeto.
 
-### Regras Comuns
+### Regras Comuns e Essenciais
 
-- <!-- Require PR -->
-- <!-- Require reviews -->
-- <!-- Require status checks -->
-- <!-- Require conversation resolution -->
-- <!-- Restrict push -->
+Para configurar uma branch protection robusta, recomenda-se ativar as seguintes opções:
+
+- **Require a pull request before merging:** Impede que qualquer pessoa faça um `git push` direto para a branch protegida. Todo código deve chegar via PR.
+  - **Require approvals:** Exige um número mínimo de aprovações (geralmente 1 ou 2) de outros desenvolvedores antes do merge.
+  - **Dismiss stale pull request approvals when new commits are pushed:** Se o autor adicionar novos commits após uma aprovação, a aprovação anterior é invalidada, exigindo nova revisão.
+  - **Require review from Code Owners:** Se houver um arquivo `CODEOWNERS`, exige que pelo menos um dos donos do código afetado aprove o PR.
+- **Require status checks to pass before merging:** Impede o merge se as Actions (testes automatizados, linters, etc.) falharem.
+  - **Require branches to be up to date before merging:** Garante que o PR seja testado com a versão mais recente da branch base antes de ser mergeado.
+- **Do not allow bypassing the above settings:** Garante que as regras se apliquem a todos, incluindo administradores e maintainers do repositório.
+- **Restrict who can push to matching branches:** Permite definir exatamente quais pessoas ou equipes têm permissão de push (caso o push direto seja permitido em casos excepcionais).
 
 ### Configurando
 
-<!-- TODO: Settings → Branches → Add rule -->
+Para adicionar ou editar regras de proteção em um repositório onde você tem permissão de administrador:
+
+1. Acesse a aba **Settings** do repositório.
+2. No menu lateral esquerdo, em "Code and automation", clique em **Branches**.
+3. Clique no botão **Add branch protection rule**.
+4. Em "Branch name pattern", digite o nome da branch (ex: `main`).
+5. Marque as caixas das regras desejadas (conforme a lista acima).
+6. Clique em **Create** ou **Save changes** no final da página.
 
 ## Security
 
@@ -497,3 +509,4 @@ Projetos que utilizam deploy contínuo (Continuous Deployment) e precisam de agi
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
 [Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
+- [@hailtonDavid](https://github.com/hailtonDavid) - Issue #55 - Seção "Branch Protection"

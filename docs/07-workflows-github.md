@@ -4,78 +4,108 @@
 
 ## 📋 Objetivos de Aprendizagem
 
-<!-- TODO: Objetivos sobre workflows colaborativos -->
+- Entender o que são workflows de desenvolvimento e por que são necessários
+- Dominar o Fork Workflow para contribuições em projetos Open Source
+- Conhecer os principais modelos de branching (GitHub Flow, Git Flow, Trunk-Based)
+- Utilizar recursos avançados do GitHub (Issues, Projects, Actions, Pages)
+- Aplicar boas práticas de segurança e colaboração na plataforma
 
 ## 🎯 Introdução
 
-<!-- TODO: GitHub além de hospedagem de código -->
-<!-- Plataforma completa de colaboração e automação -->
+O GitHub evoluiu de um simples serviço de hospedagem de código para uma plataforma completa de colaboração e automação de engenharia de software. Hoje, ele oferece ferramentas integradas para gerenciamento de projetos, integração contínua (CI/CD), segurança de código e publicação de documentação.
 
 ## O que é um Workflow?
 
-<!-- TODO: Definição de workflow de desenvolvimento -->
-<!-- Conjunto de práticas e processos para colaborar -->
+Um **workflow** (fluxo de trabalho) de desenvolvimento é um conjunto padronizado de práticas, regras e processos que uma equipe adota para colaborar no mesmo código-fonte. Ele define como as branches são criadas, como o código é revisado e como as versões chegam à produção, garantindo organização e minimizando conflitos.
 
 ## Fork Workflow
 
 ### O que é Fork?
 
-<!-- TODO: Cópia do repositório na sua conta -->
+Um **Fork** é uma cópia completa de um repositório de outra pessoa para a sua própria conta no GitHub. Diferente de um simples clone local, o fork cria um repositório remoto sob o seu controle, permitindo que você faça alterações livremente sem afetar o projeto original.
 
 ### Quando Usar
 
-<!-- TODO: Projetos open source, contribuições externas -->
+O Fork Workflow é o padrão absoluto para:
+- Contribuir para projetos **Open Source** (onde você não tem permissão de escrita).
+- Fazer grandes experimentações baseadas em um projeto existente.
+- Criar a sua própria versão de um software livre.
 
 ### Passo a Passo
 
 #### 1. Fork do Repositório
 
-<!-- TODO: Botão Fork no GitHub -->
+Acesse a página do repositório original no GitHub e clique no botão **"Fork"** no canto superior direito. Isso criará uma cópia do repositório na sua conta (`seu-usuario/nome-do-repo`).
 
 #### 2. Clone do Fork
 
+Baixe a SUA cópia (o fork) para a sua máquina local:
+
 ```bash
-# TODO: git clone SEU-FORK
+git clone https://github.com/seu-usuario/nome-do-repo.git
+cd nome-do-repo
 ```
 
 #### 3. Configurar Upstream
 
+Para manter seu fork atualizado com as mudanças que acontecem no projeto original, adicione o repositório original como um controle remoto chamado `upstream`:
+
 ```bash
-# TODO: git remote add upstream REPO-ORIGINAL
+git remote add upstream https://github.com/dono-original/nome-do-repo.git
 ```
 
 #### 4. Criar Branch
 
+Nunca trabalhe diretamente na branch `main`. Crie uma branch específica para a sua contribuição:
+
 ```bash
-# TODO: git checkout -b feature/minha-contribuicao
+git checkout -b feature/minha-contribuicao
 ```
 
 #### 5. Fazer Mudanças e Commit
 
+Faça suas alterações no código, adicione os arquivos e crie commits com mensagens claras:
+
 ```bash
-# TODO: git add e git commit
+git add .
+git commit -m "feat: adiciona nova funcionalidade XYZ"
 ```
 
 #### 6. Push para Fork
 
+Envie a branch com as suas alterações para o SEU fork no GitHub:
+
 ```bash
-# TODO: git push origin feature/minha-contribuicao
+git push origin feature/minha-contribuicao
 ```
 
 #### 7. Abrir Pull Request
 
-<!-- TODO: PR do fork para repositório original -->
+Vá até a página do repositório original no GitHub. Você verá um aviso sobre a sua nova branch com um botão **"Compare & pull request"**. Clique nele, preencha a descrição explicando o que você fez e submeta o PR para avaliação dos mantenedores.
 
 #### 8. Manter Fork Atualizado
 
+Antes de começar uma nova contribuição (ou se o seu PR estiver demorando), mantenha a sua branch `main` sincronizada com o projeto original:
+
 ```bash
-# TODO: git fetch upstream
-# git merge upstream/main
+# Baixa as novidades do repositório original
+git fetch upstream
+
+# Garante que você está na sua main
+git checkout main
+
+# Mescla as novidades na sua main local
+git merge upstream/main
+
+# Atualiza o seu fork no GitHub
+git push origin main
 ```
 
 ### Vantagens
 
-<!-- TODO: Segurança, experimentação, contribuições externas -->
+- **Segurança:** Mantenedores do projeto original não precisam dar permissão de escrita para estranhos.
+- **Experimentação Livre:** Você pode "quebrar" o seu fork à vontade sem medo de estragar o projeto principal.
+- **Escalabilidade:** Permite que milhares de pessoas contribuam para um mesmo projeto de forma organizada.
 
 ## GitHub Flow
 

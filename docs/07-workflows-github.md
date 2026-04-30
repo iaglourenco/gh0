@@ -167,23 +167,56 @@ Projetos que utilizam deploy contínuo (Continuous Deployment) e precisam de agi
 
 ### O que São Issues
 
-<!-- TODO: Sistema de rastreamento de tarefas -->
+As Issues no GitHub são usadas para organizar tarefas, reportar problemas e discutir melhorias em um projeto.
+
+Elas funcionam como um sistema de gerenciamento de tarefas, permitindo acompanhar o progresso do trabalho e facilitar a colaboração entre os membros da equipe.
 
 ### Tipos de Issues
 
-<!-- TODO: Bugs, features, questions, documentation -->
+As issues podem representar diferentes tipos de atividades:
+
+- **Bug**: algo não está funcionando corretamente
+- **Feature**: sugestão de nova funcionalidade
+- **Question**: dúvidas sobre o projeto
+- **Documentation**: melhorias ou criação de documentação
+- **Discussion**: ideias e debates
 
 ### Criando Issues
 
-<!-- TODO: Título, descrição, labels, assignees -->
+Para criar uma issue:
+
+1. Acesse a aba "Issues" do repositório
+2. Clique em "New Issue"
+3. Adicione um título claro e objetivo
+4. Descreva o problema ou sugestão com detalhes
+5. Adicione labels, assignees e milestones (se necessário)
+6. Clique em "Submit new issue"
+
+Uma boa issue deve ser clara, objetiva e conter contexto suficiente para que outra pessoa consiga entender e trabalhar nela.
 
 ### Templates de Issues
 
-<!-- TODO: .github/ISSUE_TEMPLATE/ -->
+Os templates de issues são modelos pré-definidos que ajudam a padronizar a criação de novas issues.
+
+Eles ficam localizados na pasta:
+
+.github/ISSUE_TEMPLATE/
+
+Com templates, é possível garantir que todas as informações importantes sejam preenchidas, como descrição, passos para reproduzir um bug e comportamento esperado.
 
 ### Labels
 
-<!-- TODO: Organização com labels -->
+Labels são etiquetas usadas para categorizar issues e facilitar a organização.
+
+Exemplos de labels comuns:
+
+- bug → problemas no sistema
+- enhancement → melhorias
+- documentation → mudanças na documentação
+- good first issue → ideal para iniciantes
+- help wanted → precisa de ajuda
+
+Labels ajudam a priorizar e identificar rapidamente o tipo de tarefa.
 
 #### Labels Comuns
 
@@ -195,15 +228,34 @@ Projetos que utilizam deploy contínuo (Continuous Deployment) e precisam de agi
 
 ### Milestones
 
-<!-- TODO: Agrupar issues por objetivo/release -->
+Milestones são usados para agrupar issues relacionadas a um objetivo específico, como uma versão ou sprint.
+
+Exemplo:
+- Versão 1.0
+- Sprint 2
+
+Eles ajudam a acompanhar o progresso de entregas maiores dentro do projeto.
 
 ### Assignees
 
-<!-- TODO: Atribuir responsáveis -->
+Assignees definem quem é responsável por trabalhar em uma issue.
+
+Ao atribuir uma issue a alguém, fica claro quem está responsável pela tarefa, evitando duplicidade de trabalho.
 
 ### Linking Issues e PRs
 
-<!-- TODO: Closes, Fixes, Resolves -->
+
+É possível vincular issues a Pull Requests utilizando palavras-chave no commit ou na descrição do PR.
+
+Exemplos:
+
+```bash
+Fixes #54
+Closes #10
+Relates #20
+```
+
+Quando um Pull Request com "Fixes" ou "Closes" é mergeado, a issue correspondente é fechada automaticamente.
 
 ## Projects
 

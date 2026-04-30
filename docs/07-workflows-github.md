@@ -81,14 +81,14 @@
 
 ### O que é
 
-<!-- TODO: Workflow simples e ágil -->
+Workflow de desenvolvimento simples e ágil chamado GitHub Flow, onde todas as mudanças partem da branch main e retornam para ela via Pull Request.
 
 ### Princípios
 
-1. <!-- Main está sempre deployável -->
-2. <!-- Branches descritivas -->
-3. <!-- PRs para discussão -->
-4. <!-- Deploy após merge -->
+1. Main está sempre pronta para deploy (deployable)
+2. Uso de branches curtas e descritivas
+3. Pull Requests são usados para discussão e revisão de código
+4. Mudanças só entram na main após review e aprovação
 
 ### Fluxo Completo
 
@@ -98,7 +98,14 @@ main → branch → commits → PR → review → merge → deploy
 
 ### Quando Usar
 
-<!-- TODO: Projetos com deploy contínuo -->
+Projetos que utilizam deploy contínuo (Continuous Deployment) e precisam de agilidade no desenvolvimento, especialmente em equipes pequenas ou médias.
+
+### GitHub Flow vs Git Flow
+
+- GitHub Flow é mais simples e direto
+- Não possui branches de release ou develop
+- Ideal para deploy contínuo
+- Git Flow é mais estruturado e indicado para projetos com versões planejadas
 
 ## Git Flow
 
@@ -489,3 +496,4 @@ main → branch → commits → PR → review → merge → deploy
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+[Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow

@@ -348,10 +348,9 @@ graph TD
         D -->|git pull| C
     end
     
-    E[GitHub/GitLab] <-.-> D
-    F[origin] <--> D
-    G[upstream] <--> D
-end
+    D -.->|sync| E[GitHub]
+    D <-->|push/pull| F[origin]
+    D <-->|fetch| G[upstream]
 ```
 
 ### Exemplo Prático Completo (passo-a-passo)

@@ -306,14 +306,16 @@ A configuração de nome e e-mail não é apenas burocrática; ela é o que gara
 ---
 ## SSH Keys
 
-As chaves SSH são uma forma segura de autenticação entre sua máquina local e o GitHub sem a necessidade de digitar seu usuário e senha a cada operação.
+As chaves SSH garantem uma autenticação segura e criptografada entre sua máquina local e o GitHub, eliminando a necessidade de credenciais manuais em cada operação.
 
-### Por que usar SSH em vez de HTTPS?
-* **Segurança:** Utiliza criptografia de chave pública/privada.
-* **Conveniência:** Uma vez configurado, elimina prompts de senha recorrentes.
-* **Automação:** Essencial para scripts e fluxos de CI/CD.
+### Por que utilizar SSH?
+* **Segurança:** Autenticação baseada em criptografia de chave pública/privada.
+* **Eficiência:** Elimina prompts de senha recorrentes.
+* **Automação:** Requisito para fluxos de CI/CD e scripts automatizados.
 
-### Como gerar um par de chaves (Key Pair)
-No terminal, utilize o comando:
+### Gerando o Par de Chaves (Key Pair)
+No terminal, execute o comando utilizando o algoritmo Ed25519 (recomendado por segurança e performance):
 ```bash
 ssh-keygen -t ed25519 -C "saimomgozn@gmail.com"
+   
+   

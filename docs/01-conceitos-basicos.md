@@ -561,31 +561,35 @@ git log
 
 ## Recursos Adicionais
 
-<!-- TODO: Adicione links úteis para aprofundamento -->
-
-- [Git Documentation](https://git-scm.com/doc)
-- [GitHub Guides](https://guides.github.com/)
-- <!-- Adicione mais recursos -->
+- [Git Documentation](https://git-scm.com/doc) - Documentação oficial e completa do Git.
+- [GitHub Docs - Get Started](https://docs.github.com/pt/get-started) - Guias oficiais do GitHub para iniciantes.
+- [Git - A Simple Guide](https://rogerdudler.github.io/git-guide/index.pt_BR.html) - Um guia prático e rápido para começar sem complicações.
+- [Oh Shit, Git!?!](https://ohshitgit.com/pt_BR) - Excelente site para ajudar a sair de situações difíceis e erros comuns no Git.
+- [Pro Git Book](https://git-scm.com/book/pt-br/v2) - O livro completo sobre Git, gratuito e traduzido para português.
 
 ## Glossário
 
-<!-- TODO: Defina termos importantes usados neste capítulo -->
-
-- **Commit**: <!-- Definição -->
-- **Repository**: <!-- Definição -->
-- **Clone**: <!-- Definição -->
-- **Fork**: <!-- Definição -->
+- **Commit**: Um "snapshot" (instantâneo) do estado dos seus arquivos em um momento específico. É um ponto no histórico do projeto salvo com um identificador único, autor, data e uma mensagem descritiva do que foi alterado.
+- **Repository** (Repositório): O local (pasta) onde o seu projeto é armazenado e monitorado pelo Git. Ele contém todos os arquivos do projeto, além do diretório oculto `.git` que guarda todo o histórico de alterações.
+- **Clone**: O ato de fazer o download de uma cópia exata e completa de um repositório remoto (ex: do GitHub) para o seu computador local, permitindo que você trabalhe nele offline.
+- **Fork**: Uma cópia independente de um repositório de terceiros feita diretamente para a sua conta do GitHub. É usado para contribuir com projetos open source ou usar o projeto de alguém como ponto de partida para o seu.
 
 ## Resumo
 
-<!-- TODO: Faça um resumo dos pontos principais do capítulo -->
-<!-- Lista de 5-8 pontos-chave que os alunos devem lembrar -->
+- **Controle de versão é indispensável:** Permite rastrear mudanças, recuperar versões anteriores e trabalhar em equipe sem medo de perder arquivos.
+- **Git ≠ GitHub:** Git é a ferramenta (motor) que roda no seu computador; GitHub é a plataforma na nuvem (estacionamento) onde você hospeda e compartilha seus repositórios Git.
+- **Configuração inicial:** Sempre configure seu `user.name` e `user.email` localmente antes de começar a trabalhar para que seus commits sejam identificados corretamente.
+- **Commits atômicos e claros:** Faça alterações pequenas e focadas. Use o padrão Conventional Commits (ex: `feat:`, `fix:`, `docs:`) com verbos no imperativo.
+- **Clone vs Fork:** Use `clone` para baixar repositórios para a sua máquina e `fork` para criar uma cópia de um repositório alheio no seu próprio perfil do GitHub.
+- **A prática leva à perfeição:** A melhor forma de aprender Git é usando no dia a dia. Crie um repositório de testes e pratique os comandos sem medo.
 
 ---
 
 ## 👥 Contribuidores
 
-<!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
+> Este conteúdo é colaborativo. Contribuidores deste arquivo:
+
+- [@Enkiduzis](https://github.com/Enkiduzis) - Estrutura inicial, conceitos fundamentais e glossário.
 <!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+- [@novo-contribuidor](https://github.com/novo-contribuidor) - Revisão da seção X e adição de links úteis.
 -->

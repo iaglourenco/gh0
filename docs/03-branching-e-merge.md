@@ -288,7 +288,7 @@ feature:       C---D
 
 Depois do fast-forward merge (ponteiro main apenas avançou):
 main:    A---B---C---D
-feature:             ^ (main agora aponta aqui)
+feature:             D (main e feature apontam aqui)
 ```
 
 ### Three-Way Merge
@@ -327,9 +327,9 @@ git merge --ff <nome-da-branch>
 
 ### --no-ff (No Fast-Forward)
 
-A opção `--no-ff` força o Git a **sempre criar um merge commit**, mesmo que um fast-forward seja perfeitamente possível. 
+A opção `--no-ff` força o Git a **sempre criar um merge commit**, mesmo que um fast-forward seja perfeitamente possível.
 
-**Vantagem (Histórico limpo vs Rastreabilidade):** 
+**Vantagem (Histórico limpo vs Rastreabilidade):**
 Enquanto o fast-forward mantém o histórico perfeitamente linear (limpo), ele esconde o fato de que aqueles commits faziam parte de uma branch de feature específica. Ao usar `--no-ff`, você preserva a rastreabilidade, deixando claro no histórico onde a feature começou e onde ela foi integrada, agrupando visualmente os commits relacionados.
 
 ```bash

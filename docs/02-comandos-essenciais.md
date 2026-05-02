@@ -284,7 +284,7 @@ git diff --staged
 git diff HEAD
 
 # 4. Compara dois commits específicos
-git diff <commit-id-1> <commit-id-2>
+git diff <commit1> <commit2>
 
 # 5. Compara duas branches
 git diff main..feature-branch
@@ -303,6 +303,12 @@ git diff --name-only
 
 # Compara as mudanças de um arquivo específico em dois commits
 git diff <commit1> <commit2> -- caminho/do/arquivo.txt
+
+# Compara as mudanças de um arquivo específico no working tree
+git diff -- caminho/do/arquivo.txt
+
+# Compara as mudanças staged de um arquivo específico
+git diff --staged -- caminho/do/arquivo.txt
 
 # Atalho: Compara com o commit anterior ao atual
 git diff HEAD~1

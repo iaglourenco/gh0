@@ -487,4 +487,4 @@ Para mais detalhes de qualquer comando, use `git help <comando>` ou `git <comand
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
-- [@Giseleptbr](https://github.com/Giseleptbr) - Seção git commit
+- [@esleiu](https://github.com/esleiu) - Seção tabela de referência rápida

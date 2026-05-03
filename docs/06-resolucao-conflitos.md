@@ -238,17 +238,41 @@ Se tentar fazer um `git merge teste`, irá retornar "Already up to date".
 # TODO: git status mostra arquivos em conflito
 ```
 
+```bash
+# git status mostra arquivos em conflito marcados como "both modified"
+git status
+
+# Saída esperada:
+# On branch main
+# You have unmerged paths.
+#   both modified:   src/app.js
+#   both modified:   docs/guia.md
+```
+
 #### 2. Abrir Arquivo no Editor
 
 <!-- TODO: Escolher editor (VS Code, Sublime, etc.) -->
+
+Abra o arquivo conflituoso diretamente no seu editor de código preferido. O VS Code, por exemplo, destaca os blocos conflitantes nativamente, mas a resolução manual exige que você abra e edite o arquivo bruto.
+```bash
+# Exemplo abrindo no VS Code (ou use subl, vim, nano, etc.)
+code docs/guia.md 
+```
 
 #### 3. Analisar as Versões
 
 <!-- TODO: Entender AMBAS as mudanças -->
 
+Localize os marcadores injetados pelo Git e entenda AMBAS as mudanças antes de tocar no código:
+- ``<<<<<<< HEAD``: Versão do seu branch atual (destino do merge).
+- ``=======``: Divisor entre as versões.
+- ``>>>>>>> nome-do-branch``: Versão do branch que está sendo mesclado (origem).
+
 #### 4. Decidir o que Manter
 
 <!-- TODO: Opções -->
+
+Com base na análise, escolha a abordagem mais adequada para o caso:
 
 - Manter apenas sua versão
 - Manter apenas a versão do outro
@@ -258,6 +282,10 @@ Se tentar fazer um `git merge teste`, irá retornar "Already up to date".
 #### 5. Editar o Arquivo
 
 <!-- TODO: Remover marcadores, deixar código final -->
+
+Aplique sua decisão editando o conteúdo. Mantenha a sintaxe válida, a indentação correta e a coerência com o restante do projeto.
+
+Exemplo prático de resolução:
 
 ```markdown
 # Resolução: Combinar ambas as versões
@@ -271,11 +299,21 @@ e muito popular para versionamento de código.
 
 <!-- TODO: <<<<<<, =======, >>>>>>> devem ser deletados -->
 
+Após definir o conteúdo final, **apague completamente** as linhas contendo ``<<<<<<<``, ``=======`` e ``>>>>>>>``. Esses marcadores são apenas instruções temporárias do Git; mantê-los no arquivo causará erros de parse, falhas no linter ou quebra na pipeline de build.
+
 #### 7. Testar
 
 <!-- TODO: Verificar que o código/documento está correto -->
 
+Antes de finalizar, valide a resolução no ambiente local:
+- Execute a suite de testes (``npm test, pytest, cargo test``, etc.)
+- Rode o linter/formatador para garantir estilo consistente
+- Compile ou faça a build do projeto para confirmar que a **posição de construção está estável** e não há dependências quebradas
+- Se for documentação, gere a preview para validar a renderização.
+
 #### 8. Marcar como Resolvido
+
+Informe ao Git que o conflito foi tratado. Isso move o arquivo do estado ``unmerged`` para a staging area.
 
 ```bash
 # TODO: git add para marcar resolução
@@ -284,8 +322,13 @@ e muito popular para versionamento de código.
 
 #### 9. Completar o Merge
 
+Finalize o processo criando o commit de merge. O Git gera automaticamente uma mensagem padrão, mas você pode customizá-la.
+
 ```bash
-# TODO: git commit para finalizar merge
+# git merge --continue para finalizar merge (Git 2.12+)
+git merge --continue
+
+# Ou, finalize manualmente com commit:
 # git commit -m "resolve: merge de feature X"
 ```
 
@@ -293,25 +336,38 @@ e muito popular para versionamento de código.
 
 ### Aceitar Completamente Uma Versão
 
+Ideal quando uma das branches está desatualizada, contém código experimental não aprovado, ou quando a mudança em um dos lados é irrelevante para o contexto atual.
+
 ```bash
-# TODO: Usar theirs ou ours
-# git checkout --ours arquivo.md
-# git checkout --theirs arquivo.md
+# Usar theirs ou ours para aceitar uma versão inteira
+git checkout --ours arquivo.md   # Mantém sua versão (HEAD)
+git checkout --theirs arquivo.md # Mantém a versão do outro branch
+
+# Em seguida, marque e finalize:
+git add arquivo.md
+git merge --continue
 ```
 
 ### Combinar Mudanças
 
 <!-- TODO: Quando faz sentido mesclar -->
+Quando ambas as alterações são válidas, complementares ou modificam partes diferentes da mesma função/arquivo. Exige leitura atenta, edição manual cuidadosa e validação via testes para garantir que a lógica mesclada funcione como esperado.
 
 ### Reescrever
 
 <!-- TODO: Quando nenhuma versão está ideal -->
+Quando nenhuma das versões está ideal, ou quando as mudanças conflitam em nível de arquitetura/requisito de negócio. Remova todo o bloco conflituoso e implemente uma nova solução que atenda aos objetivos de ambos os branches, garantindo que testes, lint e build passem.
 
 ## Ferramentas de Merge
 
 ### Editor de Texto
 
 <!-- TODO: Resolver manualmente -->
+Resolver manualmente no editor de texto é a base para dominar o controle de versão. Embora existam ferramentas visuais (VS Code Merge Editor, Beyond Compare, GitKraken), saber editar diretamente:
+- Garante controle total e previsibilidade sobre o resultado final
+- Funciona em qualquer ambiente (SSH, servidores CI/CD, containers sem GUI)
+- Evita dependência de plugins, extensões ou configurações locais
+- Ensina a estrutura interna do Git, tornando você autossuficiente em qualquer cenário de conflito
 
 ### VS Code
 

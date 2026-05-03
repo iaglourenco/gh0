@@ -317,5 +317,10 @@ As chaves SSH garantem uma autenticação segura e criptografada entre sua máqu
 No terminal, execute o comando utilizando o algoritmo Ed25519 (recomendado por segurança e performance):
 ```bash
 ssh-keygen -t ed25519 -C "saimomgozn@gmail.com"
+
+> **Nota para sistemas legados:** Caso o ambiente não ofereça suporte ao Ed25519, utilize o RSA com 4096 bits como alternativa:
+> ```bash
+> ssh-keygen -t rsa -b 4096 -C "saimomgozn@gmail.com"
+> ```
    
    

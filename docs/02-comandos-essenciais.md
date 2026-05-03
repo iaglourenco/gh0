@@ -401,18 +401,65 @@ Um commit deve representar uma única mudança lógica.
 
 ## Tabela de Referência Rápida
 
-<!-- TODO: Crie uma tabela com comandos e descrições -->
+Legenda de badges:
 
-| Comando | O que faz | Quando usar |
-|---------|-----------|-------------|
-| `git init` | <!-- --> | <!-- --> |
-| `git clone` | <!-- --> | <!-- --> |
-| `git add` | <!-- --> | <!-- --> |
-| `git commit` | <!-- --> | <!-- --> |
-| `git status` | <!-- --> | <!-- --> |
-| `git log` | <!-- --> | <!-- --> |
-| `git diff` | <!-- --> | <!-- --> |
-| `git restore` | <!-- --> | <!-- --> |
+- ⭐ muito usado
+- ❗ importante
+- ⚠️ cuidado
+
+Para mais detalhes de qualquer comando, use `git help <comando>` ou `git <comando> --help` (veja também [Obtendo Ajuda](#obtendo-ajuda)).
+
+### Setup
+
+| Comando | Propósito | Exemplo |
+|---------|-----------|---------|
+| ❗ `git config --global user.name "Seu Nome"` | Define o nome padrão do autor dos commits. | `git config --global user.name "Maria Silva"` |
+| ❗ `git config --global user.email "voce@email.com"` | Define o e-mail padrão do autor dos commits. | `git config --global user.email "maria@email.com"` |
+| ❗ `git init` | Inicializa um novo repositório local ([detalhes](#git-init)). | `git init` |
+| ⭐ `git clone <url>` | Clona um repositório remoto para sua máquina ([detalhes](#git-clone)). | `git clone https://github.com/org/projeto.git` |
+
+### Básico
+
+| Comando | Propósito | Exemplo |
+|---------|-----------|---------|
+| ⭐ `git status` | Mostra o estado atual dos arquivos ([detalhes](#git-status)). | `git status` |
+| ⭐ `git add <arquivo>` | Adiciona um arquivo à staging area ([detalhes](#git-add)). | `git add docs/02-comandos-essenciais.md` |
+| ⭐ `git add -A` | Adiciona todas as alterações (novos, modificados e removidos). | `git add -A` |
+| ⭐ `git commit -m "mensagem"` | Registra as alterações staged no histórico ([detalhes](#git-commit)). | `git commit -m "docs: adiciona tabela rápida"` |
+| ⭐ `git log --oneline --graph` | Exibe histórico resumido com gráfico ([detalhes](#git-log)). | `git log --oneline --graph --decorate` |
+| ⭐ `git diff` | Mostra diferenças não staged ([detalhes](#git-diff)). | `git diff` |
+| ❗ `git show <hash>` | Mostra detalhes de um commit específico ([detalhes](#git-show)). | `git show a1b2c3d` |
+
+### Branching
+
+| Comando | Propósito | Exemplo |
+|---------|-----------|---------|
+| ⭐ `git branch` | Lista branches locais. | `git branch` |
+| ❗ `git branch -a` | Lista branches locais e remotas. | `git branch -a` |
+| ⭐ `git switch -c <branch>` | Cria e troca para uma nova branch. | `git switch -c feature/login` |
+| ⭐ `git switch <branch>` | Troca para uma branch existente. | `git switch main` |
+| ❗ `git merge <branch>` | Mescla outra branch na branch atual. | `git merge feature/login` |
+| ⚠️ `git rebase <branch>` | Reescreve histórico aplicando commits sobre outra base. | `git rebase main` |
+
+### Remote
+
+| Comando | Propósito | Exemplo |
+|---------|-----------|---------|
+| ❗ `git remote -v` | Lista URLs remotas configuradas. | `git remote -v` |
+| ⭐ `git fetch` | Baixa atualizações do remoto sem mesclar. | `git fetch origin` |
+| ⭐ `git pull` | Atualiza branch atual com mudanças remotas (fetch + merge/rebase). | `git pull origin main` |
+| ⭐ `git push` | Envia commits locais para o remoto. | `git push origin main` |
+| ❗ `git push -u origin <branch>` | Publica branch e define upstream para próximos pushes/pulls. | `git push -u origin feature/login` |
+
+### Desfazer
+
+| Comando | Propósito | Exemplo |
+|---------|-----------|---------|
+| ⭐ `git restore <arquivo>` | Descarta mudanças locais não staged ([detalhes](#git-restore)). | `git restore README.md` |
+| ⭐ `git restore --staged <arquivo>` | Remove arquivo da staging area sem perder conteúdo ([detalhes](#git-restore)). | `git restore --staged README.md` |
+| ❗ `git commit --amend` | Ajusta o último commit (mensagem e/ou conteúdo). | `git commit --amend -m "fix: corrige título"` |
+| ⚠️ `git reset --soft HEAD~1` | Volta um commit mantendo alterações em staging. | `git reset --soft HEAD~1` |
+| ❗ `git revert <hash>` | Cria novo commit para desfazer um commit anterior, sem reescrever histórico. | `git revert a1b2c3d` |
 
 ## Recursos Adicionais
 

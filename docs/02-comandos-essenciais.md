@@ -105,15 +105,21 @@ git clone https://github.com/usuario/repositorio.git
 - Configura automaticamente a origem remota (`origin`);
 - Usa-se quando se deseja trabalhar com um projeto já existente, seja para contribuir ou para ter uma cópia local.
 
+| Critério              | `git init`        | `git clone`           |
+|----------------------|-----------------|-----------------------|
+| Ponto de partida     | Projeto novo    | Projeto existente     |
+| Histórico            | Vazio           | Completo              |
+| Remote origin        | Não configurado | Configurado automaticamente |
+
 ### Exemplo Prático
 
 ```bash
 git clone https://github.com/git/git.git
 ```
 Isso irá:
-- 1. Criar uma pasta chamada `git` no diretório atual;
-- 2. Baixar todo o repositório do Git, incluindo seu histórico completo;
-- 3. Configurar a origem remota para `origin`.
+1. Criar uma pasta chamada `git` no diretório atual;
+2. Baixar todo o repositório do Git, incluindo seu histórico completo;
+3. Configurar a origem remota para `origin`.
 
 Depois disso, basta entrar no diretório (`cd git`) e começar a trabalhar com o repositório clonado.
 
@@ -123,9 +129,9 @@ Um fork é uma cópia de um repositório feita dentro da sua conta (por exemplo,
 
 Passos:
 
-- 1. Faça um fork do repositório original (clicando em "Fork" na interface do GitHub);
-- 2. Copie a URL do seu fork;
-- 3. Use `git clone` com a URL do seu fork para obter uma cópia local.
+1. Faça um fork do repositório original (clicando em "Fork" na interface do GitHub);
+2. Copie a URL do seu fork;
+3. Use `git clone` com a URL do seu fork para obter uma cópia local.
 
 ```bash
 git clone https://github.com/seu-usuario/repositorio.git
@@ -142,6 +148,7 @@ E, por fim, para atualizar seu fork com as mudanças do repositório original:
 
 ```bash
 git fetch upstream
+git switch main
 git merge upstream/main
 ```
 

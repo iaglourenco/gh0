@@ -241,23 +241,123 @@ credentials.json
 
 ## Documentação
 
+Todo projeto sério no GitHub vai além do código: ele conta com um conjunto de arquivos de documentação que orientam colaboradores, protegem a comunidade e deixam claro como o projeto funciona. Esses arquivos são a "burocracia boa" do open source — sem eles, cada pessoa contribui de um jeito diferente, conflitos surgem e a comunidade não tem como crescer de forma saudável.
+
 ### CONTRIBUTING.md
 
-<!-- TODO: Guia de contribuição -->
+É o manual de instruções para novos colaboradores. Ele explica como configurar o ambiente, o fluxo de branches (como o uso do `upstream`) e os padrões de commit que a equipe aceita. Ter esse arquivo evita que cada pessoa contribua de um jeito diferente, mantendo a organização.
+
+**O que incluir:**
+
+- Pré-requisitos para contribuir (ferramentas, versões)
+- Fluxo de trabalho: fork → branch → commit → PR
+- Padrões de mensagem de commit
+- Como abrir e descrever um Pull Request
+- Referência ao Código de Conduta
 
 ### CODE_OF_CONDUCT.md
 
-<!-- TODO: Código de conduta -->
+Estabelece padrões de comportamento para garantir um ambiente saudável e inclusivo. Ele serve para proteger a comunidade contra assédio e comportamentos tóxicos, definindo o que é esperado de todos os participantes — e o que acontece quando alguém não cumpre as regras.
+
+> 💡 O padrão mais usado é o [Contributor Covenant](https://www.contributor-covenant.org/), adotado por projetos como Linux, Rails e React.
 
 ### LICENSE
 
-<!-- TODO: Escolher licença apropriada -->
-<!-- MIT, GPL, Apache, etc. -->
+Define os termos legais para o uso, modificação e distribuição do seu código. Sem uma licença, o código não é tecnicamente "open source" — ninguém tem permissão legal para usá-lo, mesmo que esteja público no GitHub.
+
+As três licenças mais comuns são:
+
+| Licença | Restrição | Ideal para |
+|---------|-----------|------------|
+| **MIT** | Mínima — mantém apenas os créditos | Projetos que querem máxima adoção |
+| **Apache 2.0** | Permissiva + proteção de patentes | Projetos corporativos |
+| **GPL v3** | Forte — derivados também devem ser abertos | Projetos que querem permanecer livres |
+
+> 💡 Não sabe qual escolher? Use [choosealicense.com](https://choosealicense.com) — ele faz as perguntas certas e recomenda a licença ideal para o seu caso.
 
 ### CHANGELOG.md
 
-<!-- TODO: Histórico de mudanças -->
+É o diário de bordo do projeto. Em vez de o usuário precisar vasculhar centenas de commits, ele lê o `CHANGELOG.md` para saber exatamente o que mudou, o que foi corrigido e o que foi removido em cada versão.
 
+**Exemplo de estrutura (formato [Keep a Changelog](https://keepachangelog.com/)):**
+
+```markdown
+## [1.1.0] - 2025-04-10
+### Added
+- Autenticação via OAuth
+- Exportação de relatórios em PDF
+
+### Fixed
+- Crash ao carregar perfil sem foto
+
+## [1.0.0] - 2025-03-01
+### Added
+- Versão inicial do projeto
+```
+
+### AUTHORS.md
+
+Nem todo projeto usa, mas é uma boa prática para dar **crédito explícito** a todas as pessoas que contribuíram. O GitHub já tem o gráfico de contribuidores automático, mas o `AUTHORS.md` é uma alternativa mais personalizável e que funciona mesmo fora da plataforma.
+
+**Exemplo de estrutura:**
+
+```markdown
+# Contribuidores
+
+- [@fulanodetal](https://github.com/fulanodetal) - Documentação inicial
+- João da Silva (joao@email.com) - Correção de bugs
+- [@ciclano](https://github.com/ciclano) - Funcionalidade X
+```
+
+### SECURITY.md
+
+Um arquivo essencial para projetos que podem ser usados por outras pessoas. Ele informa como reportar vulnerabilidades de segurança de **forma responsável** — ou seja, sem abrir uma issue pública que exporia o problema antes de ele ser corrigido.
+
+**Seções recomendadas:**
+
+- Como reportar uma vulnerabilidade (e-mail, formulário, etc.)
+- Prazo esperado de resposta
+- Quais versões ainda recebem correções de segurança
+
+A presença desse arquivo aumenta a confiança da comunidade no projeto, pois demonstra maturidade e responsabilidade.
+
+### Localização e Estrutura Padrão
+
+Os arquivos de documentação essenciais devem estar localizados na raiz do repositório ou em `.github/` (para templates de issues e PRs). A estrutura padrão é:
+
+| Arquivo | Localização | Estrutura Recomendada |
+|---------|-------------|----------------------|
+| `CONTRIBUTING.md` | Raiz | Pré-requisitos, fluxo de trabalho, padrões de commit, como abrir PR |
+| `CHANGELOG.md` | Raiz | Formato [Keep a Changelog](https://keepachangelog.com/): versões em ordem decrescente, categorias `Added`, `Changed`, `Fixed`, `Removed`, `Security` |
+| `LICENSE` | Raiz | Texto completo da licença escolhida. Use [choosealicense.com](https://choosealicense.com) para gerar |
+| `SECURITY.md` | Raiz ou `.github/` | Seções: "Reportando uma Vulnerabilidade", "Processo de Resposta", "Versões Suportadas" |
+| `CODE_OF_CONDUCT.md` | Raiz | Baseado no [Contributor Covenant](https://www.contributor-covenant.org/): compromisso, padrões, aplicação, escopo |
+| `AUTHORS.md` | Raiz (opcional) | Lista de contribuidores com nomes, usernames e tipo de contribuição |
+
+### Ferramentas Geradoras de Templates
+
+Você não precisa criar esses arquivos do zero — existem ferramentas que geram os templates prontos:
+
+| Ferramenta | Propósito | Como usar |
+|------------|-----------|------------|
+| **Templates do GitHub** | Criação inicial do repositório | Ao criar um repositório, marque "Add a README", "Add .gitignore" e "Add license" |
+| [choosealicense.com](https://choosealicense.com) | Gerar arquivo `LICENSE` | Responda às perguntas e copie o texto gerado |
+| [gitignore.io](https://gitignore.io) | Gerar `.gitignore` personalizado | Digite SO, IDE e linguagem; clique em "Generate" |
+| [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) | Gerar `CODE_OF_CONDUCT.md` | Preencha o e-mail de contato e copie o Markdown gerado |
+| [Keep a Changelog Generator](https://github.com/alexsoyes/keep-a-changelog-generator) (CLI) | Gerar `CHANGELOG.md` a partir de commits | Use com padrão Conventional Commits |
+| **Commitizen** (`cz`) | Padronizar mensagens de commit | Instale com `npm install -g commitizen`; use `git cz` no lugar de `git commit` |
+| **standard-version** | Automatizar versionamento e changelog | Execute `npx standard-version` — bumpa a versão, gera o `CHANGELOG.md` e cria a tag |
+| **markdownlint** | Validar formatação de Markdown | Configure em `.markdownlint.json` e execute `markdownlint '**/*.md'` |
+
+#### Exemplo de fluxo completo ao criar um projeto
+
+Ao iniciar um novo repositório, um bom fluxo seria:
+
+1. **Crie o repositório** com os templates do GitHub (README, `.gitignore`, `LICENSE`).
+2. **Adicione o `CODE_OF_CONDUCT.md`** usando o Contributor Covenant Generator.
+3. **Configure o `SECURITY.md`** manualmente com e-mail de contato e prazo de resposta.
+4. **Padronize os commits** instalando o Commitizen e usando `git cz`.
+5. **Automatize o changelog** com o `standard-version` a cada nova release.
 ## Histórico Limpo
 
 ### Rebasing

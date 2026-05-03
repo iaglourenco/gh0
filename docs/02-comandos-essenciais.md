@@ -461,6 +461,12 @@ Para mais detalhes de qualquer comando, use `git help <comando>` ou `git <comand
 | ⚠️ `git reset --soft HEAD~1` | Volta um commit mantendo alterações em staging. | `git reset --soft HEAD~1` |
 | ❗ `git revert <hash>` | Cria novo commit para desfazer um commit anterior, sem reescrever histórico. | `git revert a1b2c3d` |
 
+### Versão em 2 colunas (PDF/impressão)
+
+| Coluna 1 | Coluna 2 |
+|---------|---------|
+| **Setup**<br>`git config --global user.name`<br>`git config --global user.email`<br>`git init`<br>`git clone`<br><br>**Básico**<br>`git status`<br>`git add <arquivo>`<br>`git add -A`<br>`git commit -m`<br>`git log --oneline --graph`<br>`git diff`<br>`git show <hash>` | **Branching**<br>`git branch`<br>`git branch -a`<br>`git switch -c <branch>`<br>`git switch <branch>`<br>`git merge <branch>`<br>`git rebase <branch>`<br><br>**Remote**<br>`git remote -v`<br>`git fetch`<br>`git pull`<br>`git push`<br>`git push -u origin <branch>`<br><br>**Desfazer**<br>`git restore <arquivo>`<br>`git restore --staged <arquivo>`<br>`git commit --amend`<br>`git reset --soft HEAD~1`<br>`git revert <hash>` |
+
 ## Recursos Adicionais
 
 <!-- TODO: Links para documentação oficial e tutoriais -->

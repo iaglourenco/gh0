@@ -86,18 +86,147 @@ Código do outro branch
 - `>>>>>>> nome-do-branch`: <!-- Fim do código do outro branch -->
 
 ### Exemplo Completo
+Observação: esse exemplo assume que a branch principal se chama "main".
 
-<!-- TODO: Exemplo real de conflito -->
+Crie um repositório com `git init`.
 
-```markdown
-## Introdução ao Git
+Crie um arquivo exemplo.py (isso vai variar de acordo com o sistema operacional)
 
-<<<<<<< HEAD
-Git é um sistema de controle de versão distribuído criado em 2005.
-=======
-Git é uma ferramenta de versionamento de código muito popular.
->>>>>>> feature/atualiza-intro
+#### Primeiro commit
+
+Crie o primeiro commit
+
+```bash
+git add .
+git commit -m "criação do arquivo"
+git log --graph
 ```
+O resultado do `git log` deve ser dessa forma(mudando o autor):
+![primeiro commit](assets/exemplo-conflito-primeiro-commit.png)
+
+#### Criando Commit em Outra Branch
+
+Crie outra branch
+
+```bash
+git switch -c teste
+git log --graph
+```
+
+Deve ter o mesmo commit que a main(ou master).
+
+Insira o código em exemplo.py:
+
+```python
+def calcular_media(valores):
+    total = 0
+    for v in valores:
+        total += v
+    
+    print("Processando valores...")
+    media = total / len(valores)
+    
+    # Linha 10 (diferença aqui)
+    resultado = f"Média calculada: {media}"
+    
+    return resultado
+
+
+dados = [10, 20, 30]
+print(calcular_media(dados))
+```
+
+Crie um novo commit:
+
+
+```bash
+git add .
+git commit -m "codigo escrito com mensagem 'Média calculada'"
+git log --graph
+```
+
+![segundo commit teste](assets/exemplo-conflito-commit2-teste.png)
+
+#### Criando o Segundo Commit em main
+
+Volte para a main
+
+```bash
+git switch main
+```
+
+Troque o código de exemplo.py para esse (mesmo código com uma diferença na linha 10):
+
+```python
+def calcular_media(valores):
+    total = 0
+    for v in valores:
+        total += v
+    
+    print("Processando valores...")
+    media = total / len(valores)
+    
+    # Linha 10 (diferença aqui)
+    resultado = f"Valor médio final: {media}"
+    
+    return resultado
+
+
+dados = [10, 20, 30]
+print(calcular_media(dados))
+```
+
+Crie um novo commit:
+
+```bash
+git add .
+git commit -m "codigo escrito com mensagem 'Valor médio final'"
+git log --graph
+```
+
+![segundo commit main](assets/exemplo-conflito-commit2-main.png)
+
+#### Fazendo o Merge e Resolvendo o Conflito
+
+Tenha certeza de que está na main.
+
+```bash
+git switch main
+git merge teste
+```
+
+Vai aparecer a mensagem de conflito:
+
+![mensagem de conflito](assets/exemplo-conflito-mensagem-de-conflito.png)
+
+e o arquivo terá na linha 10 onde houve conflito.
+
+```python
+<<<<<<< HEAD
+    resultado = f"Média calculada: {media}"
+=======
+    resultado = f"Valor médio final: {media}"
+>>>>>>> teste
+```
+
+troque para (não esquecendo a identação):
+
+```python
+    resultado = f"Média: {media}"
+```
+
+e faça um commit para resolver o conflito:
+
+```bash
+git add .
+git commit -m "conflito resolvido"
+
+git log --graph --oneline
+```
+
+![commits finais](assets/exemplo-conflito-final.png)
+
+Se tentar fazer um `git merge teste`, irá retornar "Already up to date".
 
 ## Resolvendo Conflitos Manualmente
 

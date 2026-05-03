@@ -181,8 +181,17 @@ Antes de cada git add (para ver o que mudou) e antes de cada git commit (para co
 
 ## git commit
 
-<!-- TODO: Explique git commit -->
-Grava o snapshot da Staging Area no histórico do repositório.
+O comando `git commit` cria um registro permanente das mudanças que foram
+adicionadas à área de staging com `git add`. Cada commit funciona como um ponto
+salvo na história do projeto, contendo um identificador único, autor, data,
+mensagem descritiva e o conjunto de alterações incluídas.
+
+Use commits para dividir o trabalho em etapas pequenas e compreensíveis. Assim,
+fica mais fácil revisar mudanças, desfazer problemas e entender a evolução do
+código ao longo do tempo.
+## git commit
+
+O comando `git commit` salva as alterações da *staging area* no histórico do repositório, criando um novo ponto na linha do tempo do projeto.
 
 ### Sintaxe
 
@@ -194,23 +203,87 @@ git commit -am                                  # -am "mensagem. fix: corrige er
 git commit -m                                   # feat: adiciona camada de dropout ao modelo"
 ```
 
-### Anatomia de um Bom Commit
+- `-m`: define a mensagem do commit  
+- `-a`: adiciona automaticamente arquivos já rastreados
+
+---
+
+### Componentes de um commit
+
+Cada commit contém:
+
+- SHA-1 hash (identificador único)
+- Autor e email
+- Timestamp
+- Mensagem
+- Alterações realizadas
+
+---
+
+### Boas práticas de mensagem
 
 <!-- TODO: O que é um bom commit? -->
 Um commit deve ser atômico: deve resolver apenas uma coisa (um bug, uma feature, uma documentação). Se você mudou 10 arquivos com 3 propósitos diferentes, faça 3 commits separados.
 
-### Mensagens de Commit
+Exemplos:
 
-<!-- TODO: Como escrever boas mensagens -->
-<!-- Ver também capítulo 05 sobre boas práticas -->
+Boa:
+```text
+Add login button
+Fix authentication bug
+```
+
+Ruim:
+```text
+Fix stuff
+Update things
+```
+
+---
+
+### Opções úteis
 
 ```bash
-# TODO: Adicione exemplos
-fix: corrige erro de divisão por zero no pré-processamento # Exemplo de BOA mensagem
-
-# TODO: Adicione exemplos ruins
-ajustes, v2, arrumando coisa # Exemplo de MÁ mensagem
+git commit --amend
 ```
+
+Permite alterar o último commit.
+
+---
+
+### Commit vazio
+
+```bash
+git commit --allow-empty -m "Mensagem"
+```
+
+Usado para marcar eventos ou disparar pipelines.
+
+---
+
+### Verificação
+
+```bash
+git log
+```
+
+Exibe o histórico de commits.
+
+---
+
+### Atomicidade
+
+Um commit deve representar uma única mudança lógica.
+
+---
+
+### Conceitos
+
+- Mensagem de commit  
+- Atomicidade  
+- Rastreabilidade  
+- Histórico limpo
+
 
 ## git log
 
@@ -455,3 +528,4 @@ git commit -m "Criei o Guia Completo sobre Comandos Essenciais do Git"
 <!-- Adicione seu nome quando contribuir:
 - [@Tom-Junior](https://github.com/Tom-Junior) - Seção todas
 -->
+- [@Giseleptbr](https://github.com/Giseleptbr) - Seção git commit

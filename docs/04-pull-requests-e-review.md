@@ -80,7 +80,7 @@ Um PR passa por diferentes estados ao longo do seu ciclo de vida:
 | **Merged**            | Mesclado — alterações integradas à branch alvo.                   |
 | **Closed**            | Fechado sem merge — descartado ou substituído por outro PR.       |
 
-### Pull Request vs MergeS
+### Pull Request vs Merge
 
 É comum confundir PR com merge, mas são coisas diferentes:
 
@@ -106,10 +106,6 @@ Pull Requests trazem benefícios que vão muito além de "juntar código":
 - ⚙️ **CI/CD antes do merge** — testes automatizados, linters e checks rodam sobre o PR, garantindo que código quebrado não chegue à `main`.
 - 📐 **Padrões consistentes** — o PR é o ponto onde o time aplica convenções de estilo, arquitetura e qualidade, mantendo a base de código coerente ao longo do tempo.
 - 📚 **Histórico e aprendizado** — PRs antigos viram documentação viva: por que aquela mudança foi feita? Quem revisou? Quais alternativas foram consideradas?
-
-- Histórico e Documentação: Mantém um registro do motivo pelo qual uma alteração foi feita e de quem a aprovou.
-
-- Aprendizado: Desenvolvedores menos experientes aprendem lendo o código dos mais experientes (e vice-versa).
   
 ## Workflow com Pull Requests
 

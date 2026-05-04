@@ -111,20 +111,361 @@ Exemplos:  Closes #123, Fixes #456, Resolves #102.
 
 ## Anatomia de um Bom Pull Request
 
+Um Pull Request, também conhecido como PR, é uma solicitação para que alterações feitas em uma branch sejam revisadas e, se aprovadas, incorporadas a outra branch do projeto, geralmente a branch principal.
+
+Um bom Pull Request facilita o trabalho dos revisores, reduz riscos de erros, melhora a qualidade do código entregue e contribui para um histórico mais organizado dentro do repositório.
+
+Quando bem estruturado, o PR permite que outras pessoas entendam rapidamente:
+
+- O que foi alterado;
+- Por que a alteração foi feita;
+- Como testar a mudança;
+- Quais impactos podem existir no sistema;
+- Quais partes do código precisam de mais atenção na revisão.
+
+---
+
 ### Tamanho
-Pull Requests devem ser o menor possível. PRs com milhares de linhas de código são difíceis de revisar, escondem bugs facilmente e demoram para ser aprovados. Se a funcionalidade for muito grande, divida em PRs menores.
+
+Pull Requests devem ser o menor possível, desde que ainda representem uma entrega coerente. PRs muito grandes, com centenas ou milhares de linhas de código, são mais difíceis de revisar, aumentam a chance de bugs passarem despercebidos e costumam demorar mais para serem aprovados.
+
+O ideal é que cada PR tenha um objetivo claro e bem delimitado. Se uma funcionalidade for muito grande, ela deve ser dividida em partes menores, como criação de estrutura inicial, implementação da regra de negócio, criação de testes e ajustes de interface.
+
+#### Exemplo de PR muito grande
+
+```text
+Implementa cadastro completo de usuários, login, recuperação de senha, tela administrativa, permissões e testes.
+```
+
+Esse tipo de PR concentra muitas responsabilidades em uma única entrega, dificultando a revisão e aumentando o risco de falhas.
+
+#### Exemplo de divisão melhor
+
+```text
+PR 1: Cria estrutura inicial do módulo de usuários
+PR 2: Implementa cadastro de usuários
+PR 3: Implementa autenticação e login
+PR 4: Adiciona recuperação de senha
+PR 5: Cria testes automatizados do módulo
+```
+
+Essa divisão torna a revisão mais simples, permite aprovações mais rápidas e facilita a identificação de problemas caso algum erro seja introduzido.
+
+Além disso, PRs menores ajudam o time a manter um fluxo contínuo de entrega, evitando grandes blocos de código parados por muito tempo aguardando revisão.
+
+---
 
 ### Commits
 
-Mantenha o histórico limpo. Evite commits como **Arrumando Erro** ou **Teste**. Cada commit deve representar uma unidade lógica de mudança e ter uma mensagem explicativa.
+Mantenha o histórico de commits limpo e organizado. Cada commit deve representar uma unidade lógica de mudança, ou seja, uma alteração com propósito claro dentro do desenvolvimento.
+
+Evite commits genéricos ou pouco explicativos, pois eles dificultam a compreensão do histórico do projeto.
+
+#### Exemplos de commits ruins
+
+```text
+Arrumando erro
+Teste
+Ajustes
+Mudanças finais
+Agora vai
+```
+
+Esses nomes não explicam o que foi alterado e dificultam futuras investigações no código.
+
+#### Exemplos de commits melhores
+
+```text
+Adiciona validação de campos obrigatórios no cadastro de usuários
+Corrige cálculo do valor total do pedido
+Cria testes unitários para o serviço de autenticação
+Refatora método de busca de produtos por categoria
+Atualiza documentação do fluxo de Pull Request
+```
+
+Um bom commit ajuda outros desenvolvedores a entenderem a evolução do código e facilita investigações futuras, principalmente quando for necessário identificar quando um problema foi introduzido.
+
+Também é importante evitar misturar assuntos diferentes no mesmo commit. Por exemplo, se você corrigiu um bug e também atualizou uma documentação, o ideal é separar essas alterações em commits diferentes.
+
+#### Exemplo de separação adequada
+
+```text
+Corrige validação de e-mail no cadastro de usuários
+Atualiza documentação do fluxo de cadastro
+```
+
+Dessa forma, o histórico fica mais claro e organizado.
+
+---
 
 ### Descrição Clara
 
-Utilize templates de PR (se o repositório tiver um) e não deixe a descrição em branco. O revisor precisa entender seu raciocínio antes de ler as linhas de código.
+A descrição do Pull Request deve explicar de forma objetiva o que foi feito, por que foi feito e como a alteração pode ser testada. Nunca deixe a descrição em branco, pois o revisor precisa entender o contexto antes de analisar o código.
+
+Quando o repositório possuir um template de PR, ele deve ser preenchido corretamente. Esse template normalmente inclui campos como descrição da alteração, tipo de mudança, evidências de teste e checklist.
+
+#### Exemplo de descrição ruim
+
+```text
+Ajustes no cadastro.
+```
+
+Essa descrição é muito genérica e não ajuda o revisor a entender o objetivo da alteração.
+
+#### Exemplo de descrição melhor
+
+```markdown
+## Descrição
+
+Este PR implementa a validação dos campos obrigatórios no cadastro de usuários, garantindo que nome, e-mail e senha sejam informados antes do envio do formulário.
+
+## O que foi alterado
+
+- Adicionada validação no formulário de cadastro
+- Incluídas mensagens de erro para campos obrigatórios
+- Criados testes para validar os cenários de erro
+- Ajustada a resposta da API para retornar mensagens mais claras
+
+## Como testar
+
+1. Acessar a tela de cadastro de usuários
+2. Tentar enviar o formulário sem preencher os campos obrigatórios
+3. Verificar se as mensagens de erro são exibidas corretamente
+4. Preencher todos os campos e confirmar se o cadastro é realizado com sucesso
+```
+
+Uma descrição clara reduz dúvidas durante a revisão e evita comentários desnecessários pedindo explicações adicionais.
+
+Além disso, uma boa descrição serve como documentação histórica da mudança. No futuro, outros desenvolvedores poderão consultar o PR para entender o motivo de determinada alteração ter sido realizada.
+
+---
 
 ### Testes
 
-Sempre teste as suas alterações localmente antes de abrir um Pull Request. Certifique-se de que a nova funcionalidade está rodando conforme o esperado e que nenhuma outra parte do sistema quebrou. Se o projeto possuir testes automatizados, execute-os na sua máquina para garantir que todos estão passando com sucesso.
+Sempre teste as suas alterações localmente antes de abrir um Pull Request. Certifique-se de que a nova funcionalidade está funcionando conforme o esperado e que nenhuma parte existente do sistema foi quebrada.
+
+Se o projeto possuir testes automatizados, execute-os na sua máquina antes de enviar o PR. Isso ajuda a garantir que a alteração não causou regressões.
+
+#### Exemplos de comandos comuns para execução de testes
+
+```bash
+npm test
+```
+
+```bash
+mvn test
+```
+
+```bash
+gradle test
+```
+
+```bash
+pytest
+```
+
+Além dos testes automatizados, também é importante realizar testes manuais quando a alteração envolver telas, fluxos de usuário ou integrações.
+
+#### Exemplo de checklist de testes
+
+```text
+- [x] Executei os testes automatizados
+- [x] Testei a funcionalidade localmente
+- [x] Validei os principais cenários de erro
+- [x] Verifiquei se não houve impacto em funcionalidades relacionadas
+- [x] Incluí evidências, prints ou logs quando necessário
+```
+
+Quando possível, inclua no Pull Request evidências dos testes realizados, como prints da tela, logs de execução ou resultado dos testes automatizados. Isso aumenta a confiança do revisor e torna o processo de aprovação mais rápido.
+
+#### Exemplo de evidência no PR
+
+```text
+Testes executados com sucesso:
+
+- npm test
+- Teste manual do fluxo de cadastro
+- Validação dos cenários de erro no formulário
+- Conferência da resposta da API no navegador
+```
+
+Testar antes de abrir um PR demonstra responsabilidade técnica e reduz retrabalho para o time.
+
+---
+
+### Título do Pull Request
+
+O título do Pull Request deve ser claro, objetivo e indicar exatamente qual alteração está sendo proposta.
+
+Um bom título ajuda o time a entender rapidamente o conteúdo do PR, mesmo antes de abrir a descrição completa.
+
+#### Exemplo de título ruim
+
+```text
+Alterações gerais
+```
+
+#### Exemplo de título melhor
+
+```text
+Adiciona validação de campos obrigatórios no cadastro de usuários
+```
+
+Outro exemplo:
+
+```text
+Corrige cálculo de desconto no fechamento do pedido
+```
+
+O título deve evitar termos vagos como "ajustes", "correções diversas" ou "melhorias gerais", a menos que estejam muito bem explicados na descrição.
+
+---
+
+### Escopo Bem Definido
+
+Um bom Pull Request deve ter escopo bem definido. Isso significa que ele deve resolver um problema específico ou entregar uma parte clara da funcionalidade.
+
+Evite misturar muitas alterações diferentes no mesmo PR, como correção de bug, refatoração, alteração visual e nova funcionalidade ao mesmo tempo.
+
+#### Exemplo de escopo ruim
+
+```text
+Corrige bug no login, altera layout da tela inicial, refatora serviço de usuários e atualiza documentação.
+```
+
+#### Exemplo de escopo melhor
+
+```text
+Corrige bug no login quando o usuário informa senha inválida.
+```
+
+Caso existam outras melhorias identificadas durante o desenvolvimento, o ideal é criar novos PRs ou novas tarefas para tratar esses pontos separadamente.
+
+Essa prática facilita a revisão, reduz riscos e melhora o controle sobre o que está sendo entregue.
+
+---
+
+### Revisão de Código
+
+A revisão de código é uma etapa importante do Pull Request. Ela permite que outros desenvolvedores analisem a solução proposta, identifiquem possíveis problemas e sugiram melhorias.
+
+Ao abrir um PR, é importante solicitar revisão das pessoas corretas, preferencialmente alguém que conheça a área do sistema alterada ou que tenha contexto sobre a funcionalidade.
+
+Durante a revisão, o autor do PR deve estar aberto a feedbacks e responder aos comentários de forma clara e respeitosa.
+
+#### Boas práticas durante a revisão
+
+```text
+- Responder aos comentários dos revisores
+- Explicar decisões técnicas quando necessário
+- Corrigir os pontos levantados
+- Evitar discussões pessoais
+- Manter o foco na qualidade do código
+```
+
+A revisão não deve ser vista como uma crítica pessoal, mas como uma prática colaborativa para melhorar a qualidade do software.
+
+---
+
+### Checklist Antes de Abrir um Pull Request
+
+Antes de abrir um Pull Request, é recomendado revisar alguns pontos importantes.
+
+```text
+- [ ] O PR possui um objetivo claro?
+- [ ] O tamanho do PR está adequado?
+- [ ] Os commits possuem mensagens explicativas?
+- [ ] A descrição do PR foi preenchida corretamente?
+- [ ] Os testes automatizados foram executados?
+- [ ] A funcionalidade foi testada manualmente?
+- [ ] O código segue o padrão do projeto?
+- [ ] Não foram incluídas alterações desnecessárias?
+- [ ] O PR está vinculado a uma issue, tarefa ou card?
+- [ ] Foram adicionadas evidências quando necessário?
+```
+
+Esse checklist ajuda a evitar problemas simples e melhora a qualidade da entrega antes mesmo da revisão.
+
+---
+
+### Boas Práticas Complementares
+
+Além dos pontos anteriores, um bom Pull Request também deve seguir algumas boas práticas adicionais:
+
+- Ter um título claro e objetivo;
+- Estar relacionado a uma tarefa, issue ou card do projeto;
+- Não misturar muitas alterações diferentes no mesmo PR;
+- Evitar mudanças desnecessárias de formatação em arquivos não relacionados;
+- Manter o código alinhado ao padrão do projeto;
+- Solicitar revisão das pessoas corretas;
+- Responder aos comentários dos revisores de forma clara e respeitosa;
+- Atualizar a documentação quando necessário;
+- Garantir que a branch esteja atualizada com a branch principal;
+- Evitar subir arquivos temporários, logs ou configurações locais.
+
+#### Exemplo de arquivos que não devem ser enviados
+
+```text
+.env
+logs/
+node_modules/
+target/
+.idea/
+.DS_Store
+```
+
+Esses arquivos geralmente são específicos do ambiente local ou gerados automaticamente, e não devem fazer parte do Pull Request.
+
+---
+
+### Exemplo de Estrutura de Pull Request
+
+Abaixo está um exemplo de estrutura que pode ser utilizada na descrição de um Pull Request:
+
+```markdown
+## Descrição
+
+Descreva de forma objetiva o que foi alterado neste PR.
+
+## Motivação
+
+Explique por que essa alteração foi necessária.
+
+## O que foi alterado
+
+- Item 1
+- Item 2
+- Item 3
+
+## Como testar
+
+1. Passo 1
+2. Passo 2
+3. Passo 3
+
+## Evidências
+
+Inclua prints, logs ou resultados de testes, se necessário.
+
+## Checklist
+
+- [ ] Testei localmente
+- [ ] Executei os testes automatizados
+- [ ] Atualizei a documentação, se necessário
+- [ ] Verifiquei possíveis impactos em outras áreas
+```
+
+Essa estrutura torna o Pull Request mais organizado e facilita o trabalho de quem irá revisar.
+
+---
+
+### Conclusão
+
+Um Pull Request bem estruturado demonstra organização, responsabilidade técnica e colaboração com o time.
+
+Ao manter PRs pequenos, commits claros, descrições completas e testes bem executados, o processo de revisão se torna mais rápido, seguro e eficiente.
+
+Mais do que apenas enviar código, abrir um bom Pull Request é uma forma de comunicar bem uma mudança, facilitar o trabalho dos revisores e contribuir para a qualidade geral do projeto.
 
 ## Code Review: Revisando PRs
 

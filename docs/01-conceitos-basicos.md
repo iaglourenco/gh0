@@ -91,8 +91,49 @@
 
 ### Repositório (Repository)
 
-<!-- TODO: O que é um repositório? -->
-<!-- Tipos: local vs remoto -->
+Um repositório Git é muito mais do que uma simples pasta de projeto; é um banco de dados completo que armazena todo o histórico de versões, metadados e objetos do seu trabalho.
+
+> **Analogia:** Imagine uma pasta de projeto comum, mas que possui uma "máquina do tempo" embutida. Cada alteração salva permite que você retorne exatamente ao estado em que o projeto estava em qualquer momento do passado.
+
+#### 1. Tipos de Repositório
+
+*   **Repositório Local:** Reside na sua máquina pessoal. É onde você realiza o trabalho diário, cria commits e gerencia suas branches de forma offline.
+*   **Repositório Remoto:** Hospedado em um servidor (como GitHub, GitLab ou Bitbucket). Ele serve como o "ponto de verdade" para a colaboração, permitindo que várias pessoas sincronizem seus repositórios locais.
+
+#### 2. Estrutura Básica do Git
+
+O Git organiza seu trabalho em três áreas principais:
+
+1.  **Working Directory (Diretório de Trabalho):** É a pasta onde você visualiza e edita seus arquivos.
+2.  **Staging Area (Index):** Uma área de preparação onde você marca quais arquivos alterados entrarão no próximo commit.
+3.  **Repositório (Pasta .git):** Onde o Git armazena permanentemente os snapshots (fotos) do seu projeto.
+
+#### 3. O que há dentro da pasta `.git`?
+
+Ao iniciar um repositório, o Git cria uma pasta oculta chamada `.git`. Ela contém:
+
+*   **Objects:** Onde o conteúdo real dos arquivos e os commits são armazenados.
+*   **Refs:** Ponteiros para os commits (como branches e tags).
+*   **HEAD:** Um arquivo que indica em qual branch ou commit você está trabalhando no momento.
+
+#### 4. Sincronização: Local ↔ Remoto
+
+A interação entre os tipos de repositório ocorre através de fluxos de sincronização:
+
+*   **Push (Empurrar):** Envia seus commits locais para o servidor remoto.
+*   **Pull (Puxar):** Traz as atualizações do servidor remoto e as mescla no seu repositório local.
+
+**Exemplo Prático:**
+
+```bash
+# Inicia um repositório local
+git init
+
+# Conecta o repositório local a um servidor remoto
+git remote add origin https://github.com/usuario/projeto.git
+
+# Envia o conteúdo local pela primeira vez
+git push -u origin main
 
 ### Commit
 

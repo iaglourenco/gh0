@@ -149,6 +149,22 @@ Além das vantagens técnicas, o Code Review transforma a cultura da equipe de d
 - **Integração de Novos Membros:** Para desenvolvedores iniciantes, o Code Review é a melhor forma de entender as regras de negócio e os padrões do projeto de forma prática e supervisionada.
 - **Comunicação Mais Forte:** O processo de revisão, quando focado no código e não na pessoa, exercita a empatia, a argumentação técnica e a comunicação construtiva dentro do grupo.
 
+### Exemplo Prático: O que analisar em um Code Review?
+
+Imagine que um colega submeteu o seguinte trecho de código em Python em um Pull Request:
+
+``` python
+# Código original na PR
+def calc(v, t):
+    return v + (v * t)
+```
+#### Como agir na revisão?
+Em vez de focar apenas se o código funciona ou criticar as escolhas do autor, você deve avaliar a legibilidade e a manutenibilidade para o futuro do projeto. Um bom comentário de revisão seria:
+
+> "A lógica do cálculo está ótima! Como sugestão, o que acha de renomearmos a função e as variáveis para ficarem mais descritivas, como calcular_preco_final(valor_produto, taxa_imposto)? Assim fica muito mais fácil para outros desenvolvedores entenderem o contexto no futuro!"
+
+Este exemplo demonstra perfeitamente como o Code Review melhora o código e distribui boas práticas sem ofender o autor original.
+
 ### Como Ser um Bom Revisor
 Revisar código exige empatia e atenção aos detalhes.
 
@@ -519,4 +535,4 @@ Pull Requests e revisões de código são habilidades interpessoais e técnicas 
 ## 👥 Contribuidores
 
 - [@marcos-vinicius](https://github.com/MarcosvvMarques) 
-
+- [@cristianomendes3](https://github.com/cristianomendes3)

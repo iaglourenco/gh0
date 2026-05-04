@@ -80,15 +80,20 @@ Referências: #123, #456
 
 ### O que São
 
-<!-- TODO: Um commit = uma mudança lógica -->
+Um commit atômico é um commit que encapsula apenas **uma única mudança lógica e coesa**. Em vez de agrupar dezenas de alterações não relacionadas no mesmo pacote, o commit atômico foca em apenas uma tarefa ou bug específico, garantindo que o histórico do projeto conte uma história clara.
 
 ### Por que Usar
 
-<!-- TODO: Facilita review, revert, cherry-pick, debug -->
+- **Facilita o Code Review:** Revisores entendem as mudanças muito mais rápido.
+- **Reversão Segura:** Se algo quebrar, você pode dar `git revert` apenas naquela mudança específica sem perder o trabalho de outras *features*.
+- **Cherry-pick:** Permite puxar uma alteração específica para outra branch sem arrastar lixo junto.
+- **Debug Simplificado:** O `git bisect` fica muito mais preciso na hora de encontrar qual commit introduziu um bug.
 
 ### Como Fazer
 
-<!-- TODO: Dividir trabalho em pequenos commits coesos -->
+1. **Faça modificações pequenas:** Terminou uma função lógica? Faça o commit.
+2. **Use o `git add -p`:** Se você mexeu em vários arquivos, adicione à área de preparação (staging) apenas os pedaços de código que fazem sentido juntos.
+3. **Não misture refatoração com novas *features*:** Se você corrigiu a indentação de um arquivo inteiro e depois criou um botão, faça dois commits separados.
 
 ### Exemplos
 
@@ -106,26 +111,47 @@ git commit -m "adiciona validações e documentação"
 
 ### Nomenclatura de Branches
 
-<!-- TODO: Padrões de nomes -->
+Definir uma convenção para nomes de branches facilita a organização do projeto, melhora a comunicação da equipe e torna o histórico mais claro.
 
 #### Padrões Comuns
 
-```
+Utilize prefixos conforme o tipo de alteração:
+
+```text
 feature/descricao
-fix/descricao
+bugfix/descricao
 hotfix/descricao
+release/descricao
 docs/descricao
 refactor/descricao
 
 # Exemplos:
-feature/login-oauth
-fix/bug-123
+feature/user-login
+bugfix/erro-cadastro
+hotfix/falha-api
+release/v1-0-0
 docs/readme-update
+```
+#### Boas Práticas
+
+- Use nomes descritivos: `feature/user-login` é melhor que `feature/abc123`
+- Use letras minúsculas
+- Prefira hífens `-` no lugar de underscores `_`
+- Evite nomes muito longos
+- Evite várias pessoas trabalhando na mesma branch
+- Siga a convenção definida pelo projeto
+
+#### Listar Branches
+
+Para visualizar branches locais e remotas:
+
+```bash
+git branch -a
 ```
 
 #### Prefixo com Username
 
-<!-- TODO: Útil em projetos com muitos colaboradores -->
+Útil em projetos com muitos colaboradores, pois identifica facilmente quem está trabalhando em cada tarefa.
 
 ```
 nome-usuario/feature/descricao
@@ -136,15 +162,15 @@ joao-silva/feature/adiciona-busca
 
 ### Lifetime de Branches
 
-<!-- TODO: Branches de vida curta vs longa -->
+Branches podem ser temporárias ou permanentes, conforme o fluxo do projeto.
 
 #### Short-Lived Branches
 
-<!-- TODO: Feature branches - deletar após merge -->
+Branches criadas para tarefas específicas, como features ou correções. Devem ser removidas após o merge para manter o repositório limpo.
 
 #### Long-Lived Branches
 
-<!-- TODO: main, develop, release branches -->
+Branches permanentes utilizadas como base do projeto, como `main`, `develop` e `release`.
 
 ## .gitignore
 
@@ -493,6 +519,5 @@ main → feature branch → PR → review → merge → deploy
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
-<!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
--->
+<!-- Adicione seu nome quando contribuir: -->
+- [@idarlandias](https://github.com/idarlandias) - Seção Commits Atômicos

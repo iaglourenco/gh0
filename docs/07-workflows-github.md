@@ -231,36 +231,235 @@ Projetos que utilizam deploy contínuo (Continuous Deployment) e precisam de agi
 
 ### O que São Actions
 
-<!-- TODO: CI/CD automação de workflows -->
+GitHub Actions é um recurso do GitHub usado para automatizar tarefas dentro de um repositório. Com ele, é possível executar testes, validar código, gerar documentação, publicar aplicações e criar fluxos de CI/CD diretamente a partir de eventos do próprio GitHub.
+
+Na prática, uma Action ajuda a responder perguntas como:
+
+- O código continua funcionando depois de um novo commit?
+- Um Pull Request pode ser revisado com segurança?
+- Os testes passam antes de permitir o merge?
+- Uma aplicação pode ser publicada automaticamente?
+
+Um workflow do GitHub Actions é definido por um arquivo YAML dentro da pasta `.github/workflows/`.
 
 ### Casos de Uso
 
-<!-- TODO: Testes, build, deploy, linting -->
+GitHub Actions pode ser usado em diferentes situações, por exemplo:
+
+- Rodar testes automaticamente quando alguém faz `push`
+- Validar Pull Requests antes do merge
+- Executar tarefas agendadas com `schedule`
+- Publicar documentação ou sites estáticos
+- Fazer deploy de uma aplicação
+- Verificar formatação, lint ou qualidade do código
+
+Esse tipo de automação ajuda equipes a manterem qualidade, consistência e segurança no desenvolvimento.
 
 ### Workflow File
 
-```yaml
-# TODO: Exemplo básico de workflow
-# .github/workflows/exemplo.yml
+Um workflow é criado dentro do diretório:
+
+```text
+.github/workflows/
 ```
+
+O arquivo normalmente usa a extensão `.yml` ou `.yaml`.
+
+Exemplo:
+
+```text
+.github/workflows/ci.yml
+```
+
+Um exemplo básico de estrutura seria:
+
+```yaml
+name: CI básico
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  teste:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Executar comando de teste
+        run: echo "Testes executados com sucesso"
+```
+
+Nesse exemplo:
+
+- `name` define o nome do workflow
+- `on` indica quais eventos iniciam a automação
+- `jobs` agrupa as tarefas executadas
+- `runs-on` define o ambiente de execução
+- `steps` lista os passos executados dentro do job
+- `uses` chama uma Action pronta
+- `run` executa um comando no terminal
 
 ### Eventos (Triggers)
 
-<!-- TODO: on: push, pull_request, schedule, etc. -->
+Eventos são situações que disparam um workflow. Os mais comuns são `push`, `pull_request` e `schedule`.
+
+#### push
+
+Executa o workflow quando alguém envia commits para uma branch.
+
+```yaml
+on:
+  push:
+    branches: [main]
+```
+
+#### pull_request
+
+Executa o workflow quando um Pull Request é aberto, atualizado ou reaberto.
+
+```yaml
+on:
+  pull_request:
+    branches: [main]
+```
+
+#### schedule
+
+Executa o workflow em horários programados usando sintaxe cron.
+
+```yaml
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+```
+
+Esse exemplo executa o workflow toda segunda-feira às 09:00 UTC.
 
 ### Jobs e Steps
 
-<!-- TODO: Estrutura de um workflow -->
+Um workflow pode ter um ou mais jobs. Um job é um conjunto de etapas executadas em um mesmo ambiente. Cada job pode rodar em uma máquina virtual, como `ubuntu-latest`, `windows-latest` ou `macos-latest`.
+
+Os steps são executados em ordem dentro de cada job. Eles podem executar comandos com `run` ou usar Actions prontas com `uses`.
+
+### Matrix Builds
+
+Matrix builds permitem executar o mesmo job em diferentes versões ou ambientes.
+
+```yaml
+name: Testes com matriz
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Verificar versão do Python
+        run: python --version
+```
+
+Nesse caso, o mesmo job será executado três vezes: uma com Python 3.8, outra com Python 3.9 e outra com Python 3.10.
+
+### Actions mais usadas
+
+Algumas Actions prontas são muito comuns:
+
+- `actions/checkout`: baixa o código do repositório para o ambiente do workflow
+- `actions/setup-node`: configura uma versão do Node.js
+- `actions/setup-python`: configura uma versão do Python
+- `actions/upload-artifact`: salva arquivos gerados durante o workflow
+- `actions/download-artifact`: baixa arquivos gerados por outro job
 
 ### Exemplo: CI Básico
 
+CI significa Integração Contínua. A ideia é testar automaticamente cada mudança antes que ela seja incorporada ao projeto principal.
+
 ```yaml
-# TODO: Workflow para rodar testes
+name: CI Node.js
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Rodar testes
+        run: npm test
 ```
+
+Esse workflow executa testes quando há `push` na branch `main` ou quando alguém abre um Pull Request para `main`.
+
+### CI/CD Básico
+
+CI/CD combina duas ideias:
+
+- CI: integração contínua, usada para testar e validar mudanças automaticamente
+- CD: entrega ou implantação contínua, usada para publicar aplicações de forma automatizada
+
+Um fluxo básico pode ser:
+
+```text
+commit → push → workflow → testes → aprovação → merge → deploy
+```
+
+Esse processo reduz erros manuais e aumenta a confiança na entrega de software.
+
+### Ligação com Branch Protection
+
+GitHub Actions também pode ser usado junto com regras de proteção de branch.
+
+Por exemplo, uma equipe pode configurar a branch `main` para aceitar merge apenas quando:
+
+- O Pull Request for aprovado
+- Os testes do workflow passarem
+- A branch estiver atualizada
+- Não houver conflitos
+
+Assim, o workflow de CI funciona como uma barreira de qualidade antes do código entrar na branch principal.
 
 ### Marketplace
 
-<!-- TODO: Actions pré-prontas -->
+O GitHub Marketplace reúne Actions criadas pela comunidade e por empresas. Ele permite encontrar automações prontas para testes, deploy, análise de segurança, publicação de pacotes e integração com ferramentas externas.
+
+Antes de usar uma Action de terceiros, é importante verificar se o projeto é confiável, bem mantido e possui documentação clara.
 
 ## GitHub Pages
 

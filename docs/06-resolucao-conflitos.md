@@ -1,5 +1,3 @@
-# Resolução de Conflitos
-
 <!-- Este arquivo ensina como identificar, entender e resolver conflitos de merge no Git -->
 
 ## 📋 Objetivos de Aprendizagem
@@ -329,8 +327,129 @@ e muito popular para versionamento de código.
 
 ### VS Code
 
-<!-- TODO: Interface visual do VS Code -->
-<!-- Botões: Accept Current, Accept Incoming, Accept Both -->
+O VS Code possui integração nativa com o Git e permite resolver conflitos sem sair do editor. Ao abrir um arquivo com conflito, ele exibe botões de ação acima de cada marcador:
+
+- **Accept Current Change** — mantém o código da sua branch
+- **Accept Incoming Change** — mantém o código da branch que está sendo mergeada
+- **Accept Both Changes** — inclui as duas versões
+- **Compare Changes** — abre um diff lado a lado
+
+Para configurar o VS Code como mergetool padrão:
+
+```bash
+git config --global merge.tool vscode
+git config --global mergetool.vscode.cmd 'code --wait $MERGED'
+```
+
+### Ferramentas Visuais Externas
+
+Quando os conflitos são numerosos ou envolvem código complexo, ferramentas visuais dedicadas oferecem uma interface de três painéis (sua versão / base comum / versão deles) que facilita muito a comparação.
+
+#### Meld
+
+Ferramenta open-source com interface simples, boa opção para quem está começando.
+
+```bash
+# Instalação no Ubuntu/Debian
+sudo apt install meld
+
+# Configuração no Git
+git config --global merge.tool meld
+```
+
+#### KDiff3
+
+Além da interface visual, o KDiff3 tenta mesclar automaticamente as partes que não têm conflito real, deixando para o usuário apenas o que precisa de decisão.
+
+```bash
+# Instalação no Ubuntu/Debian
+sudo apt install kdiff3
+
+# Configuração no Git
+git config --global merge.tool kdiff3
+```
+
+#### P4Merge
+
+Gratuito e disponível para Windows, macOS e Linux. Tem visual limpo e é bastante usado em ambientes profissionais.
+
+```bash
+# Após instalar (https://www.perforce.com/products/helix-core-apps/merge-diff-tool-p4merge)
+git config --global merge.tool p4merge
+git config --global mergetool.p4merge.path "/usr/local/bin/p4merge"
+```
+
+### git mergetool
+
+#### O mergetool abre uma interface visual para resolver conflitos
+```bash
+git mergetool
+```
+
+#### O difftool permite comparar as versões antes de decidir
+```bash
+git difftool
+```
+
+### Workflow Completo com Mergetool
+
+```bash
+# 1. Merge gera conflito
+git merge feature/nova-funcionalidade
+
+# 2. Verifique os arquivos em conflito
+git status
+
+# 3. Abra a ferramenta configurada
+git mergetool
+# A ferramenta abre para cada arquivo em conflito, um por vez
+# Resolva, salve e feche
+
+# 4. Remova os arquivos .orig gerados (backup automático)
+git clean -f *.orig
+# Ou desative permanentemente:
+# git config --global mergetool.keepBackup false
+
+# 5. Adicione e finalize
+git add arquivo-resolvido.py
+git commit -m "merge: resolve conflito em arquivo-resolvido.py"
+```
+
+### Git Aliases para Setup Rápido
+
+Adicione ao seu `~/.gitconfig` para trocar de ferramenta com um comando só:
+
+```bash
+git config --global alias.use-vscode '!git config --global merge.tool vscode && git config --global mergetool.vscode.cmd "code --wait $MERGED"'
+git config --global alias.use-meld '!git config --global merge.tool meld'
+git config --global alias.use-kdiff3 '!git config --global merge.tool kdiff3'
+git config --global alias.mt 'mergetool'
+```
+
+Uso:
+
+```bash
+git use-meld    # troca para Meld
+git mt          # abre o mergetool nos arquivos com conflito
+```
+
+### Comparativo das Ferramentas
+
+| Ferramenta | Plataforma | Custo | Destaques |
+|---|---|---|---|
+| **VS Code** | Linux, Windows, macOS | Gratuito | Integrado ao editor, sem instalação extra |
+| **Meld** | Linux, Windows, macOS | Gratuito / Open-source | Interface simples, ótimo para iniciantes |
+| **KDiff3** | Linux, Windows, macOS | Gratuito / Open-source | Auto-merge de partes não conflitantes |
+| **P4Merge** | Linux, Windows, macOS | Gratuito (proprietário) | Visual limpo, popular em equipes profissionais |
+
+### Quando usar ferramenta em vez de resolver manualmente?
+
+A edição direta do arquivo com os marcadores `<<<<<<<`, `=======`, `>>>>>>>` funciona bem para conflitos simples. Prefira uma ferramenta visual quando:
+
+- O arquivo tem mais de dois ou três blocos de conflito
+- O conflito envolve código que foi movido (refatoração), não apenas modificado
+- Você precisa ver o estado **antes das duas branches divergirem** (painel base)
+- A leitura dos marcadores dificulta entender o contexto ao redor
 
 ### Git GUI Tools
 
@@ -341,22 +460,6 @@ e muito popular para versionamento de código.
 #### SourceTree
 
 <!-- TODO: Interface de merge do SourceTree -->
-
-### git mergetool
-
-#### O mergetool abre uma interface visual para resolver conflitos
-```bash
-# git mergetool
-```
-
-#### O difftool permite comparar as versões antes de decidir
-```bash
-# git difftool
-```
-
-```bash
-# TODO: Configurar e usar mergetool
-```
 
 ### Configurando Merge Tool
 
@@ -629,3 +732,4 @@ Cenário:
 <!-- Adicione seu nome quando contribuir: Filipe Alves de Sousa
 - [@seu-usuario](https://github.com/filipe19) - Estratégias e Ferramentas de Resolução (#46)
 -->
+<!-- - [@AtlasExploit](https://github.com/AtlasExploit) - Ferramentas de Merge: VS Code, Meld, KDiff3, P4Merge, aliases e workflow (#47) -->

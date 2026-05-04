@@ -466,3 +466,4 @@ Pull Requests trazem benefícios que vão muito além de "juntar código":
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
+[@RfaelDePadua](https://github.com/RfaelDePadua) - Seção "O que é um Pull Request (PR)?"

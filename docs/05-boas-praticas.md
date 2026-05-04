@@ -378,22 +378,40 @@ git push --force
 
 ## Fluxo de Trabalho
 
+A escolha do modelo de fluxo (workflow) dita como a equipe colabora e integra o código. [cite_start]Atualmente, o mercado tem migrado do "lançamento de grandes versões" para a "entrega contínua", o que impacta diretamente qual modelo escolher[cite: 679].
+
 ### Git Flow
 
-<!-- TODO: Introdução ao Gitflow -->
-<!-- (Detalhes no capítulo 07) -->
+[cite_start]O GitFlow é um modelo rigoroso criado em 2010, baseado em múltiplas ramificações com funções muito específicas[cite: 626]. [cite_start]Ele é ideal para projetos que possuem ciclos de lançamento (releases) bem definidos e agendados[cite: 627].
+
+- [cite_start]**main (ou master):** Código espelho da produção[cite: 628].
+- [cite_start]**develop:** Onde a integração do dia a dia acontece[cite: 629].
+- [cite_start]**feature branches:** Para novas funcionalidades (sempre saem da develop)[cite: 630].
+- [cite_start]**release branches:** Para preparar uma nova versão (estabilização e limpeza de bugs antes da produção)[cite: 631].
+- [cite_start]**hotfix branches:** Para correções críticas e imediatas direto em produção[cite: 632].
+
+[cite_start]**Prós:** Excelente para releases definidas e controle rigoroso[cite: 641].
+[cite_start]**Contras:** Muito complexo para entregas rápidas; pode gerar os famosos "merge hells" (conflitos gigantescos) se as branches durarem muito tempo[cite: 642].
 
 ### GitHub Flow
 
-<!-- TODO: Fluxo simplificado -->
+[cite_start]É uma versão simplificada do GitFlow e que se aproxima do Trunk-based, criada pelo próprio GitHub[cite: 670]. [cite_start]É o modelo padrão para a maioria dos projetos open source e startups[cite: 671].
 
-```
-main → feature branch → PR → review → merge → deploy
-```
+[cite_start]Neste fluxo, a regra de ouro é: tudo o que está na `main` é implantável (deployable)[cite: 672]. O ciclo de vida é direto:
+1. [cite_start]Cria-se uma `feature branch` descritiva a partir da `main`[cite: 673].
+2. [cite_start]Abre-se um Pull Request (PR) para discussão e revisão[cite: 674].
+3. [cite_start]Após o merge na `main`, o deploy é feito imediatamente[cite: 675].
 
 ### Trunk-Based Development
 
-<!-- TODO: Alternativa moderna -->
+[cite_start]Atualmente é o modelo mais usado (e incentivado) em empresas de tecnologia de altíssima performance (como Google, Meta e Amazon)[cite: 677]. [cite_start]Todos os desenvolvedores trabalham em uma única branch principal (o "trunk" ou `main`)[cite: 649].
+
+- [cite_start]As branches de funcionalidade são curtíssimas (duram horas ou, no máximo, um dia) ou nem existem[cite: 650].
+- [cite_start]**Integração contínua (CI):** O código é testado e mesclado à `main` várias vezes ao dia[cite: 651].
+- [cite_start]**Feature flags:** Como tudo vai para a `main` rápido, usa-se código "escondido" por chaves de configuração para não liberar funções incompletas para o usuário[cite: 652].
+
+[cite_start]**Prós:** Velocidade máxima, feedback imediato e facilita muito o Continuous Deployment (CD)[cite: 654, 655].
+[cite_start]**Contras:** Exige uma cultura de DevOps extremamente bem estabelecida, testes automatizados rigorosos e desenvolvedores experientes[cite: 656, 657, 658, 659, 660, 661].
 
 ## Aliases
 
@@ -521,3 +539,4 @@ main → feature branch → PR → review → merge → deploy
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
 <!-- Adicione seu nome quando contribuir: -->
 - [@idarlandias](https://github.com/idarlandias) - Seção Commits Atômicos
+- [@Sthefferson](https://github.com/Sthefferson) - Seção Fluxo de Trabalho

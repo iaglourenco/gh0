@@ -666,7 +666,7 @@ git push origin fix/corrige-bug-login
 # Para personalizar com Jekyll:
 cat > _config.yml << 'EOF'
 title: Minha Documentação
-description: Projeto incrivel
+description: Projeto incrível
 theme: cayman
 EOF
 

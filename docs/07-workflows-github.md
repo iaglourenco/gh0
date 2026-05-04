@@ -255,7 +255,7 @@ GitHub Actions pode ser usado em diferentes situações, por exemplo:
 
 Esse tipo de automação ajuda equipes a manterem qualidade, consistência e segurança no desenvolvimento.
 
-### Workflow File
+### Arquivo de Workflow
 
 Um workflow é criado dentro do diretório:
 
@@ -304,7 +304,7 @@ Nesse exemplo:
 - `uses` chama uma Action pronta
 - `run` executa um comando no terminal
 
-### Eventos (Triggers)
+### Eventos
 
 Eventos são situações que disparam um workflow. Os mais comuns são `push`, `pull_request` e `schedule`.
 
@@ -696,3 +696,4 @@ Antes de usar uma Action de terceiros, é importante verificar se o projeto é c
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
 [Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
+[Carol Anely Miranda Guzman](https://github.com/Carolanely) - Introdução sobre GitHub Actions

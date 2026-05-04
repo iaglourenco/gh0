@@ -1,3 +1,4 @@
+# Resolução de Conflitos
 <!-- Este arquivo ensina como identificar, entender e resolver conflitos de merge no Git -->
 
 ## 📋 Objetivos de Aprendizagem
@@ -334,7 +335,10 @@ O VS Code possui integração nativa com o Git e permite resolver conflitos sem 
 - **Accept Both Changes** — inclui as duas versões
 - **Compare Changes** — abre um diff lado a lado
 
-Para configurar o VS Code como mergetool padrão:
+Para configurar o VS Code como sua ferramenta de merge padrão (mergetool), utilize os comandos abaixo. 
+Essa configuração permite que, ao executar `git mergetool`, o Git abra automaticamente o VS Code para resolver os conflitos. 
+
+> **Nota:** Para que esses comandos funcionem, o comando `code` deve estar configurado no seu terminal (no VS Code, use `Ctrl+Shift+P` e procure por "Shell Command: Install 'code' command in PATH").
 
 ```bash
 git config --global merge.tool vscode
@@ -373,11 +377,14 @@ git config --global merge.tool kdiff3
 
 Gratuito e disponível para Windows, macOS e Linux. Tem visual limpo e é bastante usado em ambientes profissionais.
 
+> **Observação:** O caminho do executável do P4Merge pode variar dependendo do seu sistema operacional e local de instalação. Certifique-se de ajustar o caminho nas configurações do Git caso a ferramenta não seja encontrada automaticamente.
+
 ```bash
-# Após instalar (https://www.perforce.com/products/helix-core-apps/merge-diff-tool-p4merge)
+# Após instalar (https://www.perforce.com/products/helix-core-apps/merge-diff-tool-p4merge )
 git config --global merge.tool p4merge
-git config --global mergetool.p4merge.path "/usr/local/bin/p4merge"
-```
+# Exemplo de ajuste de caminho (se necessário):
+# git config --global mergetool.p4merge.path "/usr/local/bin/p4merge"
+
 
 ### git mergetool
 
@@ -406,9 +413,8 @@ git mergetool
 # Resolva, salve e feche
 
 # 4. Remova os arquivos .orig gerados (backup automático)
+> **Cuidado:** O comando `git clean` apaga arquivos permanentemente. Use apenas se tiver certeza de que quer remover os backups `.orig`.
 git clean -f *.orig
-# Ou desative permanentemente:
-# git config --global mergetool.keepBackup false
 
 # 5. Adicione e finalize
 git add arquivo-resolvido.py
@@ -732,4 +738,6 @@ Cenário:
 <!-- Adicione seu nome quando contribuir: Filipe Alves de Sousa
 - [@seu-usuario](https://github.com/filipe19) - Estratégias e Ferramentas de Resolução (#46)
 -->
-<!-- - [@AtlasExploit](https://github.com/AtlasExploit) - Ferramentas de Merge: VS Code, Meld, KDiff3, P4Merge, aliases e workflow (#47) -->
+<!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
+<!-- Adicione seu nome quando contribuir: Kaique Pinheiro 
+[@AtlasExploit](https://github.com/AtlasExploit) - Ferramentas de Merge: VS Code, Meld, KDiff3, P4Merge, aliases e workflow (#47) -->

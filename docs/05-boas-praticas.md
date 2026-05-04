@@ -13,68 +13,229 @@
 
 ## Mensagens de Commit
 
+Mensagens de commit devem explicar de forma clara o que foi alterado no
+projeto. Um bom histórico facilita revisão de código, investigação de bugs e
+entendimento da evolução do sistema.
+
 ### Por que Mensagens Importam
 
-<!-- TODO: Comunicação, histórico, debugging -->
+Mensagens bem escritas ajudam a equipe a entender rapidamente o motivo de cada
+alteração. Isso é importante durante code review, manutenção do projeto,
+debugging e análise do histórico com comandos como `git log`.
+
+Uma mensagem ruim, como `update`, não explica o que mudou. Já uma mensagem como
+`fix: validate empty login form` mostra o tipo da alteração e o problema
+resolvido.
 
 ### Estrutura de uma Boa Mensagem
 
-<!-- TODO: Formato padrão -->
+Uma boa mensagem de commit deve ter uma primeira linha curta, com no máximo 72
+caracteres, escrita no modo imperativo.
 
+Use:
+
+```text
+Add feature
 ```
-tipo: resumo em até 50 caracteres
 
-Descrição detalhada (opcional) explicando:
-- Por que essa mudança é necessária
-- O que ela resolve
-- Como funciona (se não óbvio)
+Evite:
 
-Referências: #123, #456
+```text
+Added feature
+```
+
+Formato recomendado:
+
+```text
+tipo: resumo curto no imperativo
+
+Explique o que foi alterado.
+
+Explique por que a mudança foi necessária.
+
+Explique como o sistema funciona agora.
+
+Fixes #39
+Refs #123
+```
+
+A linha em branco entre o título e o corpo é importante porque separa o resumo
+da explicação detalhada.
+
+Exemplo:
+
+```bash
+git commit -m "docs: add commit message best practices" -m "Explain how to write clear commit messages.
+
+Describe the recommended format, conventional prefixes, issue references and git hooks.
+
+Fixes #39
+Refs #123"
+```
+
+### Corpo da Mensagem: What, Why e How Now
+
+Quando a alteração precisar de mais contexto, use o corpo da mensagem para
+responder três perguntas:
+
+- **What:** o que foi alterado.
+- **Why:** por que a alteração foi necessária.
+- **How now:** como o projeto funciona depois da mudança.
+
+Exemplo:
+
+```text
+fix: prevent duplicate user registration
+
+Check if the email already exists before creating a new account.
+
+This avoids duplicated users and improves data consistency.
+
+Fixes #39
+Refs #123
 ```
 
 ### Tipos de Commit
 
-<!-- TODO: Convenção de tipos -->
+É recomendado usar prefixos convencionais para indicar o tipo da alteração:
 
-- `feat`: <!-- Nova funcionalidade -->
-- `fix`: <!-- Correção de bug -->
-- `docs`: <!-- Documentação -->
-- `style`: <!-- Formatação, ponto e vírgula -->
-- `refactor`: <!-- Refatoração de código -->
-- `test`: <!-- Adicionar testes -->
-- `chore`: <!-- Tarefas de manutenção -->
+- `feat`: nova funcionalidade
+- `fix`: correção de bug
+- `docs`: alteração na documentação
+- `style`: formatação, espaços, ponto e vírgula
+- `refactor`: melhoria interna sem mudar comportamento
+- `test`: criação ou alteração de testes
+- `chore`: tarefas de manutenção
+
+Exemplos:
+
+```bash
+git commit -m "feat: add user authentication"
+git commit -m "fix: validate empty password field"
+git commit -m "docs: update README setup guide"
+git commit -m "style: format markdown lists"
+```
 
 ### Exemplos de Boas Mensagens
 
-<!-- TODO: Exemplos reais -->
+```text
+feat: add password reset flow
 
-```bash
-✅ feat: adiciona autenticação via OAuth
-✅ fix: corrige crash ao carregar perfil vazio
-✅ docs: atualiza instruções de instalação
-✅ refactor: reorganiza estrutura de pastas
+fix: prevent form submission with empty fields
+
+docs: add local installation instructions
+
+refactor: simplify user validation service
 ```
 
-### Exemplos de  Más Mensagens
+Essas mensagens são boas porque indicam o tipo da alteração e explicam o que foi
+feito de forma objetiva.
 
-<!-- TODO: O que evitar -->
+### Exemplos de Más Mensagens
 
-```bash
-❌ update
-❌ fixes
-❌ changes
-❌ wip
-❌ aaaa teste
-❌ mudanças do dia 15
+```text
+update
+
+changes
+
+final version
+
+fix bugs
+
+added things
+
+wip
 ```
 
-### Convenções de Equipe
+Essas mensagens devem ser evitadas porque são genéricas e não explicam a
+alteração feita no projeto.
 
-<!-- TODO: Conventional Commits, commitlint -->
+### Referência a Issues
 
-### Ferramentas
+Quando um commit estiver relacionado a uma issue, informe isso no corpo da
+mensagem.
 
-<!-- TODO: commitlint, commitizen, git hooks -->
+Use palavras-chave como:
+
+```text
+Fixes #39
+Closes #39
+Resolves #39
+Refs #123
+```
+
+Exemplo:
+
+```text
+docs: add README best practices
+
+Explain how to write clear README files with practical examples.
+
+Fixes #39
+Refs #123
+```
+
+### Histórico Limpo
+
+Um histórico limpo facilita a leitura do projeto com `git log`.
+
+Exemplo:
+
+```bash
+git log --oneline
+```
+
+Saída esperada:
+
+```text
+a1b2c3d docs: add commit message best practices
+b4c5d6e fix: validate empty login form
+c7d8e9f feat: add user authentication
+```
+
+Esse tipo de histórico é melhor do que uma sequência de commits genéricos como
+`update`, `changes` ou `final`.
+
+### Ferramentas e Git Hooks
+
+Git hooks podem ser usados para validar mensagens de commit antes que elas sejam
+salvas no histórico.
+
+Um hook comum para isso é o `commit-msg`, que pode verificar se a mensagem segue
+um formato padrão, como Conventional Commits.
+
+Exemplo de formato aceito:
+
+```text
+docs: add commit message best practices
+```
+
+Exemplo de formato rejeitado:
+
+```text
+added commit docs
+```
+
+Exemplo simples de hook `commit-msg`:
+
+```bash
+#!/bin/sh
+
+commit_msg_file="$1"
+commit_msg="$(head -n 1 "$commit_msg_file")"
+
+pattern="^(feat|fix|docs|style|refactor|test|chore): .{1,72}$"
+
+if ! echo "$commit_msg" | grep -Eq "$pattern"; then
+  echo "Mensagem de commit inválida."
+  echo "Use o formato: tipo: resumo curto"
+  echo "Exemplo: docs: add commit message best practices"
+  exit 1
+fi
+```
+
+Esse tipo de validação ajuda a manter o padrão do projeto e evita mensagens
+genéricas no histórico.
 
 ## Commits Atômicos
 

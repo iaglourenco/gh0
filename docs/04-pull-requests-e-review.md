@@ -130,14 +130,24 @@ Sempre teste as suas alterações localmente antes de abrir um Pull Request. Cer
 
 ### O que é Code Review?
 
-É a prática sistemática de analisar o código escrito por outro desenvolvedor. O objetivo é encontrar possíveis falhas estruturais, de lógica ou de segurança antes que o código seja efetivamente mesclado.
+O Code Review (Revisão de Código) é a prática de analisar e avaliar o código escrito por outro desenvolvedor antes que ele seja integrado oficialmente ao projeto principal (a branch `main`). Pense nisso como uma "revisão de texto" antes de publicar um livro: o objetivo não é julgar o autor, mas sim garantir que a obra final tenha a melhor qualidade possível, esteja livre de erros estruturais ou lógicos, e siga os padrões estabelecidos pelo projeto.
 
-### Por que Revisar Código?
+### Por que é importante?
 
-- **Qualidade:** Garante que o código atende aos padrões da arquitetura do projeto.
-- **Prevenção de Bugs:** Dois pares de olhos veem melhor que um.
+O processo de Code Review é uma das ferramentas mais valiosas na engenharia de software moderna, pois atua como a última linha de defesa antes da produção. Sua importância reside em:
 
-- **Compartilhamento de Conhecimento:** Evita que apenas uma pessoa saiba como determinada parte do sistema funciona.
+- **Prevenção de Bugs:** Um segundo (ou terceiro) par de olhos tem muito mais facilidade para identificar falhas lógicas, variáveis esquecidas ou problemas de segurança que passaram despercebidos pelo autor original.
+- **Manutenção de Padrões:** Ajuda a garantir que todo o código do projeto siga o mesmo estilo e a mesma arquitetura, evitando que o repositório vire uma bagunça ("código espaguete").
+- **Economia de Tempo:** Corrigir um erro durante a fase de revisão é infinitamente mais rápido e barato do que consertar um bug depois que ele já está rodando em produção.
+
+### Benefícios para a equipe
+
+Além das vantagens técnicas, o Code Review transforma a cultura da equipe de desenvolvimento:
+
+- **Distribuição de Conhecimento:** Quando você lê o código de um colega, você aprende novas abordagens e funções. Ao mesmo tempo, o autor recebe dicas valiosas. Isso nivela o conhecimento técnico de todo o time.
+- **Responsabilidade Compartilhada:** Se um bug chega à produção, a responsabilidade não é apenas de quem escreveu o código, mas também de quem o revisou e aprovou. A qualidade se torna um esforço coletivo.
+- **Integração de Novos Membros:** Para desenvolvedores iniciantes, o Code Review é a melhor forma de entender as regras de negócio e os padrões do projeto de forma prática e supervisionada.
+- **Comunicação Mais Forte:** O processo de revisão, quando focado no código e não na pessoa, exercita a empatia, a argumentação técnica e a comunicação construtiva dentro do grupo.
 
 ### Como Ser um Bom Revisor
 Revisar código exige empatia e atenção aos detalhes.

@@ -108,14 +108,17 @@ git push origin main
 
 ### O que é
 
-GitHub Flow é um workflow **simples e ágil** criado pelo GitHub, ideal para projetos com deploy contínuo. Baseia-se em uma única branch principal (`main`) sempre estável e branches curtas para cada funcionalidade.
+
+GitHub Flow é um workflow de desenvolvimento **simples e ágil** criado pelo GitHub, ideal para projetos com deploy contínuo. Nesse fluxo, todas as mudanças partem da branch principal (`main`) e retornam para ela por meio de Pull Requests.
 
 ### Princípios
 
-1. `main` está **sempre deployável** — nunca quebre a branch principal
-2. Crie **branches com nomes descritivos** para cada tarefa
-3. Abra **Pull Requests** cedo para discussão e feedback
-4. Faça **deploy imediatamente** após o merge na main
+1. A `main` está **sempre pronta para deploy** — nunca quebre a branch principal
+2. Use **branches curtas e descritivas** para cada tarefa ou funcionalidade
+3. Abra **Pull Requests** cedo para discussão, feedback e revisão de código
+4. Mudanças só entram na `main` após review e aprovação
+5. Faça o **deploy imediatamente** após o merge na `main`
+
 
 ### Fluxo Completo
 
@@ -125,7 +128,16 @@ main → branch → commits → PR → review → merge → deploy
 
 ### Quando Usar
 
-Ideal para projetos web com **deploy contínuo** (ex: SaaS, aplicações web), equipes pequenas e projetos onde uma única versão em produção é suficiente.
+
+Ideal para projetos web com **deploy contínuo** ou **Continuous Deployment**, como SaaS, aplicações web e projetos que precisam de agilidade no desenvolvimento, especialmente em equipes pequenas ou médias.
+
+### GitHub Flow vs Git Flow
+
+- GitHub Flow é mais simples e direto
+- Não possui branches de `release` ou `develop`
+- É ideal para deploy contínuo
+- Git Flow é mais estruturado e indicado para projetos com versões planejadas
+
 
 ## Git Flow
 
@@ -776,4 +788,7 @@ Combinando esses recursos, você terá um fluxo de trabalho profissional e colab
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
+
 - [@Davidamascen07](https://github.com/Davidamascen07) - Seção GitHub Pages e conteúdo completo do arquivo
+- [Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
+

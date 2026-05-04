@@ -508,5 +508,5 @@ Para adicionar ou editar regras de proteção em um repositório onde você tem 
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
-[Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
+- [Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
 - [@hailtonDavid](https://github.com/hailtonDavid) - Issue #55 - Seção "Branch Protection"

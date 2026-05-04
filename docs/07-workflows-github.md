@@ -401,7 +401,7 @@ GitHub Pages é um serviço gratuito do GitHub que permite **hospedar sites est�
 
 ### Casos de Uso
 
-- **Documentação de projetos**: transformar arquivos Markdown em site navegable
+- **Documentação de projetos**: transformar arquivos Markdown em site navegável
 - **Portfólio pessoal**: exibir seus projetos e habilidades
 - **Landing pages**: página de apresentação de um software
 - **Blogs**: usando Jekyll ou outros geradores estáticos

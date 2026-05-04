@@ -99,14 +99,9 @@ Em outras palavras: você poderia simplesmente fazer `git merge` direto na `main
 
 
 ### Por que Usar Pull Requests?
-Pull Requests trazem benefícios que vão muito além de "juntar código":
 
-- 🔍 **Code review** — outra pessoa lê seu código antes de ele entrar em produção, ajudando a pegar bugs, melhorar o design e compartilhar conhecimento.
-- 💬 **Discussão estruturada** — dúvidas, sugestões e decisões ficam registradas no próprio PR, junto às linhas de código a que se referem.
-- ⚙️ **CI/CD antes do merge** — testes automatizados, linters e checks rodam sobre o PR, garantindo que código quebrado não chegue à `main`.
-- 📐 **Padrões consistentes** — o PR é o ponto onde o time aplica convenções de estilo, arquitetura e qualidade, mantendo a base de código coerente ao longo do tempo.
-- 📚 **Histórico e aprendizado** — PRs antigos viram documentação viva: por que aquela mudança foi feita? Quem revisou? Quais alternativas foram consideradas?
-  
+Além dos pontos comparados na tabela acima, o PR é o lugar onde o time aplica convenções de estilo, arquitetura e qualidade — mantendo a base de código coerente ao longo do tempo. Como bônus, PRs antigos viram documentação viva: registram **por que** aquela mudança foi feita, quem revisou e quais alternativas foram consideradas.
+
 ## Workflow com Pull Requests
 
 O fluxo tradicional de trabalho em projetos colaborativos ou Open Source segue um padrão claro de etapas.

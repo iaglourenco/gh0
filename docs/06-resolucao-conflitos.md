@@ -17,9 +17,10 @@
 <!-- Conflitos não são erros - são oportunidades de aprendizado -->
 
 ## O que São Conflitos de Merge?
+   Um conflito de merge ocorre quando o Git, apesar de sua inteligência algorítmica, encontra uma ambiguidade que não pode ser resolvida automaticamente. Isso acontece tipicamente quando duas ramificações (branches) distintas alteram a mesma linha de um arquivo de formas diferentes, ou quando uma branch deleta um arquivo que outra modificou. 
 
-<!-- TODO: Definição -->
 <!-- Quando Git não consegue resolver automaticamente -->
+   Tecnicamente, o Git falha ao tentar aplicar um 'Three-way merge', pois as mudanças são divergentes a partir do ancestral comum, exigindo que a inteligência humana intervenha para decidir qual estado final preserva a integridade lógica do sistema.
 
 ### Por que Conflitos Acontecem?
 
@@ -92,11 +93,11 @@ Esse comando ajuda a localizar exatamente onde estão os marcadores de conflito 
 Quando o Git não consegue decidir qual versão manter, ele adiciona marcadores diretamente no arquivo. Esses marcadores mostram o começo, a separação e o fim da área em conflito.
 
 ```markdown
-<<<<<<< HEAD
+// <<<<<<< HEAD
 Seu código ou texto atual
-=======
+// =======
 Código ou texto vindo da outra branch
->>>>>>> nome-da-branch
+// >>>>>>> nome-da-branch
 ```
 
 Esses símbolos não fazem parte do conteúdo final. Eles são apenas uma indicação temporária para que a pessoa resolva manualmente o conflito.
@@ -136,21 +137,136 @@ Mostra os detalhes de um commit específico.
 Esses comandos ajudam a entender quem fez a alteração, quando ela foi feita e qual era a intenção por trás da mudança.
 
 ### Exemplo Completo
+Observação: esse exemplo assume que a branch principal se chama "main".
 
+// <<<<<<< joao-marafiotti/marcadores-conflito
 Imagine que duas pessoas editaram a mesma introdução de um documento.
 
 Antes da resolução, o arquivo pode ficar assim:
+// =======
+Crie um repositório com `git init`.
+// >>>>>>> main
 
-```markdown
-## Introdução ao Git
+Crie um arquivo exemplo.py (isso vai variar de acordo com o sistema operacional)
 
-<<<<<<< HEAD
-Git é um sistema de controle de versão distribuído criado em 2005.
-=======
-Git é uma ferramenta de versionamento de código muito popular.
->>>>>>> feature/atualiza-intro
+#### Primeiro commit
+
+Crie o primeiro commit
+
+```bash
+git add .
+git commit -m "criação do arquivo"
+git log --graph
+```
+O resultado do `git log` deve ser dessa forma(mudando o autor):
+![primeiro commit](assets/exemplo-conflito-primeiro-commit.png)
+
+#### Criando Commit em Outra Branch
+
+Crie outra branch
+
+```bash
+git switch -c teste
+git log --graph
 ```
 
+Deve ter o mesmo commit que a main(ou master).
+
+Insira o código em exemplo.py:
+
+```python
+def calcular_media(valores):
+    total = 0
+    for v in valores:
+        total += v
+    
+    print("Processando valores...")
+    media = total / len(valores)
+    
+    # Linha 10 (diferença aqui)
+    resultado = f"Média calculada: {media}"
+    
+    return resultado
+
+
+dados = [10, 20, 30]
+print(calcular_media(dados))
+```
+
+Crie um novo commit:
+
+
+```bash
+git add .
+git commit -m "codigo escrito com mensagem 'Média calculada'"
+git log --graph
+```
+
+![segundo commit teste](assets/exemplo-conflito-commit2-teste.png)
+
+#### Criando o Segundo Commit em main
+
+Volte para a main
+
+```bash
+git switch main
+```
+
+Troque o código de exemplo.py para esse (mesmo código com uma diferença na linha 10):
+
+```python
+def calcular_media(valores):
+    total = 0
+    for v in valores:
+        total += v
+    
+    print("Processando valores...")
+    media = total / len(valores)
+    
+    # Linha 10 (diferença aqui)
+    resultado = f"Valor médio final: {media}"
+    
+    return resultado
+
+
+dados = [10, 20, 30]
+print(calcular_media(dados))
+```
+
+Crie um novo commit:
+
+```bash
+git add .
+git commit -m "codigo escrito com mensagem 'Valor médio final'"
+git log --graph
+```
+
+![segundo commit main](assets/exemplo-conflito-commit2-main.png)
+
+#### Fazendo o Merge e Resolvendo o Conflito
+
+Tenha certeza de que está na main.
+
+```bash
+git switch main
+git merge teste
+```
+
+Vai aparecer a mensagem de conflito:
+
+![mensagem de conflito](assets/exemplo-conflito-mensagem-de-conflito.png)
+
+e o arquivo terá na linha 10 onde houve conflito.
+
+```python
+// <<<<<<< HEAD
+    resultado = f"Média calculada: {media}"
+// =======
+    resultado = f"Valor médio final: {media}"
+// >>>>>>> teste
+```
+
+// <<<<<<< joao-marafiotti/marcadores-conflito
 Nesse exemplo:
 
 - a versão acima de `=======` veio da branch atual;
@@ -167,6 +283,26 @@ e muito popular para versionamento de código.
 ```
 
 Depois da resolução, os marcadores `<<<<<<<`, `=======` e `>>>>>>>` devem ser removidos completamente.
+// =======
+troque para (não esquecendo a identação):
+
+```python
+    resultado = f"Média: {media}"
+```
+
+e faça um commit para resolver o conflito:
+
+```bash
+git add .
+git commit -m "conflito resolvido"
+
+git log --graph --oneline
+```
+
+![commits finais](assets/exemplo-conflito-final.png)
+
+Se tentar fazer um `git merge teste`, irá retornar "Already up to date".
+// >>>>>>> main
 
 ## Resolvendo Conflitos Manualmente
 
@@ -205,11 +341,11 @@ code docs/06-conflitos.md
 Leia com atenção as duas partes do conflito:
 
 ```markdown
-<<<<<<< HEAD
+// <<<<<<< HEAD
 Versão da branch atual
-=======
+// =======
 Versão da outra branch
->>>>>>> nome-da-branch
+// >>>>>>> nome-da-branch
 ```
 
 Antes de escolher, tente entender o objetivo de cada alteração. Uma versão pode corrigir um erro, enquanto a outra pode adicionar uma informação importante.
@@ -232,11 +368,11 @@ Depois de decidir, edite o arquivo deixando apenas o conteúdo final.
 Exemplo de conflito:
 
 ```markdown
-<<<<<<< HEAD
+// <<<<<<< HEAD
 Git ajuda equipes a controlar versões de arquivos.
-=======
+// =======
 Git permite acompanhar o histórico de alterações em um projeto.
->>>>>>> feature/melhora-descricao
+// >>>>>>> feature/melhora-descricao
 ```
 
 Exemplo resolvido:
@@ -250,9 +386,9 @@ Git ajuda equipes a controlar versões de arquivos e acompanhar o histórico de 
 Depois da edição, remova todos os marcadores adicionados pelo Git:
 
 ```txt
-<<<<<<< HEAD
-=======
->>>>>>> nome-da-branch
+// <<<<<<< HEAD
+// =======
+// >>>>>>> nome-da-branch
 ```
 
 Se algum desses marcadores ficar no arquivo, o conflito não foi resolvido corretamente.
@@ -322,11 +458,24 @@ Esse comando cancela o merge em andamento e restaura o repositório para o estad
 
 ### Aceitar Completamente Uma Versão
 
+#### Para priorizar a nossa versão em conflitos automáticos
+```bash
+# git merge -Xours nome-da-branch
+```
+
+#### Para priorizar a versão que está vindo de fora
+```bash
+# git merge -Xtheirs nome-da-branch
+```
+   Em cenários onde a escala de mudanças é massiva, a resolução manual linha a linha torna-se inviável. As estratégias de estratégia de recursão permitem automatizar essa decisão. A opção -Xours orienta o Git a favorecer sistematicamente a versão da branch atual (aquela em que você está), sendo ideal para proteger configurações locais ou códigos core que não podem ser alterados. Já a -Xtheirs prioriza a branch que está sendo integrada, sendo a escolha correta quando você está absorvendo uma 'hotfix' ou uma atualização crítica de terceiros que deve sobrescrever o estado atual.
+
 ```bash
 # TODO: Usar theirs ou ours
 # git checkout --ours arquivo.md
 # git checkout --theirs arquivo.md
 ```
+
+
 
 ### Combinar Mudanças
 
@@ -340,7 +489,7 @@ Esse comando cancela o merge em andamento e restaura o repositório para o estad
 
 ### Editor de Texto
 
-<!-- TODO: Resolver manualmente -->
+   A resolução de conflitos via terminal em arquivos complexos (como códigos ou grandes datasets JSON) é propensa a erros. O uso do git difftool atua na fase de pré-análise, permitindo uma inspeção visual comparativa antes de qualquer alteração. Uma vez identificada a colisão, o git mergetool invoca uma interface gráfica (GUI) que segmenta o arquivo em três painéis: a base comum, a versão local e a versão remota. Essa visualização tripartida é fundamental para que o desenvolvedor possa compor uma solução híbrida que aproveite o melhor de ambas as versões.
 
 ### VS Code
 
@@ -358,6 +507,16 @@ Esse comando cancela o merge em andamento e restaura o repositório para o estad
 <!-- TODO: Interface de merge do SourceTree -->
 
 ### git mergetool
+
+#### O mergetool abre uma interface visual para resolver conflitos
+```bash
+# git mergetool
+```
+
+#### O difftool permite comparar as versões antes de decidir
+```bash
+# git difftool
+```
 
 ```bash
 # TODO: Configurar e usar mergetool
@@ -390,6 +549,8 @@ Esse comando cancela o merge em andamento e restaura o repositório para o estad
 <!-- TODO: Mudanças em estrutura de pastas -->
 
 ## Prevenindo Conflitos
+
+Embora ferramentas ajudem a resolver, a melhor prática é a prevenção através de fluxos de trabalho inteligentes. Commits pequenos e atômicos, aliados a Pull/Fetch frequentes, garantem que a divergência entre a sua branch e a main seja mínima. Em sistemas de missão crítica, como os desenvolvidos em eletrônica aeroespacial, a fragmentação de tarefas em arquivos distintos e o uso de interfaces bem definidas são as defesas primárias contra colisões de código massivas.
 
 ### Comunicação
 
@@ -444,6 +605,13 @@ Esse comando cancela o merge em andamento e restaura o repositório para o estad
 ```
 
 ## Abortando um Merge
+
+A resolução de conflitos pode se tornar excessivamente complexa se houver muitos arquivos alterados simultaneamente. Nestes casos, o comando git merge --abort funciona como um 'botão de pânico'. Ele interrompe o processo de integração e restaura o repositório ao estado exato em que estava antes do comando de merge ser disparado. É uma prática recomendada usar o abort sempre que houver dúvida sobre a integridade da resolução manual, permitindo ao desenvolvedor reavaliar a estratégia de integração sem deixar o repositório em um estado 'sujo' ou quebrado.
+
+### Retorna ao estado anterior caso o merge esteja muito complexo
+```bash
+# TODO: git merge --abort
+```
 
 ### Quando Abortar
 
@@ -521,6 +689,10 @@ Cenário:
 ```
 
 ### Comunicar com o Autor
+
+#### Use o git blame para identificar quem editou a linha e converse com o autor para entender a intenção do código original.
+
+   A resolução técnica de um conflito é apenas metade do trabalho. A outra metade é política/social. O comando git blame deve ser usado como uma ferramenta de rastreabilidade para identificar o autor da mudança divergente. Antes de concluir o merge, uma breve consulta ao autor evita a deleção de lógicas intencionais (edge cases) que podem não ser óbvias à primeira vista.
 
 <!-- TODO: Perguntar intenção das mudanças -->
 
@@ -618,7 +790,7 @@ Cenário:
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
-<!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+<!-- Adicione seu nome quando contribuir: Filipe Alves de Sousa
+- [@seu-usuario](https://github.com/filipe19) - Estratégias e Ferramentas de Resolução (#46)
 -->
 - [@joaomarafiotti](https://github.com/joaomarafiotti) - Marcadores de conflito

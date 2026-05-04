@@ -111,26 +111,47 @@ git commit -m "adiciona validações e documentação"
 
 ### Nomenclatura de Branches
 
-<!-- TODO: Padrões de nomes -->
+Definir uma convenção para nomes de branches facilita a organização do projeto, melhora a comunicação da equipe e torna o histórico mais claro.
 
 #### Padrões Comuns
 
-```
+Utilize prefixos conforme o tipo de alteração:
+
+```text
 feature/descricao
-fix/descricao
+bugfix/descricao
 hotfix/descricao
+release/descricao
 docs/descricao
 refactor/descricao
 
 # Exemplos:
-feature/login-oauth
-fix/bug-123
+feature/user-login
+bugfix/erro-cadastro
+hotfix/falha-api
+release/v1-0-0
 docs/readme-update
+```
+#### Boas Práticas
+
+- Use nomes descritivos: `feature/user-login` é melhor que `feature/abc123`
+- Use letras minúsculas
+- Prefira hífens `-` no lugar de underscores `_`
+- Evite nomes muito longos
+- Evite várias pessoas trabalhando na mesma branch
+- Siga a convenção definida pelo projeto
+
+#### Listar Branches
+
+Para visualizar branches locais e remotas:
+
+```bash
+git branch -a
 ```
 
 #### Prefixo com Username
 
-<!-- TODO: Útil em projetos com muitos colaboradores -->
+Útil em projetos com muitos colaboradores, pois identifica facilmente quem está trabalhando em cada tarefa.
 
 ```
 nome-usuario/feature/descricao
@@ -141,15 +162,15 @@ joao-silva/feature/adiciona-busca
 
 ### Lifetime de Branches
 
-<!-- TODO: Branches de vida curta vs longa -->
+Branches podem ser temporárias ou permanentes, conforme o fluxo do projeto.
 
 #### Short-Lived Branches
 
-<!-- TODO: Feature branches - deletar após merge -->
+Branches criadas para tarefas específicas, como features ou correções. Devem ser removidas após o merge para manter o repositório limpo.
 
 #### Long-Lived Branches
 
-<!-- TODO: main, develop, release branches -->
+Branches permanentes utilizadas como base do projeto, como `main`, `develop` e `release`.
 
 ## .gitignore
 

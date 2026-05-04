@@ -57,19 +57,31 @@
 
 ## O que é GitHub?
 
-<!-- TODO: Explique o que é GitHub -->
-<!-- Dicas:
-- Plataforma de hospedagem de código
-- Baseada em Git
-- Ferramentas de colaboração
-- Maior plataforma de código aberto do mundo
-- Não é a mesma coisa que Git!
--->
+O GitHub é uma **plataforma web de hospedagem de código** baseada em Git. Ela pega tudo que o Git faz localmente, ou seja, rastreia mudanças, cria histórico e gerencia branches, mas adiciona uma camada de colaboração, revisão de código e automação acessível pelo navegador. 
+
+Fundado em **abril de 2008** por Tom Preston-Werner, Chris Wanstrath e PJ Hyett, o GitHub se tornou rapidamente o lar da maioria dos projetos open source do mundo. Em **junho de 2018**, a **Microsoft adquiriu o GitHub por US$ 7,5 bilhões**, mantendo-o independente e expandindo os recursos gratuitos, incluindo repositórios privados ilimitados para contas gratuitas. 
+
+Hoje em dia, o GitHub é muito mais do que um lugar para guardar código, é onde equipes colaboram de forma distribuída, empresas constroem produtos e desenvolvedores mostram seu trabalho, esse modelo de desenvolvimento aberto e colaborativo ficou conhecido como **social coding**. É usado por desenvolvedores individuais como portfólio técnico, por equipes no dia a dia de desenvolvimento e por grandes projetos open source como Linux, React e Python. 
+
+A plataforma está disponível em **[github.com](https://github.com)**, basta criar uma conta gratuita para começar.
+
+> **Git ≠ GitHub.** Git é a ferramenta de controle de versão; GitHub é a plataforma que usa Git por baixo dos panos. Você pode usar Git sem o GitHub, mas não o contrário
+
+O plano **Free** já inclui repositórios públicos e privados ilimitados e é mais do que suficiente para a maioria dos desenvolvedores. Para equipes, o plano **Team** adiciona revisões obrigatórias e permissões avançadas. Os preços podem ser consultados com seus valores atualizados em [github.com/pricing](https://github.com/pricing).
+
+Além do GitHub, existem alternativas que valem conhecer: o **[GitLab](https://gitlab.com)** se destaca pela opção de self-hosting e CI/CD robusto; o **[Bitbucket](https://bitbucket.org)** é popular em equipes que usam o ecossistema Atlassian (Jira, Confluence); e o **[Gitea](https://gitea.io)** é uma opção leve e open source para quem quer controle total da infraestrutura.
+
 
 ### Recursos do GitHub
 
-<!-- TODO: Liste os principais recursos do GitHub -->
-<!-- Exemplos: repositórios, issues, pull requests, actions, pages, etc. -->
+- **Repositórios remotos** — hospeda seu código na nuvem, servindo como fonte
+  de verdade compartilhada para toda a equipe
+- **Pull Requests (PRs)** — mecanismo para propor, revisar e discutir alterações
+  antes de incorporá-las ao código principal
+- **Issues** — sistema integrado para rastrear bugs, tarefas e sugestões
+- **GitHub Actions** — plataforma de CI/CD nativa que roda testes e deploys
+  automaticamente a cada push ou PR
+- **GitHub Pages** — hospedagem gratuita de sites estáticos direto de um repositório
 
 ## Diferença entre Git e GitHub
 
@@ -116,28 +128,89 @@
 
 ## Instalação do Git
 
+O Git pode ser instalado em todos os principais sistemas operacionais. Abaixo você encontra o guia de instalação para Windows, macOS e Linux, incluindo o uso de gerenciadores de pacotes.
+
 ### Windows
 
-<!-- TODO: Como instalar Git no Windows -->
-<!-- Link para download: https://git-scm.com/download/win -->
+**Opção 1: Instalador Oficial (Recomendado para iniciantes)**
+1. Acesse o site oficial: [https://git-scm.com/download/win](https://git-scm.com/download/win)
+2. Baixe a versão correspondente ao seu sistema (geralmente 64-bit Git for Windows Setup).
+3. Execute o instalador e siga o assistente (pode deixar as opções padrão marcadas).
+4. Após a instalação, você terá acesso ao Git Bash, um terminal que emula o ambiente Linux no Windows, facilitando o uso dos comandos.
+**Opção 2: Usando Package Managers (Avançado)**
+Se você usa gerenciadores de pacotes no Windows, pode instalar via terminal:
+
+Via **Winget**:
+```powershell
+winget install --id Git.Git -e --source winget
+```
+
+Via **Chocolatey**:
+```powershell
+choco install git
+```
 
 ### macOS
 
-<!-- TODO: Como instalar Git no macOS -->
-<!-- Homebrew, Xcode, download direto -->
+A maneira mais comum e recomendada de instalar o Git no macOS é através do gerenciador de pacotes **Homebrew**.
+
+1. Se não tiver o Homebrew instalado, instale-o com:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+2. Instale o Git executando:
+```bash
+brew install git
+```
+
+*Alternativa:* Você também pode baixar o instalador oficial em [https://git-scm.com/download/mac](https://git-scm.com/download/mac).
 
 ### Linux
 
-<!-- TODO: Como instalar Git no Linux -->
-<!-- Comandos para Ubuntu/Debian, Fedora, Arch -->
+No Linux, a instalação é feita diretamente pelo terminal usando o gerenciador de pacotes da sua distribuição.
+
+**Debian / Ubuntu / Linux Mint:**
+```bash
+sudo apt update
+sudo apt install git
+```
+
+**Fedora:**
+```bash
+sudo dnf install git
+```
+*(Se estiver usando uma versão mais antiga do Fedora, pode usar `sudo yum install git`)*
+
+**Arch Linux:**
+```bash
+sudo pacman -S git
+```
 
 ### Verificando a Instalação
 
-<!-- TODO: Como verificar se o Git foi instalado corretamente -->
+Independentemente do seu sistema operacional, após a instalação, abra o seu terminal (Prompt de Comando, PowerShell, Terminal do macOS ou Linux) e digite o seguinte comando para confirmar que o Git foi instalado com sucesso:
 
 ```bash
-# TODO: Adicione o comando para verificar versão do Git
+git --version
 ```
+
+**Output de exemplo esperado:**
+```text
+git version 2.44.0
+```
+*(O número da versão pode variar dependendo de quando você instalou, mas deve mostrar "git version...")*
+
+### Troubleshooting (Problemas Comuns)
+
+Se você receber um erro como:
+> `'git' não é reconhecido como um comando interno ou externo, um programa operável ou um arquivo em lotes.` (Windows)
+> **ou**
+> `bash: git: command not found` (Linux/macOS)
+
+**Como resolver:**
+1. **Reinicie o terminal:** O terminal precisa ser fechado e aberto novamente para recarregar as variáveis de ambiente.
+2. **Verifique o PATH (Windows):** Se você usou o instalador manual e desmarcou a opção de adicionar o Git ao PATH, o terminal não saberá onde ele está. Reinstale o Git e certifique-se de marcar a opção *"Git from the command line and also from 3rd-party software"*.
+3. **Permissões (Linux/macOS):** Se a instalação falhar por erro de permissão, lembre-se de usar `sudo` antes dos comandos de instalação com `apt`, `dnf` ou `pacman`.
 
 ## Configuração Inicial
 

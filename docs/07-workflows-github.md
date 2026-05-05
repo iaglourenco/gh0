@@ -352,7 +352,7 @@ Para configurar uma branch protection robusta, recomenda-se ativar as seguintes 
   - **Require review from Code Owners:** Se houver um arquivo `CODEOWNERS`, exige que pelo menos um dos donos do código afetado aprove o PR.
 - **Require status checks to pass before merging:** Impede o merge se as Actions (testes automatizados, linters, etc.) falharem.
   - **Require branches to be up to date before merging:** Garante que o PR seja testado com a versão mais recente da branch base antes de ser mergeado.
-- **Do not allow bypassing the above settings:** Garante que as regras se apliquem a todos, incluindo administradores e maintainers do repositório.
+- **Include administrators:** Garante que as regras de proteção também se apliquem aos administradores do repositório. Em interfaces mais novas, como **rulesets**, esse conceito pode aparecer com opções relacionadas a impedir bypass das regras.
 - **Restrict who can push to matching branches:** Permite definir exatamente quais pessoas ou equipes têm permissão de push (caso o push direto seja permitido em casos excepcionais).
 
 ### Configurando

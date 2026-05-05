@@ -111,33 +111,400 @@ Exemplos:  Closes #123, Fixes #456, Resolves #102.
 
 ## Anatomia de um Bom Pull Request
 
+Um Pull Request, também conhecido como PR, é uma solicitação para que alterações feitas em uma branch sejam revisadas e, se aprovadas, incorporadas a outra branch do projeto, geralmente a branch principal.
+
+Um bom Pull Request facilita o trabalho dos revisores, reduz riscos de erros, melhora a qualidade do código entregue e contribui para um histórico mais organizado dentro do repositório.
+
+Quando bem estruturado, o PR permite que outras pessoas entendam rapidamente:
+
+- O que foi alterado;
+- Por que a alteração foi feita;
+- Como testar a mudança;
+- Quais impactos podem existir no sistema;
+- Quais partes do código precisam de mais atenção na revisão.
+
+---
+
 ### Tamanho
-Pull Requests devem ser o menor possível. PRs com milhares de linhas de código são difíceis de revisar, escondem bugs facilmente e demoram para ser aprovados. Se a funcionalidade for muito grande, divida em PRs menores.
+
+Pull Requests devem ser o menor possível, desde que ainda representem uma entrega coerente. PRs muito grandes, com centenas ou milhares de linhas de código, são mais difíceis de revisar, aumentam a chance de bugs passarem despercebidos e costumam demorar mais para serem aprovados.
+
+O ideal é que cada PR tenha um objetivo claro e bem delimitado. Se uma funcionalidade for muito grande, ela deve ser dividida em partes menores, como criação de estrutura inicial, implementação da regra de negócio, criação de testes e ajustes de interface.
+
+#### Exemplo de PR muito grande
+
+```text
+Implementa cadastro completo de usuários, login, recuperação de senha, tela administrativa, permissões e testes.
+```
+
+Esse tipo de PR concentra muitas responsabilidades em uma única entrega, dificultando a revisão e aumentando o risco de falhas.
+
+#### Exemplo de divisão melhor
+
+```text
+PR 1: Cria estrutura inicial do módulo de usuários
+PR 2: Implementa cadastro de usuários
+PR 3: Implementa autenticação e login
+PR 4: Adiciona recuperação de senha
+PR 5: Cria testes automatizados do módulo
+```
+
+Essa divisão torna a revisão mais simples, permite aprovações mais rápidas e facilita a identificação de problemas caso algum erro seja introduzido.
+
+Além disso, PRs menores ajudam o time a manter um fluxo contínuo de entrega, evitando grandes blocos de código parados por muito tempo aguardando revisão.
+
+---
 
 ### Commits
 
-Mantenha o histórico limpo. Evite commits como **Arrumando Erro** ou **Teste**. Cada commit deve representar uma unidade lógica de mudança e ter uma mensagem explicativa.
+Mantenha o histórico de commits limpo e organizado. Cada commit deve representar uma unidade lógica de mudança, ou seja, uma alteração com propósito claro dentro do desenvolvimento.
+
+Evite commits genéricos ou pouco explicativos, pois eles dificultam a compreensão do histórico do projeto.
+
+#### Exemplos de commits ruins
+
+```text
+Arrumando erro
+Teste
+Ajustes
+Mudanças finais
+Agora vai
+```
+
+Esses nomes não explicam o que foi alterado e dificultam futuras investigações no código.
+
+#### Exemplos de commits melhores
+
+```text
+Adiciona validação de campos obrigatórios no cadastro de usuários
+Corrige cálculo do valor total do pedido
+Cria testes unitários para o serviço de autenticação
+Refatora método de busca de produtos por categoria
+Atualiza documentação do fluxo de Pull Request
+```
+
+Um bom commit ajuda outros desenvolvedores a entenderem a evolução do código e facilita investigações futuras, principalmente quando for necessário identificar quando um problema foi introduzido.
+
+Também é importante evitar misturar assuntos diferentes no mesmo commit. Por exemplo, se você corrigiu um bug e também atualizou uma documentação, o ideal é separar essas alterações em commits diferentes.
+
+#### Exemplo de separação adequada
+
+```text
+Corrige validação de e-mail no cadastro de usuários
+Atualiza documentação do fluxo de cadastro
+```
+
+Dessa forma, o histórico fica mais claro e organizado.
+
+---
 
 ### Descrição Clara
 
-Utilize templates de PR (se o repositório tiver um) e não deixe a descrição em branco. O revisor precisa entender seu raciocínio antes de ler as linhas de código.
+A descrição do Pull Request deve explicar de forma objetiva o que foi feito, por que foi feito e como a alteração pode ser testada. Nunca deixe a descrição em branco, pois o revisor precisa entender o contexto antes de analisar o código.
+
+Quando o repositório possuir um template de PR, ele deve ser preenchido corretamente. Esse template normalmente inclui campos como descrição da alteração, tipo de mudança, evidências de teste e checklist.
+
+#### Exemplo de descrição ruim
+
+```text
+Ajustes no cadastro.
+```
+
+Essa descrição é muito genérica e não ajuda o revisor a entender o objetivo da alteração.
+
+#### Exemplo de descrição melhor
+
+```markdown
+## Descrição
+
+Este PR implementa a validação dos campos obrigatórios no cadastro de usuários, garantindo que nome, e-mail e senha sejam informados antes do envio do formulário.
+
+## O que foi alterado
+
+- Adicionada validação no formulário de cadastro
+- Incluídas mensagens de erro para campos obrigatórios
+- Criados testes para validar os cenários de erro
+- Ajustada a resposta da API para retornar mensagens mais claras
+
+## Como testar
+
+1. Acessar a tela de cadastro de usuários
+2. Tentar enviar o formulário sem preencher os campos obrigatórios
+3. Verificar se as mensagens de erro são exibidas corretamente
+4. Preencher todos os campos e confirmar se o cadastro é realizado com sucesso
+```
+
+Uma descrição clara reduz dúvidas durante a revisão e evita comentários desnecessários pedindo explicações adicionais.
+
+Além disso, uma boa descrição serve como documentação histórica da mudança. No futuro, outros desenvolvedores poderão consultar o PR para entender o motivo de determinada alteração ter sido realizada.
+
+---
 
 ### Testes
 
-Sempre teste as suas alterações localmente antes de abrir um Pull Request. Certifique-se de que a nova funcionalidade está rodando conforme o esperado e que nenhuma outra parte do sistema quebrou. Se o projeto possuir testes automatizados, execute-os na sua máquina para garantir que todos estão passando com sucesso.
+Sempre teste as suas alterações localmente antes de abrir um Pull Request. Certifique-se de que a nova funcionalidade está funcionando conforme o esperado e que nenhuma parte existente do sistema foi quebrada.
+
+Se o projeto possuir testes automatizados, execute-os na sua máquina antes de enviar o PR. Isso ajuda a garantir que a alteração não causou regressões.
+
+#### Exemplos de comandos comuns para execução de testes
+
+```bash
+npm test
+```
+
+```bash
+mvn test
+```
+
+```bash
+gradle test
+```
+
+```bash
+pytest
+```
+
+Além dos testes automatizados, também é importante realizar testes manuais quando a alteração envolver telas, fluxos de usuário ou integrações.
+
+#### Exemplo de checklist de testes
+
+```text
+- [x] Executei os testes automatizados
+- [x] Testei a funcionalidade localmente
+- [x] Validei os principais cenários de erro
+- [x] Verifiquei se não houve impacto em funcionalidades relacionadas
+- [x] Incluí evidências, prints ou logs quando necessário
+```
+
+Quando possível, inclua no Pull Request evidências dos testes realizados, como prints da tela, logs de execução ou resultado dos testes automatizados. Isso aumenta a confiança do revisor e torna o processo de aprovação mais rápido.
+
+#### Exemplo de evidência no PR
+
+```text
+Testes executados com sucesso:
+
+- npm test
+- Teste manual do fluxo de cadastro
+- Validação dos cenários de erro no formulário
+- Conferência da resposta da API no navegador
+```
+
+Testar antes de abrir um PR demonstra responsabilidade técnica e reduz retrabalho para o time.
+
+---
+
+### Título do Pull Request
+
+O título do Pull Request deve ser claro, objetivo e indicar exatamente qual alteração está sendo proposta.
+
+Um bom título ajuda o time a entender rapidamente o conteúdo do PR, mesmo antes de abrir a descrição completa.
+
+#### Exemplo de título ruim
+
+```text
+Alterações gerais
+```
+
+#### Exemplo de título melhor
+
+```text
+Adiciona validação de campos obrigatórios no cadastro de usuários
+```
+
+Outro exemplo:
+
+```text
+Corrige cálculo de desconto no fechamento do pedido
+```
+
+O título deve evitar termos vagos como "ajustes", "correções diversas" ou "melhorias gerais", a menos que estejam muito bem explicados na descrição.
+
+---
+
+### Escopo Bem Definido
+
+Um bom Pull Request deve ter escopo bem definido. Isso significa que ele deve resolver um problema específico ou entregar uma parte clara da funcionalidade.
+
+Evite misturar muitas alterações diferentes no mesmo PR, como correção de bug, refatoração, alteração visual e nova funcionalidade ao mesmo tempo.
+
+#### Exemplo de escopo ruim
+
+```text
+Corrige bug no login, altera layout da tela inicial, refatora serviço de usuários e atualiza documentação.
+```
+
+#### Exemplo de escopo melhor
+
+```text
+Corrige bug no login quando o usuário informa senha inválida.
+```
+
+Caso existam outras melhorias identificadas durante o desenvolvimento, o ideal é criar novos PRs ou novas tarefas para tratar esses pontos separadamente.
+
+Essa prática facilita a revisão, reduz riscos e melhora o controle sobre o que está sendo entregue.
+
+---
+
+### Revisão de Código
+
+A revisão de código é uma etapa importante do Pull Request. Ela permite que outros desenvolvedores analisem a solução proposta, identifiquem possíveis problemas e sugiram melhorias.
+
+Ao abrir um PR, é importante solicitar revisão das pessoas corretas, preferencialmente alguém que conheça a área do sistema alterada ou que tenha contexto sobre a funcionalidade.
+
+Durante a revisão, o autor do PR deve estar aberto a feedbacks e responder aos comentários de forma clara e respeitosa.
+
+#### Boas práticas durante a revisão
+
+```text
+- Responder aos comentários dos revisores
+- Explicar decisões técnicas quando necessário
+- Corrigir os pontos levantados
+- Evitar discussões pessoais
+- Manter o foco na qualidade do código
+```
+
+A revisão não deve ser vista como uma crítica pessoal, mas como uma prática colaborativa para melhorar a qualidade do software.
+
+---
+
+### Checklist Antes de Abrir um Pull Request
+
+Antes de abrir um Pull Request, é recomendado revisar alguns pontos importantes.
+
+```text
+- [ ] O PR possui um objetivo claro?
+- [ ] O tamanho do PR está adequado?
+- [ ] Os commits possuem mensagens explicativas?
+- [ ] A descrição do PR foi preenchida corretamente?
+- [ ] Os testes automatizados foram executados?
+- [ ] A funcionalidade foi testada manualmente?
+- [ ] O código segue o padrão do projeto?
+- [ ] Não foram incluídas alterações desnecessárias?
+- [ ] O PR está vinculado a uma issue, tarefa ou card?
+- [ ] Foram adicionadas evidências quando necessário?
+```
+
+Esse checklist ajuda a evitar problemas simples e melhora a qualidade da entrega antes mesmo da revisão.
+
+---
+
+### Boas Práticas Complementares
+
+Além dos pontos anteriores, um bom Pull Request também deve seguir algumas boas práticas adicionais:
+
+- Ter um título claro e objetivo;
+- Estar relacionado a uma tarefa, issue ou card do projeto;
+- Não misturar muitas alterações diferentes no mesmo PR;
+- Evitar mudanças desnecessárias de formatação em arquivos não relacionados;
+- Manter o código alinhado ao padrão do projeto;
+- Solicitar revisão das pessoas corretas;
+- Responder aos comentários dos revisores de forma clara e respeitosa;
+- Atualizar a documentação quando necessário;
+- Garantir que a branch esteja atualizada com a branch principal;
+- Evitar subir arquivos temporários, logs ou configurações locais.
+
+#### Exemplo de arquivos que não devem ser enviados
+
+```text
+.env
+logs/
+node_modules/
+target/
+.idea/
+.DS_Store
+```
+
+Esses arquivos geralmente são específicos do ambiente local ou gerados automaticamente, e não devem fazer parte do Pull Request.
+
+---
+
+### Exemplo de Estrutura de Pull Request
+
+Abaixo está um exemplo de estrutura que pode ser utilizada na descrição de um Pull Request:
+
+```markdown
+## Descrição
+
+Descreva de forma objetiva o que foi alterado neste PR.
+
+## Motivação
+
+Explique por que essa alteração foi necessária.
+
+## O que foi alterado
+
+- Item 1
+- Item 2
+- Item 3
+
+## Como testar
+
+1. Passo 1
+2. Passo 2
+3. Passo 3
+
+## Evidências
+
+Inclua prints, logs ou resultados de testes, se necessário.
+
+## Checklist
+
+- [ ] Testei localmente
+- [ ] Executei os testes automatizados
+- [ ] Atualizei a documentação, se necessário
+- [ ] Verifiquei possíveis impactos em outras áreas
+```
+
+Essa estrutura torna o Pull Request mais organizado e facilita o trabalho de quem irá revisar.
+
+---
+
+### Conclusão
+
+Um Pull Request bem estruturado demonstra organização, responsabilidade técnica e colaboração com o time.
+
+Ao manter PRs pequenos, commits claros, descrições completas e testes bem executados, o processo de revisão se torna mais rápido, seguro e eficiente.
+
+Mais do que apenas enviar código, abrir um bom Pull Request é uma forma de comunicar bem uma mudança, facilitar o trabalho dos revisores e contribuir para a qualidade geral do projeto.
 
 ## Code Review: Revisando PRs
 
 ### O que é Code Review?
 
-É a prática sistemática de analisar o código escrito por outro desenvolvedor. O objetivo é encontrar possíveis falhas estruturais, de lógica ou de segurança antes que o código seja efetivamente mesclado.
+O Code Review (Revisão de Código) é a prática de analisar e avaliar o código escrito por outro desenvolvedor antes que ele seja integrado oficialmente ao projeto principal (a branch `main`). Pense nisso como uma "revisão de texto" antes de publicar um livro: o objetivo não é julgar o autor, mas sim garantir que a obra final tenha a melhor qualidade possível, esteja livre de erros estruturais ou lógicos, e siga os padrões estabelecidos pelo projeto.
 
-### Por que Revisar Código?
+### Por que é importante?
 
-- **Qualidade:** Garante que o código atende aos padrões da arquitetura do projeto.
-- **Prevenção de Bugs:** Dois pares de olhos veem melhor que um.
+O processo de Code Review é uma das ferramentas mais valiosas na engenharia de software moderna, pois atua como a última linha de defesa antes da produção. Sua importância reside em:
 
-- **Compartilhamento de Conhecimento:** Evita que apenas uma pessoa saiba como determinada parte do sistema funciona.
+- **Prevenção de Bugs:** Um segundo (ou terceiro) par de olhos tem muito mais facilidade para identificar falhas lógicas, variáveis esquecidas ou problemas de segurança que passaram despercebidos pelo autor original.
+- **Manutenção de Padrões:** Ajuda a garantir que todo o código do projeto siga o mesmo estilo e a mesma arquitetura, evitando que o repositório vire uma bagunça ("código espaguete").
+- **Economia de Tempo:** Corrigir um erro durante a fase de revisão é infinitamente mais rápido e barato do que consertar um bug depois que ele já está rodando em produção.
+
+### Benefícios para a equipe
+
+Além das vantagens técnicas, o Code Review transforma a cultura da equipe de desenvolvimento:
+
+- **Distribuição de Conhecimento:** Quando você lê o código de um colega, você aprende novas abordagens e funções. Ao mesmo tempo, o autor recebe dicas valiosas. Isso nivela o conhecimento técnico de todo o time.
+- **Responsabilidade Compartilhada:** Se um bug chega à produção, a responsabilidade não é apenas de quem escreveu o código, mas também de quem o revisou e aprovou. A qualidade se torna um esforço coletivo.
+- **Integração de Novos Membros:** Para desenvolvedores iniciantes, o Code Review é a melhor forma de entender as regras de negócio e os padrões do projeto de forma prática e supervisionada.
+- **Comunicação Mais Forte:** O processo de revisão, quando focado no código e não na pessoa, exercita a empatia, a argumentação técnica e a comunicação construtiva dentro do grupo.
+
+### Exemplo Prático: O que analisar em um Code Review?
+
+Imagine que um colega submeteu o seguinte trecho de código em Python em um Pull Request:
+
+``` python
+# Código original na PR
+def calc(v, t):
+    return v + (v * t)
+```
+#### Como agir na revisão?
+Em vez de focar apenas se o código funciona ou criticar as escolhas do autor, você deve avaliar a legibilidade e a manutenibilidade para o futuro do projeto. Um bom comentário de revisão seria:
+
+> "A lógica do cálculo está ótima! Como sugestão, o que acha de renomearmos a função e as variáveis para ficarem mais descritivas, como calcular_preco_final(valor_produto, taxa_imposto)? Assim fica muito mais fácil para outros desenvolvedores entenderem o contexto no futuro!"
+
+Este exemplo demonstra perfeitamente como o Code Review melhora o código e distribui boas práticas sem ofender o autor original.
 
 ### Como Ser um Bom Revisor
 Revisar código exige empatia e atenção aos detalhes.
@@ -199,30 +566,105 @@ O GitHub possui a funcionalidade "Add a suggestion" (Ctrl + G ou o ícone de doc
 
 ### Como Autor do PR
 
-Lidar com revisões faz parte do dia a dia da engenharia de software e exige maturidade.
-  
+Quando você abre um Pull Request, outras pessoas podem revisar sua contribuição e deixar comentários, sugestões ou pedidos de alteração. Isso é normal em projetos colaborativos e faz parte do processo de melhoria do conteúdo.
+
+O objetivo da revisão não é apontar erros de forma negativa mas ajudar para que o Pull Request fique mais claro, correto e útil para todos que vão ler a documentação.
+
+<!-- TODO: Como lidar com feedback -->
+
 #### Recebendo Feedback
 
-Mantenha uma atitude positiva. O revisor não está avaliando suas habilidades profissionais, mas sim garantindo a qualidade do produto final. Não leve apontamentos técnicos para o lado pessoal.
+Ao receber feedback, leia cada comentário com calma antes de responder. Muitas vezes, o revisor está tentando ajudar a melhorar uma explicação, corrigir um detalhe ou deixar o texto mais fácil de entender para iniciantes.
+
+A revisão deve ser vista como uma oportunidade de aprendizado. Mesmo que seja necessário fazer ajustes, isso não significa que sua contribuição está ruim. Significa apenas que ela pode ficar ainda melhor.
+
+Boas práticas ao receber feedback:
+
+- agradeça pelas sugestões;
+- responda com educação;
+- pergunte quando não entender algum comentário;
+- aceite ajustes que deixem o conteúdo mais claro;
+- mantenha o foco na melhoria do Pull Request.
+
+Exemplo de resposta adequada:
+
+```text
+Obrigado pela sugestão! Vou ajustar essa parte para deixar a explicação mais clara.
+```
+
+<!-- TODO: Atitude positiva, não defensiva -->
 
 #### Discutindo Construtivamente
 
-Se você discorda de um apontamento, argumente de forma técnica e respeitosa. Explique o motivo pelo qual você tomou aquela decisão de design. O Code Review é um diálogo.
+Nem sempre o autor do Pull Request vai concordar imediatamente com uma sugestão. Nesses casos, é importante conversar de forma respeitosa e explicar o motivo da sua escolha.
+
+Uma boa discussão deve focar no conteúdo, não na pessoa. Em vez de apenas recusar uma sugestão, tente explicar seu ponto de vista e abrir espaço para uma solução melhor.
+
+Exemplo de resposta construtiva:
+
+```text
+Entendi sua sugestão. Eu escrevi dessa forma para deixar o exemplo mais simples para iniciantes. Você acha melhor manter assim ou detalhar um pouco mais?
+```
+
+Evite respostas curtas ou defensivas, como:
+
+```text
+Não vou mudar.
+```
+
+ou:
+
+```text
+Está certo do meu jeito.
+```
+
+Esse tipo de resposta pode dificultar a colaboração. O ideal é manter um diálogo educado e buscar a melhor solução para o projeto.
+
+
+<!-- TODO: Quando discordar respeitosamente -->
 
 #### Fazendo Alterações
 Para atualizar um PR com as mudanças solicitadas pelo revisor, basta alterar o código localmente, commitar e fazer o push novamente na mesma branch:
 
+Quando uma revisão solicitar mudanças, faça os ajustes na mesma branch usada para abrir o Pull Request. Não é necessário criar outro Pull Request.
+
+Depois de editar o arquivo solicitado, use o Git para registrar e enviar as alterações novamente.
+
+Fluxo básico:
+
 ```bash
-# Faça as modificações nos arquivos
-git add .
-git commit -m "refactor: ajusta lógica conforme revisão de código"
-git push origin sua-branch
+# veja o que foi alterado
+git status
+
+# adicione o arquivo modificado
+git add docs/04-pull-requests-e-review.md
+
+# faça um novo commit
+git commit -m "docs: ajusta seção sobre code review"
+
+# envie para seu fork
+git push origin nome-da-sua-branch
 ```
+
+Depois do `git push`, o Pull Request será atualizado automaticamente no GitHub. Isso significa que o revisor verá as novas alterações no mesmo PR, sem que você precise abrir outro.
 
 #### Marcar Conversas como Resolvidas
 
-Quando você aplicar a correção pedida em um comentário, clique no botão "Resolve conversation" para ocultar a thread e mostrar ao revisor que aquele ponto foi tratado.
+Depois de corrigir um comentário da revisão, responda explicando o que foi alterado. Em seguida marque a conversa como resolvida no GitHub.
 
+Exemplo de resposta:
+
+```text
+Ajustei a explicação conforme sugerido e adicionei um exemplo prático.
+```
+
+Marcar conversas como resolvidas ajuda revisores e professores a acompanharem o que já foi corrigido e o que ainda precisa de atenção.
+
+#### Referência
+
+Para se aprofundar no fluxo de colaboração com Git e GitHub, consulte:
+
+- [Pro Git Book (PT-BR)](https://git-scm.com/book/pt-br/v2)
 ## Estados de um Pull Request
 
 Durante o seu ciclo de vida, um Pull Request passará por diferentes estados visíveis na plataforma:
@@ -255,39 +697,148 @@ O PR foi encerrado sem que o código fosse mesclado. Isso acontece se a feature 
 
 ### Tipos de Merge no GitHub
 
-O GitHub oferece três maneiras principais de concluir a integração de um PR:
 
-#### Merge Commit
+### Tipos de Merge no GitHub
 
-Cria um commit explícito de junção (Merge). Ele preserva exatamente a árvore de commits e o histórico de tudo o que foi feito na branch.
+Ao finalizar um Pull Request, o GitHub oferece três estratégias para integrar suas alterações à branch principal. Entender cada uma é essencial para manter um histórico limpo e colaborativo.
 
-- Vantagem: Histórico fiel à realidade.
+---
 
-- Desvantagem: Pode deixar a árvore do Git confusa e poluída.
-  
-#### Squash and Merge
+#### 1️.    Merge Commit (Merge tradicional)
 
-Pega todos os commits da sua branch do PR e os comprime em um único commit na branch principal.
+**O que faz:** Cria um novo commit de "merge" que une as duas branches, preservando todo o histórico individual de cada uma.
 
-- Vantagem: Mantém a main extremamente limpa, com apenas um commit por funcionalidade.
+**Diagrama:**
 
-- Desvantagem: O detalhamento granular de como o desenvolvedor chegou à solução é perdido.
+```
+main:     A---B---C---M
+                 \ /
+feature:          D---E
 
-#### Rebase and Merge
+```
 
-Reaplica cada um dos commits do PR diretamente no topo da branch de destino, de forma sequencial, sem criar um commit de merge.
+**Quando usar:**
+- Projetos open-source com múltiplos contribuidores
+- Quando é importante preservar o histórico completo de cada feature
+- Para rastrear exatamente quando e como uma feature foi integrada
 
-- Vantagem: Histórico linear, limpo e detalhado.
+**Comando equivalente no Git:**
+```bash
+git checkout main
+git merge --no-ff feature-branch
+```
 
-- Desvantagem: Exige que a equipe tenha mais proficiência em Git, pois resolver conflitos de rebase pode ser complexo.
+**Vantagens:**
+- Histórico completo e auditável
+- Fácil de reverter se necessário
+- Mostra claramente o contexto da feature
 
-### Quando Usar Cada Tipo
+**Desvantagens:**
+- Histórico pode ficar "poluído" com muitos merges
+- Mais commits para navegar em projetos grandes
 
-- Squash: Ideal para branches de funcionalidades longas e com commits de correção rápida (ex: wip, arrumando typo).
+---
 
-- Merge Commit: Ideal para repositórios onde a rastreabilidade absoluta de cada etapa de desenvolvimento é exigida.
+#### 2️.   Squash and Merge (Compactar e mesclar)
 
-- Rebase: Ideal para equipes pequenas e experientes que valorizam um histórico linear perfeito.
+**O que faz:** Combina **todos os commits** da sua branch em **um único commit** antes de integrar à main.
+
+**Diagrama:**
+```
+main:     A---B---C---[D+E+F]
+                 \
+feature:          D---E---F
+```
+
+**Quando usar:**
+- Features pequenas com muitos commits de "WIP" ou correções
+- Quando o histórico detalhado da feature não é relevante
+- Para manter a branch main limpa e linear
+
+**Comando equivalente no Git:**
+```bash
+git checkout main
+git merge --squash feature-branch
+git commit -m "feat: adiciona funcionalidade X completa"
+```
+
+**Vantagens:**
+- Histórico da main limpo e objetivo
+- Cada feature = 1 commit na main
+- Ideal para deploy e changelogs
+
+**Desvantagens:**
+- Perde-se o histórico detalhado da feature
+- Pode dificultar debugging se algo der errado
+- Autores originais dos commits podem ser perdidos (configurável)
+
+---
+
+#### 3️.   Rebase and Merge (Rebase e mesclar)
+
+**O que faz:** "Reescreve" os commits da sua branch como se tivessem sido feitos **em cima da main mais recente**, criando um histórico linear.
+
+**Diagrama:**
+```
+main:     A---B---C---D'---E'---F'
+                 \
+feature:          D---E---F  (antes do rebase)
+```
+
+**Quando usar:**
+- Quando se deseja um histórico completamente linear
+- Para projetos que seguem filosofia "one branch, one commit"
+- Em equipes que preferem `git pull --rebase`
+
+**Comando equivalente no Git:**
+```bash
+git checkout feature-branch
+git rebase main
+git checkout main
+git merge feature-branch  # fast-forward merge
+```
+
+**Vantagens:**
+- Histórico linear e fácil de ler
+- Sem commits de merge extras
+- Ideal para `git bisect` e debugging
+
+**Desvantagens:**
+- Reescreve o histórico (cuidado com branches compartilhadas!)
+- Pode causar conflitos complexos durante o rebase
+- Não recomendado para branches públicas
+
+---
+
+#### Tabela de Decisão: Qual Merge Usar?
+
+#### Tabela de Decisão: Qual Merge Usar?
+
+| Cenário | Merge Commit | Squash | Rebase |
+|---------|-------------|--------|--------|
+| Feature grande com múltiplos desenvolvedores | Recomendado | Não recomendado | Com cautela |
+| Correção rápida de bug | Não recomendado | Recomendado | Recomendado |
+| Histórico detalhado é importante | Recomendado | Não recomendado | Com cautela |
+| Main deve ter histórico linear | Não recomendado | Recomendado | Recomendado |
+| Branch pública/compartilhada | Recomendado | Com cautela | Não recomendado |
+| Preparando release/changelog | Não recomendado | Recomendado | Recomendado |
+
+**Legenda:**
+- **Recomendado**: Estratégia ideal para o cenário.
+- **Não recomendado**: Evite usar nesta situação.
+- **Com cautela**: Pode ser usado, mas exige atenção a detalhes específicos.
+
+
+> **Dica**: Na dúvida, comece com **Squash and Merge** para features pequenas e **Merge Commit** para features complexas. Evite Rebase em branches que outras pessoas estão usando.
+
+---
+
+#### Cuidados Importantes
+
+1. **Nunca faça rebase em branches públicas** que outras pessoas estão usando — isso reescreve o histórico e quebra o trabalho alheio.
+2. **Comunique sua equipe** sobre a estratégia de merge adotada no projeto.
+3. **Teste sempre** após o merge, especialmente ao usar rebase.
+4. **Use mensagens de commit claras** — elas são ainda mais importantes no squash!
 
 ## Conflitos em Pull Requests
 
@@ -477,7 +1028,7 @@ Fazer alterações locais baseadas nos feedbacks, mas dar "push" ignorando as th
 ## Workflow Diagram
 
 Fluxograma básico de um Pull Request:
-
+```
 Local                   Remoto (GitHub)
   
 [ main ]                  [ main ]
@@ -490,6 +1041,7 @@ Local                   Remoto (GitHub)
    |                         |
    +------------------> (6. Open PR)
       (5. Push)
+```
 
 ## Recursos Adicionais
 
@@ -506,7 +1058,105 @@ Para aprofundar seu conhecimento na gestão do repositório, consulte estes link
 
 Pull Requests e revisões de código são habilidades interpessoais e técnicas tão cruciais quanto o próprio ato de programar. Eles garantem a saúde do sistema, distribuem conhecimento, uniformizam padrões e criam um ambiente cooperativo. Ao dominar PRs pequenos, bem documentados e a arte de um feedback construtivo, você se torna um profissional pronto para atuar em times de engenharia de ponta.
 
+
+# Revisão de Código: Como ser um bom revisor
+
+A revisão de código (code review) é uma etapa essencial para manter a qualidade e consistência de qualquer projeto colaborativo. Mais do que apontar erros, é uma oportunidade de ensinar, aprender e melhorar o código em equipe.
+
+## Antes de começar: mentalidade
+
+- **A revisão é sobre o código, não sobre a pessoa.** Critique a implementação, não o autor.
+- **Não leve para o lado pessoal.** Você e o revisor estão no mesmo time. Um código revisado em 10 minutos foi escrito em horas. Tenha humildade para ouvir.
+- **Faça elogios.** Se algo ficou bom, diga! Isso incentiva os contribuidores.
+- **Existem várias soluções para o mesmo problema.** Distinga entre boas práticas e gosto pessoal.
+
+Fonte: [Dev.to](https://dev.to/christiantld/boas-praticas-de-code-review-para-bons-programadores-3999)[reference:0]
+
+## O que revisar?
+
+Use um checklist mental. Alguns pontos importantes:
+
+- ✅ **Propósito:** Entendo o que o código faz? Ele cumpre o que a issue/PR descreve?
+- ✅ **Lógica:** Existem bugs óbvios? Casos extremos (edge cases) foram tratados?
+- ✅ **Segurança:** Validação de entrada? Risco de injeção SQL, XSS, etc.?
+- ✅ **Performance:** Loops desnecessários? Consultas repetidas (N+1)?
+- ✅ **Manutenibilidade:** Nomes de variáveis são claros? Funções fazem uma coisa só? Código complexo tem comentários?
+
+Fonte: Google Engineering Practices[reference:1]
+
+## Como dar feedback
+
+### ✨ Escreva comentários objetivos e construtivos
+
+Prefira frases como "Eu sugiro que..." em vez de acusações diretas.
+
+- ❌ Evite: "Você está fazendo errado."
+- ✅ Prefira: "O código faz X, mas talvez seja melhor Y porque Z."
+
+### 🔍 Faça perguntas
+
+Se algo não ficou claro, pergunte. Isso abre diálogo em vez de gerar conflito.
+
+- Exemplo: "Não entendi por que essa validação foi feita aqui. Você pode explicar?"
+
+### 📏 Use comentários em linha
+
+No GitHub, você pode clicar no número de uma linha nos arquivos alterados ("Files changed") e deixar um comentário bem específico. Se quiser sugerir uma correção, use o botão `+/-` de "suggestion".
+
+### 📦 Priorize o feedback
+
+Separe o que é crítico (correção obrigatória) do que é sugestão de estilo.
+
+- Exemplo de sugestão não bloqueante: *"[nit] Considere trocar esta variável de 'x' para 'userCount' para ficar mais claro. Não é impeditivo."*
+
+Fonte: Code Review Excellence Playbook[reference:2]
+
+## Como finalizar uma revisão no GitHub
+
+Depois de comentar todas as linhas e sugerir mudanças, clique no botão **"Review changes"** (perto do canto superior direito). Você verá três opções:
+
+| Opção            | Quando usar                                                                  |
+| ---------------- | ---------------------------------------------------------------------------- |
+| **Comment**      | Feedback geral sem aprovação. Útil se você pretende fechar o PR após revisar.|
+| **Approve**      | O código está bom e pode ser mesclado (merge).                               |
+| **Request changes** | Há problemas que precisam ser corrigidos antes do merge.                  |
+
+Sempre agradeça ao contribuidor pelo esforço! Um simples "obrigado" faz muita diferença, especialmente para novos colaboradores.
+
+Fonte: GitHub Docs[reference:3] e Carpentries GitHub Skills[reference:4]
+
+## Dicas bônus
+
+- **Limite o tamanho do PR:** Até 400 linhas por revisão. PRs muito grandes são cansativos e menos revisados.
+- **Revisão não é formatação:** Use linters para isso. Foque em lógica e segurança.
+- **Teste localmente se possível:** Para mudanças complexas, baixe o branch e teste na sua máquina.
+- **Use o checklist do projeto** se houver um.
+
+Fonte: Code Review Best Practices[reference:5]
+
+---
+
+## 💡 Boas práticas em um piscar de olhos
+
+| Faça ✅                                 | Evite ❌                                   |
+| --------------------------------------- | ------------------------------------------ |
+| Critique o código, não a pessoa         | "Você fez isso errado"                     |
+| Pergunte ("você considerou X?")         | Exija mudanças sem explicação              |
+| Elogie partes boas                      | Foque só nos problemas                     |
+| Seja específico e sugira melhorias      | Use sarcasmo ou hipérbole ("sempre", "nunca") |
+| Forneça referências                     | Faça comentários vagos                     |
+
+---
+
+## 📚 Referências
+
+- [Boas práticas de Code Review (Dev.to)](https://dev.to/christiantld/boas-praticas-de-code-review-para-bons-programadores-3999)
+- [Google Engineering Practices – Code Review](https://google.github.io/eng-practices/review/)
+- [GitHub Docs: About pull request reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews)
+- [Luizalabs – Guia de boas práticas para revisão de código](https://github.com/luizalabs/dev-guide/blob/master/code-review/README.md)
+- [A practical guide for better, faster code reviews (GitHub)](https://github.com/mawrkus/pull-request-review-guide)
+
 ## 👥 Contribuidores
 
 - [@marcos-vinicius](https://github.com/MarcosvvMarques) 
-
+- [@cristianomendes3](https://github.com/cristianomendes3)

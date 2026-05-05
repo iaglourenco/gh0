@@ -270,13 +270,22 @@ Branches como `main`, `develop` ou `release` são perenes. Elas servem como pila
 
 ### O que É
 
-Um arquivo de texto na raiz do seu projeto chamado `.gitignore`. Ele diz ao Git explicitamente quais arquivos e pastas **não devem ser rastreados** e, portanto, nunca devem ser enviados para o repositório remoto.
+O `.gitignore` é um arquivo de configuração do Git que lista padrões de arquivos e diretórios que devem ser **ignorados pelo controle de versão**. Qualquer arquivo ou pasta que corresponda a um padrão listado não será rastreado pelo Git, ou seja, não aparecerá como modificação e não poderá ser commitado acidentalmente.
+
+---
 
 ### Por que Usar
 
-- Impedir o vazamento de senhas e credenciais.
-- Economizar espaço e tempo ignorando pastas gigantes geradas automaticamente (como `node_modules` ou pastas de `build`).
-- Evitar poluir o projeto de outras pessoas com arquivos temporários do seu sistema operacional ou editor de código.
+Nem tudo que existe no seu projeto deve ir para o repositório. Os principais motivos para ignorar arquivos são:
+
+- **Secrets e credenciais**: arquivos como `.env`, `*.key` e `credentials.json` contêm senhas, tokens e chaves de API que não devem ser expostos publicamente.
+- **Dependências**: pastas como `node_modules/` e `venv/` são instaladas localmente e podem ser recriadas a qualquer momento — commitá-las aumenta o repositório sem necessidade.
+- **Binários e builds**: arquivos gerados (como `dist/`, `build/`, `*.exe`) são produtos do código-fonte e não precisam ser versionados.
+- **Arquivos de sistema e IDEs**: `.DS_Store`, `Thumbs.db`, `.vscode/`, `.idea/` são específicos do ambiente do desenvolvedor e não fazem parte do projeto em si.
+
+> **Regra de ouro**: se um arquivo pode ser gerado, instalado ou contém informação sensível, ele provavelmente não deveria estar no repositório.
+
+---
 
 ### Exemplos Comuns
 
@@ -308,18 +317,47 @@ credentials.json
 *.swp
 ```
 
+### Globbing Patterns
+
+O `.gitignore` usa **glob patterns** para definir quais arquivos ignorar:
+
+| Padrão | O que ignora |
+|---|---|
+| `*.log` | Todos os arquivos com extensão `.log` |
+| `build/` | O diretório `build` e todo seu conteúdo |
+| `!important.log` | **Exceção**: não ignora este arquivo específico |
+| `**/temp` | Diretório `temp` em qualquer nível da árvore |
+| `doc/*.txt` | Arquivos `.txt` diretamente dentro de `doc/` |
+
+> **Ordem importa**: coloque padrões mais **específicos antes dos mais genéricos**. Uma regra de exceção (`!`) só funciona se vier depois da regra que ignora o padrão.
+
+---
+
 ### Templates
 
-Nunca perca tempo escrevendo um `.gitignore` do zero. Use sites como o [gitignore.io](https://www.toptal.com/developers/gitignore) ou os templates oficiais oferecidos pelo próprio GitHub na criação do repositório.
+Não precisa escrever tudo do zero. O site **[gitignore.io](https://www.toptal.com/developers/gitignore)** gera automaticamente um `.gitignore` completo baseado na linguagem, framework ou ferramenta que você está usando.
+
+Exemplos de templates disponíveis: `Python`, `Node`, `Java`, `React`, `Django`, `Unity`, entre muitos outros.
+
+---
 
 ### Arquivo já Commitado
 
-Se você cometeu o erro de adicionar um arquivo e só depois colocá-lo no `.gitignore`, o Git continuará rastreando as mudanças dele. Para forçar o Git a "esquecer" o arquivo sem apagá-lo do seu computador:
+Se você acidentalmente já commitou um arquivo que deveria ser ignorado, apenas adicionar o padrão ao `.gitignore` **não resolve** — o Git continua rastreando o arquivo. Para removê-lo do rastreamento sem deletar do disco:
 
 ```bash
-git rm --cached nome-do-arquivo.txt
-git commit -m "chore: remove arquivo do rastreamento e adiciona ao gitignore"
+git rm --cached <nome-do-arquivo>
 ```
+
+Para remover um diretório inteiro:
+
+```bash
+git rm -r --cached <nome-do-diretório>/
+```
+
+Depois, adicione o padrão ao `.gitignore`, faça o commit da remoção e o arquivo deixará de ser rastreado.
+
+> ⚠️ **Atenção**: se o arquivo continha dados sensíveis (como senhas), considere rotacionar as credenciais, pois o histórico do Git ainda o conterá.
 
 ## README.md
 
@@ -893,7 +931,7 @@ Se a linha de comando assustar ou não for produtiva para você em tarefas visua
 ---
 
 ## 👥 Contribuidores
-
+-  [@ffogacalemos](https://github.com/ffogacalemos) - Seção boas práticas: .gitignor
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
 <!-- Adicione seu nome quando contribuir: -->
 - [@ASCCJR](https://github.com/ASCCJR) - Seção Segurança

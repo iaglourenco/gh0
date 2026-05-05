@@ -1,7 +1,7 @@
 name: 🏷️ Auto-Label em Pull Requests
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
 permissions:
@@ -12,9 +12,6 @@ jobs:
   label:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Aplicar labels baseado em arquivos modificados
         uses: actions/labeler@v5
         with:

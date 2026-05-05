@@ -101,6 +101,8 @@ Recentemente, a comunidade Git mudou de **master** para **main** como nome padr�
 
 ### Listar Branches
 
+Para ver quais branches existem no seu repositório local:
+
 ```bash
 # Listar branches locais
 git branch
@@ -119,6 +121,8 @@ git branch --no-merged
 ```
 
 ### Criar uma Nova Branch
+
+Para criar uma ramificação a partir do ponto atual onde você está:
 
 ```bash
 # Criar uma nova branch (sem trocar para ela)
@@ -149,6 +153,8 @@ Use nomes descritivos e consistentes para suas branches:
 
 ### Trocar de Branch
 
+Para navegar entre as linhas do tempo (branches):
+
 ```bash
 # Trocar para uma branch existente
 git checkout <nome-da-branch>
@@ -164,6 +170,8 @@ git switch feature/login
 > **Nota:** O `git switch` é recomendado pois é mais específico que `git checkout` (que também serve para outras coisas).
 
 ### Criar e Trocar em Um Comando
+
+Na prática, quase sempre que criamos uma branch, queremos ir imediatamente para ela. Existem atalhos para isso:
 
 ```bash
 # Criar e trocar para nova branch em um comando
@@ -239,18 +247,20 @@ git stash pop
 
 ## Merge: Unindo Branches
 
-<!-- TODO: Conceito de merge -->
-
 ### O que é Merge?
 
-<!-- TODO: Integrar mudanças de uma branch em outra -->
+Merge é a operação de pegar as mudanças desenvolvidas em uma branch separada (ex: `feature`) e aplicá-las em outra branch (ex: `main`). É como dizer: "Ok, o código do universo paralelo está pronto, agora vamos trazê-lo para a realidade principal".
 
 ### Sintaxe Básica
 
+Para fazer um merge, você **sempre deve estar na branch de destino** (a branch que vai receber as mudanças).
+
 ```bash
-# TODO: Como fazer merge
-# git merge <nome-da-branch>
-# Primeiro checkout para branch destino, depois merge
+# 1. Troque para a branch que vai receber as alterações
+git switch main
+
+# 2. Execute o merge trazendo a branch desejada
+git merge <nome-da-branch-feature>
 ```
 
 ### Assinatura de Commits de Merge (GPG Sign)
@@ -263,11 +273,18 @@ git merge -S feature/nova-funcionalidade
 ### Exemplo de Merge
 
 ```bash
-# TODO: Exemplo completo
-# 1. Criar feature branch
-# 2. Fazer commits
-# 3. Voltar para main
-# 4. Fazer merge
+# Criar e ir para nova branch
+git switch -c feature/nova-tela
+
+# ... faço edições no código ...
+git add .
+git commit -m "feat: adiciona nova tela de perfil"
+
+# Volto para a branch principal
+git switch main
+
+# Incorporo a nova funcionalidade à main
+git merge feature/nova-tela
 ```
 
 ## Tipos de Merge
@@ -278,14 +295,20 @@ git merge -S feature/nova-funcionalidade
 
 <!-- Quando acontece: quando não há commits divergentes -->
 
-```
-Antes:
-main:    A---B
-              \
-feature:       C---D
+### Fast-Forward Merge
 
-Depois (fast-forward):
-main:    A---B---C---D
+Acontece quando a branch de destino (`main`) **não teve nenhum commit novo** desde que a branch de `feature` foi criada. Como o caminho é direto, o Git simplesmente move o ponteiro da `main` "para frente" (fast-forward) até o commit mais recente da `feature`.
+
+```mermaid
+gitGraph
+   commit id: "A"
+   commit id: "B"
+   branch feature
+   checkout feature
+   commit id: "C"
+   commit id: "D"
+   checkout main
+   merge feature type: FAST_FORWARD
 ```
 
 ### Three-Way Merge
@@ -313,6 +336,8 @@ feature:       D---E
 <!-- Tem dois parents -->
 
 ## Estratégias de Merge
+
+Na linha de comando, podemos forçar o comportamento do merge através de opções (flags):
 
 ### --ff (Fast-Forward)
 
@@ -344,19 +369,11 @@ git merge --no-ff feature/login
 
 ### --squash
 
-A estratégia squash pega as alterações de todos os commits da branch que você está mesclando e as comprime em um único pacote de modificações, colocando-as diretamente na sua área de preparação (staging area). O Git não cria o commit automaticamente. É ideal para quando sua branch tem dezenas de commits pequenos ("wip", "corrige erro", "teste") e você quer levar tudo para a branch principal como uma única e coesa alteração.
-
-<!-- TODO: Comprimir commits -->
+O `squash` pega todos os commits da branch de `feature` e os comprime em uma única alteração no Working Directory, sem comitá-los automaticamente. Você então faz um único commit na branch principal com todas as novidades agregadas.
 
 ```bash
-# 1. Traz todas as mudanças da branch comprimidas para o staging
-git merge --squash feature/login
-
-# 2. Opcional: Verifique o status para confirmar as mudanças agrupadas
-git status
-
-# 3. Finalize criando um único commit (idealmente usando Conventional Commits)
-git commit -m "feat: implementa fluxo completo de login"
+git merge --squash feature-nome
+git commit -m "feat: pacote de funcionalidades finalizado"
 ```
 
 ### Squash vs Merge Commit: Quando usar?
@@ -413,45 +430,48 @@ git push origin --delete feature/nova-funcionalidade
 
 ## Visualizando o Grafo
 
+O terminal pode desenhar o histórico das branches e seus merges de forma bastante ilustrativa:
+
 ```bash
-# TODO: Ver histórico de branches
-# git log --graph --oneline --all
+git log --graph --oneline --all
 ```
 
 ## Branch Tracking
 
-<!-- TODO: Conceito de tracking branches -->
-
 ### Upstream Branch
 
-<!-- TODO: O que é upstream -->
+Quando você envia uma branch local para o GitHub pela primeira vez, o Git precisa saber qual é a branch "gêmea" dela lá no servidor. Esse link é chamado de configuração de *upstream*.
 
 ```bash
-# TODO: Configurar upstream
-# git branch -u origin/<branch>
-# git push -u origin <branch>
+# Ao fazer push pela primeira vez, cria a branch no remoto e vincula as duas
+git push -u origin <nome-da-branch>
+
+# A partir daí, basta digitar:
+git push
 ```
 
 ## Exemplos Práticos
 
 ### Exemplo 1: Feature Branch Workflow
 
-<!-- TODO: Fluxo completo de desenvolvimento de feature -->
-
 ```bash
-# 1. Criar branch
-# 2. Desenvolver feature
-# 3. Fazer merge
-# 4. Deletar branch
+# Atualiza localmente
+git pull origin main
+
+# Cria a nova branch
+git switch -c feature/dark-mode
+
+# Trabalha...
+git add .
+git commit -m "feat: adiciona tema escuro"
+
+# Retorna e integra
+git switch main
+git merge feature/dark-mode
+
+# Limpa a casa
+git branch -d feature/dark-mode
 ```
-
-### Exemplo 2: Merge de Múltiplas Features
-
-<!-- TODO: Cenário com várias branches -->
-
-### Exemplo 3: Desfazendo um Merge
-
-<!-- TODO: Como reverter merge (git reset, git revert) -->
 
 ## Conventional Commits
 
@@ -466,13 +486,18 @@ O padrão **Conventional Commits** é uma convenção simples para formatar as m
 
 ## Boas Práticas
 
-<!-- TODO: Lista de boas práticas com branches -->
+```bash
+# Remove o último commit (o do merge indesejado) da branch atual
+git reset --hard HEAD~1
+```
 
-- <!-- Manter branches pequenas e focadas -->
-- <!-- Commits frequentes -->
-- <!-- Merge regularmente da main -->
-- <!-- Deletar branches após merge -->
-- <!-- Nomear branches descritivamente -->
+## Boas Práticas
+
+- **Mantenha branches pequenas:** Elas devem durar pouco tempo, de preferência dias, não meses.
+- **Commits frequentes:** Salve o progresso regularmente.
+- **Merge com frequência:** Traga mudanças da `main` para a sua branch (`git merge main`) frequentemente para evitar um acúmulo gigante de alterações conflitantes no final.
+- **Delete após usar:** Fez o merge, apague a branch.
+- **Não comite na main:** Em times profissionais, o fluxo natural é sempre criar branch, aprovar e mergiar.
 
 ## Boas Práticas e Integração Contínua (CI/CD)
 
@@ -529,66 +554,75 @@ O **Trunk-Based Development** é um modelo focado em integração contínua extr
 
 ### O que São
 
-<!-- TODO: Quando ocorrem -->
-
-### Exemplo Simples
-
-<!-- TODO: Exemplo básico de conflito e resolução rápida -->
+Conflitos são apenas o Git pedindo a intervenção humana para escolher qual código deve prevalecer. O Git insere marcações visuais (`<<<<<<<`, `=======`, `>>>>>>>`) no código conflitante para que você leia, decida, edite o arquivo apagando os marcadores e depois faça um commit para concluir o merge. (Esse processo é detalhado no Capítulo 06).
 
 ## git stash
 
-<!-- TODO: Salvando mudanças temporariamente -->
+Se você estiver no meio de um trabalho confuso e precisar trocar de branch urgentemente para arrumar um bug rápido na `main`, você pode usar a "gaveta" do Git: o `stash`.
 
 ### Quando Usar Stash
 
-<!-- TODO: Cenários de uso -->
+O comando `stash` pega todas as suas alterações não comitadas e as guarda temporariamente, limpando seu diretório. Assim, você pode trocar de branch livremente. Quando voltar, você as retira da gaveta.
 
 ```bash
-# TODO: Comandos stash básicos
-# git stash
-# git stash pop
-# git stash list
+# Guarda mudanças temporariamente na gaveta
+git stash
+
+# Tira a última coisa guardada da gaveta e aplica nos arquivos
+git stash pop
+
+# Vê o que tem guardado
+git stash list
 ```
 
 ## Comparando Branches
 
+Para ver o que tem de diferente no código da sua branch em relação à `main` antes do merge:
+
 ```bash
-# TODO: Como ver diferenças entre branches
-# git diff <branch1>..<branch2>
+# Mostra o código diferente (diff) entre duas branches
+git diff main..minha-branch
 ```
 
 ## Erros Comuns
 
 ### Erro 1: Merge na Branch Errada
 
-<!-- TODO: Como evitar e como reverter -->
+Você queria fundir na `main`, mas sem perceber estava na branch `teste` e fez o merge nela.
+**Solução:** Use o `git status` ou olhe a indicação no seu terminal para sempre ter certeza de qual branch está (`git switch`) antes de invocar o `git merge`. Se errar, pode ser revertido via `git reset`.
 
 ### Erro 2: Deletar Branch Sem Merge
 
-<!-- TODO: Perda de trabalho, recuperação -->
+Tentar apagar uma branch com código não finalizado usando `git branch -D` (forçado).
+**Solução:** Sempre tente usar `-d` (minúsculo), o Git só permitirá deletar se tiver certeza de que as alterações já estão salvas na branch principal.
 
 ### Erro 3: Não Atualizar a Main Antes de Criar Branch
 
-<!-- TODO: Por que isso causa problemas -->
+Criar uma branch a partir de uma `main` antiga na sua máquina, resultando em dezenas de conflitos na hora de integrar meses depois.
+**Solução:** Sempre rode `git pull origin main` e certifique-se de ter os arquivos atualizados antes de dar o `git switch -c`.
 
 ## Exercícios
 
-<!-- TODO: Exercícios práticos -->
+1. Crie uma nova branch chamada `docs/primeiro-teste` e troque para ela.
+2. Adicione ou altere um arquivo. Faça o `git add` e o `git commit`.
+3. Volte para a branch principal (`git switch main`). Observe que as suas alterações "sumiram" dos arquivos!
+4. Realize a união usando `git merge docs/primeiro-teste` para que a `main` incorpore as mudanças.
+5. Delete a branch usando `git branch -d docs/primeiro-teste`.
 
-1. <!-- Criar branch, fazer commits, fazer merge -->
-2. <!-- Experimentar fast-forward vs three-way merge -->
-3. <!-- Visualizar grafo de branches -->
-4. <!-- Deletar branches após merge -->
+## Tabela de Referência
 
-## Diagrama de Workflow
-
-<!-- TODO: Diagrama visual do fluxo de trabalho com branches -->
+| Comando | Descrição |
+| --- | --- |
+| `git branch` | Lista as branches locais. |
+| `git switch <branch>` | Troca para a branch especificada. |
+| `git switch -c <branch>` | Cria uma nova branch e já troca para ela. |
+| `git merge <branch>` | Junta a branch informada para dentro da branch atual. |
+| `git branch -d <branch>` | Deleta a branch local (se já tiver sido mergiada). |
+| `git stash` | Guarda alterações não comitadas temporariamente na gaveta. |
 
 ## Recursos Adicionais
 
-<!-- TODO: Links sobre branching e merging -->
-
-- [Learn Git Branching](https://learngitbranching.js.org/)
+- [Learn Git Branching (Game interativo incrível!)](https://learngitbranching.js.org/)
 - [Atlassian Git Branching Tutorial](https://www.atlassian.com/git/tutorials/using-branches)
 - [Fluxo de Trabalho Gitflow (Atlassian)](https://www.atlassian.com/br/git/tutorials/comparing-workflows/gitflow-workflow)
 - [GitHub Flow (Documentação Oficial)](https://docs.github.com/pt/get-started/using-github/github-flow)
@@ -596,7 +630,11 @@ O **Trunk-Based Development** é um modelo focado em integração contínua extr
 
 ## Resumo
 
-<!-- TODO: Pontos principais sobre branches e merge -->
+- **Branches** são universos paralelos de desenvolvimento que isolam as alterações.
+- Use **`git switch`** para viajar entre esses universos.
+- Use **`git merge`** a partir da branch de destino (ex: `main`) para fundir as alterações de outra branch.
+- Sempre tente atualizar sua branch local antes de criar novos trabalhos paralelos para evitar dores de cabeça no futuro.
+- Acostume-se a **deletar** as branches após os merges para manter a organização do time.
 
 ---
 

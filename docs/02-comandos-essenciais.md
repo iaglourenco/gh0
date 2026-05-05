@@ -4,26 +4,22 @@ Este arquivo documenta os comandos Git fundamentais que todo desenvolvedor deve 
 
 ## 📋 Objetivos de Aprendizagem
 
-<!-- Liste aqui os objetivos de aprendizagem deste capítulo -->
-<!-- Ao final, o aluno deve saber usar os comandos básicos do Git -->
 Ao final deste capítulo, você será capaz de:
-- Iniciar repositórios do zero ou clonar projetos existentes.
-- Dominar o ciclo de vida dos arquivos através da Staging Area.
-- Criar registros históricos significativos utilizando commits atômicos.
-- Inspecionar alterações e navegar pelo histórico de desenvolvimento com precisão.
-
-<!-- TODO: Adicione 3-5 objetivos de aprendizagem -->
+- Inicializar novos repositórios e clonar projetos existentes.
+- Utilizar o ciclo básico de salvamento no Git (add, commit, status).
+- Visualizar o histórico e as diferenças entre as alterações realizadas.
+- Desfazer pequenas mudanças e compreender os estados dos arquivos no Git.
 
 ## 🎯 Introdução
 
-<!-- Introdução sobre comandos Git e sua importância -->
-<!-- Por que aprender linha de comando? -->
-Dominar a linha de comando (CLI) é o que diferencia o desenvolvedor de alta performance do usuário casual. Na área de IA, onde frequentemente operamos em servidores remotos (via SSH) ou em instâncias na nuvem para treinar modelos, a interface gráfica nem sempre está disponível. A CLI é mais rápida, permite automação e oferece controle total sobre as operações do Git.
+A linha de comando (ou terminal) é a interface principal e mais poderosa para interagir com o Git. Embora existam diversas interfaces gráficas, aprender os comandos fundamentais ajuda a entender como o Git realmente funciona por baixo dos panos, facilitando a resolução de problemas e dando mais flexibilidade e velocidade ao seu fluxo de trabalho de desenvolvimento.
 
 ## Estrutura dos Comandos Git
 
-<!-- TODO: Explique a estrutura geral dos comandos Git -->
-<!-- Formato: git <comando> <opções> <argumentos> -->
+A estrutura geral da maioria dos comandos Git segue o seguinte padrão:
+`git <comando> <opções> <argumentos>`
+
+Por exemplo, no comando `git commit -m "mensagem"`, `commit` é o comando, `-m` é uma opção (flag) e `"mensagem"` é o argumento dessa opção.
 
 A sintaxe do Git segue um padrão lógico:
 git <comando> <opções> <argumentos>
@@ -34,18 +30,21 @@ git <comando> <opções> <argumentos>
 
 ###  Obtendo Ajuda
 
-<!-- TODO: Como obter ajuda sobre comandos Git -->
+Se você esquecer o que um comando faz ou quais opções ele aceita, o próprio Git possui manuais integrados muito detalhados:
 
 ```bash
-# Comandos para obter ajuda
-git help commit       # Abre o manual completo no navegador
-git commit --help     # Abre o manual no terminal
+# Mostra uma ajuda rápida sobre um comando específico no terminal
+git <comando> -h
+git add -h
+
+# Abre o manual completo (geralmente no navegador ou paginador) sobre o comando
+git help <comando>
+git help commit
 ```
 
 ## git init
 
-<!-- TODO: Explique o comando git init -->
-O comando git init transforma um diretório comum em um repositório Git.
+O comando `git init` é usado para criar um novo repositório Git em branco ou para reinicializar um existente. Ele transforma um diretório normal (pasta do seu computador) em um repositório Git, permitindo que você comece a rastrear as alterações nele.
 
 ### Sintaxe
 
@@ -55,36 +54,39 @@ git init
 
 ### Quando Usar
 
-<!-- TODO: Cenários de uso -->
-Sempre que você iniciar um projeto novo localmente e quiser começar a versioná-lo.
+Você deve usar o `git init` quando estiver começando um projeto do zero na sua máquina local e quiser colocá-lo sob controle de versão.
 
 ### Exemplo Prático
 
 ```bash
-# TODO: Exemplo completo de uso
-# 1. Criar pasta
-# 2. Executar git init
-# 3. Verificar resultado
-mkdir meu-projeto-ia
-cd meu-projeto-ia
+# 1. Cria uma nova pasta para o projeto
+mkdir meu-novo-projeto
+
+# 2. Entra na pasta
+cd meu-novo-projeto
+
+# 3. Inicializa o repositório Git
 git init
-ls -a   # Você verá a pasta oculta .git criada
+
+# 4. Verifica o resultado
+ls -a # Você verá uma pasta oculta chamada .git
 ```
 
 ### O que Acontece
 
-<!-- TODO: O que git init faz no sistema de arquivos? -->
-<!-- Pasta .git criada, etc. -->
-O Git cria uma subpasta oculta chamada .git. Ela contém toda a estrutura do banco de dados do repositório, incluindo configurações, objetos de histórico e referências de branches. Nunca apague esta pasta, ou você perderá todo o histórico do projeto.
+Ao rodar `git init`, o Git cria uma pasta oculta chamada `.git` dentro do seu diretório atual. Essa pasta contém todos os metadados, banco de dados de objetos e configurações necessárias para o controle de versão. Seu diretório agora é o "Working Directory".
 
 ## git clone
 
-O comando `git clone` é usado para criar uma cópia local de um repositório remoto. Ele baixa todo o histórico do projeto (commits, branches e arquivos) e configura automaticamente a origem remota (normalmente chamada de `origin`). Ao executar `git clone`, você não apenas obtém os arquivos atuais, mas todo o histórico de versionamento, permitindo trabalhar plenamente com o repositório.
+O comando `git clone` é usado para copiar um repositório existente, geralmente de um servidor remoto (como o GitHub), para o seu computador local.
 
 ### Sintaxe
 
 ```bash
 git clone <url-do-repositorio>
+
+# Opcional: especificar um nome de pasta diferente
+git clone <url-do-repositorio> <nome-da-pasta>
 ```
 #### Variantes Comuns:
 
@@ -133,7 +135,11 @@ git clone https://github.com/usuario/repositorio.git
 ### Exemplo Prático
 
 ```bash
-git clone https://github.com/git/git.git
+# Clonar um repositório do GitHub
+git clone https://github.com/usuario/projeto-exemplo.git
+
+# Entrar na pasta do projeto clonado
+cd projeto-exemplo
 ```
 Isso irá:
 1. Criar uma pasta chamada `git` no diretório atual;
@@ -178,16 +184,17 @@ O comando `git add` é usado para selecionar quais arquivos modificados você qu
 ### Sintaxe
 
 ```bash
-# Adiciona um arquivo específico:
-git add nome-do-arquivo.txt
+# Adiciona um arquivo específico
+git add index.html
 
-# Adiciona todos os arquivos modificados e novos na pasta atual:
+# Adiciona vários arquivos
+git add arquivo1.txt arquivo2.txt
+
+# Adiciona todos os arquivos modificados e novos na pasta atual
 git add .
 
-# Adiciona TODAS as alterações no repositório inteiro (incluindo arquivos apagados):
+# Adiciona todos os arquivos do projeto (modificados, novos e deletados)
 git add -A
-# ou
-git add --all
 ```
 
 ### Staging Area
@@ -216,38 +223,43 @@ git restore --staged css/form.css
 
 ### Boas Práticas
 
-Evite usar `git add .` se você modificou muitas coisas diferentes que não têm relação entre si. Prefira adicionar os arquivos um a um (`git add <arquivo>`) ou em pequenos grupos para garantir que seus commits contem uma história lógica e bem dividida.
+Evite usar `git add .` às cegas. Sempre verifique quais arquivos foram modificados usando `git status` antes. Prefira adicionar arquivos individualmente ou por partes lógicas para garantir que seus commits tenham um único propósito bem definido.
 
 ## git status
 
-<!-- TODO: Explique git status -->
-O melhor amigo do desenvolvedor. Mostra o estado atual das três áreas do Git.
+O comando `git status` exibe o estado do diretório de trabalho e da área de preparação. É o comando mais importante e você deve usá-lo o tempo todo!
 
 ### O que Mostra
 
-<!-- TODO: Tipos de informação que git status exibe -->
-<!-- Arquivos modificados, staged, untracked, etc. -->
-- Arquivos Untracked (novos, que o Git ainda não conhece).
-- Arquivos Modified (alterados, mas não adicionados ao stage).
-- Arquivos Staged (prontos para o commit).
+Ele mostra:
+- Arquivos que não estão sendo rastreados (Untracked files).
+- Arquivos modificados que ainda não foram preparados (Changes not staged for commit).
+- Arquivos preparados e prontos para o commit (Changes to be committed).
+- Qual branch você está no momento.
 
 ### Exemplo de Saída
 
 ```bash
-On branch main                                      # Você está na branch principal (a oficial).
-Changes to be committed:                            # Arquivos que já estão na STAGING AREA.
-  (use "git restore --staged <file>..." to unstage) # Comando para remover do stage se desistir.
-        new file:   model.py                        # Este arquivo será gravado no próximo commit.
+$ git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   index.html
 
-Changes not staged for commit:                      # Arquivos no WORKING DIRECTORY (ainda não preparados).
-  (use "git add <file>..." to update what will be committed) # Sugestão: use 'add' para preparar.
-        modified:   README.md                       # O arquivo foi alterado, mas o Git ainda não o "empacotou".
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   style.css
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        script.js
 ```
+*Na saída acima: `index.html` está na staging area; `style.css` foi modificado, mas não está preparado; `script.js` é um arquivo novo que o Git não conhece.*
 
 ### Quando Usar
 
-<!-- TODO: Por que verificar status frequentemente -->
-Antes de cada git add (para ver o que mudou) e antes de cada git commit (para conferir o que está sendo gravado).
+Use **antes e depois** de comandos como `git add` e `git commit` para garantir que você não está fazendo nada errado. Se estiver na dúvida sobre o que fazer, rode `git status`.
 
 ## git commit
 
@@ -422,7 +434,17 @@ Exibe commits de todos os branches, não apenas o atual.
 
 **Mostrar referências (tags e branches):**
 ```bash
-git log --decorate
+# Mostra cada commit em apenas uma linha (Hash e Mensagem)
+git log --oneline
+
+# Mostra o histórico em forma de árvore/grafo (útil quando há múltiplas branches)
+git log --graph --oneline
+
+# Filtra commits de um autor específico
+git log --author="Antonio"
+
+# Filtra commits recentes
+git log --since="2 weeks ago"
 ```
 Indica onde estão as branches e tags no histórico.
 
@@ -521,30 +543,30 @@ Mostra a diferença textual entre estados dos arquivos.
 ### Tipos de Diff
 
 ```bash
-git diff             # O que eu mudei mas ainda não dei 'git add'
-git diff --staged    # O que está no 'stage' vs o último commit
+# Mostra as diferenças entre o Working Directory e a Staging Area
+# (O que você mudou, mas ainda não fez "git add")
+git diff
+
+# Mostra as diferenças entre a Staging Area e o último commit
+# (O que vai entrar no próximo commit)
+git diff --staged
+
+# Mostra a diferença entre as alterações totais não comitadas e o último commit
+git diff HEAD
+
+# Compara dois commits diferentes usando seus Hashes
+git diff <hash_antigo> <hash_novo>
 ```
 
 ### Lendo a Saída
 
-<!-- TODO: Como interpretar a saída do diff -->
-<!-- + verde = adicionado, - vermelho = removido -->
-- Linhas em vermelho (precedidas por -): Foram removidas.
-- Linhas em verde (precedidas por +): Foram adicionadas.
-
-### Exemplo Prático
-
-<!-- TODO: Exemplo de uso -->
-O diff compara o que foi escrito.
-- git diff: Compara o Working Directory com a Staging Area.
-- git diff --staged: Compara a Staging Area com o último commit.
-- git diff HEAD~1 HEAD: Compara o penúltimo commit com o último. Excelente para revisar métricas de treino entre versões.
+Na saída do diff:
+- Linhas que começam com `+` (geralmente verdes) indicam código adicionado.
+- Linhas que começam com `-` (geralmente vermelhas) indicam código removido.
 
 ## git restore
 
-O comando `git restore` foi introduzido no Git 2.23 (junto com o `git switch`) para separar as responsabilidades que antes ficavam sobrecarregadas no `git checkout`. Seu propósito principal é **desfazer mudanças** em arquivos, permitindo restaurá-los para estados anteriores, seja no diretório de trabalho (*working directory*) ou na área de preparação (*staging area*).
-
-Por padrão, `git restore <arquivo>` restaura o conteúdo do arquivo no diretório de trabalho a partir do **index/staging area**. Como o index normalmente reflete o `HEAD`, isso muitas vezes equivale à versão do último commit, mas não sempre. Para restaurar explicitamente a partir de um commit ou outro ponto do histórico, use `--source`.
+O `git restore` é um comando moderno introduzido em versões mais recentes do Git para desfazer alterações e remover arquivos da staging area de forma mais intuitiva que o antigo `git reset` e partes do `git checkout`.
 
 ### Desfazendo Mudanças
 
@@ -578,11 +600,12 @@ git restore --staged config.js
 Você também pode buscar a versão de um arquivo de um commit passado ou branch específica, em vez do último commit (HEAD):
 
 ```bash
-# Restaura o arquivo para a versão de um commit específico
-git restore --source=<hash-do-commit> <arquivo>
+# Desfaz as alterações de um arquivo no Working Directory (volta para o estado do último commit)
+# CUIDADO: Isso APAGA suas alterações não salvas definitivamente!
+git restore index.html
 
-# Exemplo prático: recuperando um arquivo de 3 commits atrás
-git restore --source=HEAD~3 estilos.css
+# Remove o arquivo da Staging Area (Unstage), mas MANTÉM as alterações no arquivo
+git restore --staged index.html
 ```
 
 ### Exemplo Prático: Recuperação de Arquivo Deletado
@@ -620,154 +643,170 @@ git rm: Remove o arquivo do disco e já prepara a deleção no Git.
 ### Removendo Arquivos
 
 ```bash
-rm arquivo.txt                     # Apaga apenas do disco. O Git ainda verá o arquivo como "deleted" mas não preparado.
-git rm arquivo.txt                 # Apaga do disco e já prepara a deleção para o commit.
+# Remove o arquivo e prepara a remoção
+git rm arquivo-obsoleto.txt
+git commit -m "chore: remove arquivo obsoleto"
 ```
+
+### Diferença de rm normal
+
+Se você usar o comando de terminal normal `rm arquivo.txt`, o arquivo some, mas o Git o registra como uma "Change not staged". Você teria que rodar `git add arquivo.txt` para preparar a remoção. O `git rm` faz os dois passos de uma vez.
 
 ## git mv
 
-<!-- TODO: Explique git mv -->
-git mv: Renomeia ou move um arquivo, mantendo o rastro do histórico.
+Usado para mover ou renomear arquivos.
 
 ### Renomeando/Movendo Arquivos
 
 ```bash
-git mv antigo_nome.py novo_nome.py #     Renomeia o arquivo e mantém o histórico vinculado ao novo nome.
+# Renomear um arquivo
+git mv nome-antigo.txt nome-novo.txt
+
+# Mover um arquivo para uma pasta
+git mv arquivo.txt pasta/arquivo.txt
 ```
+O Git reconhece automaticamente como uma alteração do tipo renomeação, deixando preparado (staged) para o commit.
 
 ## Fluxo de Trabalho Básico
 
-<!-- TODO: Diagrama ou descrição do fluxo -->
+O fluxo de trabalho clássico (e infinito) do desenvolvedor no Git é:
 
-```
-1. Modificar arquivos.
-2. git status (para conferir).
-3. git add <arquivos> (preparar).
-4. git commit -m "mensagem" (gravar).
+```mermaid
+sequenceDiagram
+    participant WD as Working Directory
+    participant SA as Staging Area
+    participant Repo as Repository
+    
+    WD->>SA: git add
+    SA->>Repo: git commit
+    Repo-->>WD: git restore
 ```
 
 ### Exemplo Completo
 
 ```bash
-# TODO: Exemplo de fluxo completo
-mkdir classificador-imagens
-cd classificador-imagens
-git init
-echo "print('Iniciando modelo')" > main.py
-git add main.py
-git commit -m "initial commit"
+git clone https://github.com/meu-usuario/projeto.git
+cd projeto
+# [Eu edito alguns arquivos de código]
+git status
+git add app.js index.html
+git commit -m "feat: adiciona lógica inicial do app"
+git log --oneline
 ```
 
 ## Comandos de Consulta
 
 ### git show
 
-<!-- TODO: Ver detalhes de um commit específico -->
-Mostra tudo o que mudou em um commit específico.
+Mostra o conteúdo detalhado, mensagens e as alterações de um commit específico.
+
+```bash
+# Ver os detalhes do último commit (HEAD)
+git show HEAD
+
+# Ver detalhes de um commit através de seu Hash
+git show a1b2c3d
+```
 
 ### git blame
 
-<!-- TODO: Ver quem modificou cada linha -->
-Mostra linha por linha quem foi o último a alterar o arquivo (essencial para depuração em equipe).
+Mostra quem modificou cada linha de um arquivo por último, exibindo o autor e o hash do commit. Ótimo para descobrir quem causou aquele bug ou tirar dúvidas com o autor do trecho de código.
+
+```bash
+git blame arquivo.txt
+```
 
 ## Exemplos Práticos
 
 ### Exemplo 1: Criando Primeiro Repositório
 
 ```bash
-mkdir classificador-imagens
-cd classificador-imagens
+mkdir novo-site
+cd novo-site
 git init
-echo "print('Iniciando modelo')" > main.py
-git add main.py
-git commit -m "initial commit"
+echo "# Meu Novo Site" > README.md
+git status
+git add README.md
+git commit -m "docs: cria o README inicial"
+git log --oneline
 ```
 
 ### Exemplo 2: Clonando e Contribuindo
 
-<!-- TODO: Clone → modificar → commit workflow -->
-1. git clone <url>
-2. git checkout -b feature/melhoria-acuracia (Cria branch nova)
-3. Modifica código...
-4. git add .
-5. git commit -m "feat: altera learning rate"
+```bash
+git clone https://github.com/exemplo/repositorio.git
+cd repositorio
+# Editar um arquivo
+git status
+git diff
+git add .
+git commit -m "fix: corrige erro de digitação"
+```
 
 ### Exemplo 3: Desfazendo Alterações
 
-<!-- TODO: Quando e como usar restore -->
-Você alterou o arquivo config.json e o código parou de rodar:
-git restore config.json (O arquivo volta imediatamente ao estado do último commit).
+```bash
+# Se eu fiz uma alteração indesejada num arquivo
+git status
+git restore index.html # Minha alteração errada some, volto ao código limpo do último commit
+```
 
 ## Erros Comuns
 
 ### Erro 1: Esquecer de git add
 
-<!-- TODO: Commit vazio, como evitar -->
-O commit fica vazio ou incompleto. Solução: Sempre rode git status antes de commitar.
+Fazer um `git commit` achando que as alterações serão salvas, mas o Git diz que não há nada para commitar. 
+**Solução:** Sempre rode `git status` e `git add` antes.
 
 ### Erro 2: Mensagem de commit vaga
 
-<!-- TODO: Importância de mensagens claras -->
-"Update" não explica nada. Solução: Use o padrão: tipo: descrição curta (ex: docs: atualiza guia de instalação).
+Escrever `git commit -m "ok"` ou `git commit -m "mudanças"`. Em seis meses, você não fará ideia do que isso significa. 
+**Solução:** Descreva **o que** mudou de forma resumida e direta.
 
 ### Erro 3: Committar arquivos errados
 
-<!-- TODO: Como verificar antes de commit -->
-Adicionar senhas ou datasets de 2GB. Solução: Crie um arquivo .gitignore e verifique com git diff --staged antes de finalizar.
+Fazer um `git add .` às cegas e acidentalmente adicionar senhas, chaves de API ou arquivos pesados/pessoais que não deveriam ir para o repositório.
+**Solução:** Sempre use `git status` antes de adicionar, e aprenda sobre `.gitignore`.
 
 ### Erro 4: Confundir git reset e git restore
 
-<!-- TODO: Diferenças e quando usar cada um -->
-- restore: Altera o conteúdo dos arquivos.
-- reset: Altera para onde a branch aponta na história (nível de commit).
+- `git restore`: Trabalha nos arquivos. Usado para desfazer modificações em arquivos soltos.
+- `git reset`: Trabalha na linha do tempo. Usado para voltar ou desfazer commits inteiros (veja no capítulo de resolução de problemas).
 
 ## Exercícios
 
-<!-- TODO: Crie exercícios práticos -->
-
-1. Crie um repositório chamado projeto-teste, crie um arquivo notas.txt e faça seu primeiro commit.
-2. Modifique o notas.txt, use git diff para ver o que mudou e depois committe.
-3. Use git log --oneline para ver seus dois commits.
-4. Modifique o arquivo novamente, mas use git restore para apagar essa última mudança sem committar.
+1. Crie uma nova pasta no seu computador chamada `treino-git` e transforme-a em um repositório Git usando `git init`.
+2. Crie um arquivo `anotacoes.txt`, adicione um texto qualquer, e faça seu primeiro `commit`.
+3. Altere o texto desse arquivo. Rode `git diff` para visualizar a alteração no terminal, depois adicione (`add`) e comite (`commit`).
+4. Visualize seu histórico com `git log --oneline`.
+5. Modifique o arquivo de novo, mas não adicione (sem `add`). Use o comando `git restore` para descartar a sua mudança e confirme rodando `git status`.
 
 ## Tabela de Referência Rápida
 
-<!-- TODO: Crie uma tabela com comandos e descrições -->
-
 | Comando | O que faz | Quando usar |
 |---------|-----------|-------------|
-| `git init` | Cria um novo repositório local | No início de um projeto |
-| `git clone` | Copia um repositório remoto | Ao baixar um projeto do GitHub |
-| `git add` | Adiciona arquivos ao Stage | Antes de cada commit |
-| `git commit` | Salva o histórico | Após terminar uma tarefa lógica |
-| `git status` | Mostra o estado atual | O tempo todo (entre comandos) |
-| `git log` | Lista o histórico | Para revisar o que foi feito |
-| `git diff` | Exibe as alterações textuais entre os estados dos arquivos (quem entrou e quem saiu) | Antes de dar git add para revisar o que você escreveu, ou após o add (com --staged) para validar o pacote |
-| `git restore` | Desfaz alterações no diretório de trabalho ou remove arquivos da área de preparação | Quando você comete um erro no código e quer voltar ao estado do último commit, ou quando adicionou um arquivo ao stage por engano |
+| `git init` | Inicializa um novo repositório em branco | No início de um projeto novo localmente |
+| `git clone` | Baixa uma cópia de um repositório da web | Para trabalhar em um projeto já existente |
+| `git add` | Move mudanças para a Staging Area | Antes de committar, para separar suas alterações |
+| `git commit` | Salva um snapshot (foto) na linha do tempo | Para salvar um grupo de mudanças lógicas concluídas |
+| `git status` | Exibe o estado atual dos arquivos | Constantemente, para saber o que está acontecendo |
+| `git log` | Exibe o histórico de commits | Para ver o que foi feito no passado e por quem |
+| `git diff` | Exibe as linhas exatas que foram alteradas | Para revisar suas mudanças detalhadamente antes do add/commit |
+| `git restore` | Desfaz alterações ou tira da staging area | Para descartar código indesejado que não foi comitado |
 
 ## Recursos Adicionais
 
-<!-- TODO: Links para documentação oficial e tutoriais -->
-
-- [Git Reference Manual](https://git-scm.com/docs)
-- [Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)
-- [Cheat Sheet do GitHub](https://training.github.com/downloads/pt_BR/github-git-cheat-sheet.pdf)
+- [Git Reference Manual - Comandos Principais](https://git-scm.com/docs)
+- [Git Cheat Sheet Interativo](https://ndpsoftware.com/git-cheatsheet.html)
+- [Aprenda Git Branching (Visual e Prático)](https://learngitbranching.js.org/)
 
 ## Resumo
 
-<!-- TODO: Pontos principais que os alunos devem lembrar -->
-Este capítulo cobriu a base operacional da linha de comando. Aqui estão os pontos fundamentais que você deve carregar para sua carreira:
-
-- A CLI é Soberana: O uso do terminal (Git Bash) permite maior controle e velocidade, além de ser o padrão em ambientes de servidores de IA.
-- O Fluxo é Sagrado: Lembre-se sempre da sequência Modificar → Status → Add → Status → Commit. O git status é o seu diagnóstico constante.
-- A Staging Area é sua Revisão: Não pule a fase de preparação. Use-a para garantir que cada commit tenha apenas um objetivo (seja atômico).
-- Commits são Documentação: Um bom commit com uma mensagem clara (feat:, fix:, docs:) economiza horas de depuração e facilita o trabalho em equipe.
-- Segurança em Primeiro Lugar: Com comandos como git log e git diff, você nunca está "cego". Você sempre sabe o que mudou e quem mudou.
-- Desfazer é Normal: O Git é projetado para ser resiliente. Errou no código? git restore. Errou no stage? git restore --staged. Nada é permanente até que você envie para o servidor.
-- Diferença de Escopo:
-  - git init inicia o projeto.
-  - git clone baixa um projeto existente.
-  - git rm remove e já avisa o Git.
+- O ciclo de vida do salvamento de arquivos no Git é essencialmente: `Modificar -> git add -> git commit`.
+- **`git status`** é o seu melhor amigo. Use sem moderação.
+- O histórico é valioso e permanente (`git log`).
+- O **`git diff`** mostra *exatamente* o que mudou, enquanto o status mostra *onde* mudou.
+- Você pode sempre recuar de erros nos arquivos modificados usando **`git restore`**.
 
 ---
 

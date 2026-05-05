@@ -693,11 +693,10 @@ Esse tipo de resposta pode dificultar a colaboração. O ideal é manter um diá
 #### Fazendo Alterações
 Para atualizar um PR com as mudanças solicitadas pelo revisor, basta alterar o código localmente, commitar e fazer o push novamente na mesma branch:
 
-Quando uma revisão solicitar mudanças, faça os ajustes na mesma branch usada para abrir o Pull Request. Não é necessário criar outro Pull Request.
-
-Depois de editar o arquivo solicitado, use o Git para registrar e enviar as alterações novamente.
-
-Fluxo básico:
+Se o revisor pediu mudanças:
+1. Volte para o seu terminal, na branch do PR.
+2. Faça as alterações no código.
+3. Faça o commit e o push normalmente.
 
 ```bash
 # veja o que foi alterado
@@ -712,6 +711,7 @@ git commit -m "docs: ajusta seção sobre code review"
 # envie para seu fork
 git push origin nome-da-sua-branch
 ```
+O GitHub atualizará o PR automaticamente com os novos commits!
 
 Depois do `git push`, o Pull Request será atualizado automaticamente no GitHub. Isso significa que o revisor verá as novas alterações no mesmo PR, sem que você precise abrir outro.
 
@@ -744,23 +744,25 @@ Indica que o PR ainda está em desenvolvimento. É útil para mostrar à equipe 
 
 O PR está finalizado pelo autor e pronto para revisão. O código está aguardando o Code Review e a execução da pipeline de testes.
 
-### Changes Requested
+### Changes Requested (Mudanças Solicitadas)
 
 Um revisor analisou o código e marcou o PR exigindo modificações. O merge fica bloqueado até que o autor faça os ajustes e o revisor mude o status para "Approved".
 
-### Approved
+### Approved (Aprovado)
 
 A revisão foi concluída com sucesso por um ou mais membros da equipe. O código foi validado tecnicamente e está liberado para integração.
 
-### Merged
+### Merged (Mesclado/Unido)
 
 O estado final de sucesso. O código contido na branch do PR foi integrado oficialmente na branch de destino (ex: main) e já faz parte da base do projeto.
 
-### Closed
+### Closed (Fechado)
 
 O PR foi encerrado sem que o código fosse mesclado. Isso acontece se a feature for cancelada, se a abordagem adotada foi descartada, ou se houver um erro irreversível no PR.
 
 ## Merge de Pull Requests
+
+Na hora de aprovar e realizar o merge de um PR no GitHub, geralmente existem três opções (se habilitadas pelos administradores do repositório):
 
 ### Tipos de Merge no GitHub
 
@@ -917,6 +919,13 @@ Se o conflito for simples (mudança em linhas de texto comuns), o próprio GitHu
 
 ### Resolvendo Localmente
 
+A forma mais segura, ideal para conflitos de código real:
+1. Vá para o seu terminal e atualize sua `main` local.
+2. Troque para a sua branch do PR.
+3. Faça um merge (ou rebase) da `main` atualizada para dentro da sua branch.
+4. Resolva os conflitos no seu editor de código (VSCode, etc).
+5. Comite e faça o push. O PR no GitHub ficará limpo automaticamente.
+
 ```bash
 # Atualiza as informações do repositório original
 git fetch upstream
@@ -998,6 +1007,7 @@ Utilize verbos colaborativos. Ao invés de usar o imperativo ("Mude essa funçã
 ## Ferramentas Úteis
 
 ### GitHub CLI
+Para quem prefere nunca sair do terminal, o GitHub possui uma excelente ferramenta oficial (`gh`) para gerenciar PRs:
 
 ```bash
 gh pr create

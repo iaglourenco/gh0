@@ -1,5 +1,4 @@
 # Resolução de Conflitos
-
 <!-- Este arquivo ensina como identificar, entender e resolver conflitos de merge no Git -->
 
 ## 📋 Objetivos de Aprendizagem
@@ -17,9 +16,10 @@
 <!-- Conflitos não são erros - são oportunidades de aprendizado -->
 
 ## O que São Conflitos de Merge?
+   Um conflito de merge ocorre quando o Git, apesar de sua inteligência algorítmica, encontra uma ambiguidade que não pode ser resolvida automaticamente. Isso acontece tipicamente quando duas ramificações (branches) distintas alteram a mesma linha de um arquivo de formas diferentes, ou quando uma branch deleta um arquivo que outra modificou. 
 
-<!-- TODO: Definição -->
 <!-- Quando Git não consegue resolver automaticamente -->
+   Tecnicamente, o Git falha ao tentar aplicar um 'Three-way merge', pois as mudanças são divergentes a partir do ancestral comum, exigindo que a inteligência humana intervenha para decidir qual estado final preserva a integridade lógica do sistema.
 
 ### Por que Conflitos Acontecem?
 
@@ -69,12 +69,12 @@ Pessoa A                     Pessoa B
 
 <!-- TODO: Explicar os marcadores -->
 
-```
-<<<<<<< HEAD
+```markdown
+<<<<<< HEAD
 Seu código (versão atual)
-=======
+======
 Código do outro branch
->>>>>>> nome-do-branch
+>>>>>> nome-do-branch
 ```
 
 ### Entendendo Cada Parte
@@ -202,11 +202,8 @@ Vai aparecer a mensagem de conflito:
 e o arquivo terá na linha 10 onde houve conflito.
 
 ```python
-<<<<<<< HEAD
     resultado = f"Média calculada: {media}"
-=======
     resultado = f"Valor médio final: {media}"
->>>>>>> teste
 ```
 
 troque para (não esquecendo a identação):
@@ -336,7 +333,16 @@ git merge --continue
 
 ### Aceitar Completamente Uma Versão
 
-Ideal quando uma das branches está desatualizada, contém código experimental não aprovado, ou quando a mudança em um dos lados é irrelevante para o contexto atual.
+#### Para priorizar a nossa versão em conflitos automáticos
+```bash
+# git merge -Xours nome-da-branch
+```
+
+#### Para priorizar a versão que está vindo de fora
+```bash
+# git merge -Xtheirs nome-da-branch
+```
+   Em cenários onde a escala de mudanças é massiva, a resolução manual linha a linha torna-se inviável. As estratégias de estratégia de recursão permitem automatizar essa decisão. A opção -Xours orienta o Git a favorecer sistematicamente a versão da branch atual (aquela em que você está), sendo ideal para proteger configurações locais ou códigos core que não podem ser alterados. Já a -Xtheirs prioriza a branch que está sendo integrada, sendo a escolha correta quando você está absorvendo uma 'hotfix' ou uma atualização crítica de terceiros que deve sobrescrever o estado atual.
 
 ```bash
 # Usar theirs ou ours para aceitar uma versão inteira
@@ -347,6 +353,8 @@ git checkout --theirs arquivo.md # Mantém a versão do outro branch
 git add arquivo.md
 git merge --continue
 ```
+
+
 
 ### Combinar Mudanças
 
@@ -371,8 +379,134 @@ Resolver manualmente no editor de texto é a base para dominar o controle de ver
 
 ### VS Code
 
-<!-- TODO: Interface visual do VS Code -->
-<!-- Botões: Accept Current, Accept Incoming, Accept Both -->
+O VS Code possui integração nativa com o Git e permite resolver conflitos sem sair do editor. Ao abrir um arquivo com conflito, ele exibe botões de ação acima de cada marcador:
+
+- **Accept Current Change** — mantém o código da sua branch
+- **Accept Incoming Change** — mantém o código da branch que está sendo mergeada
+- **Accept Both Changes** — inclui as duas versões
+- **Compare Changes** — abre um diff lado a lado
+
+Para configurar o VS Code como sua ferramenta de merge padrão (mergetool), utilize os comandos abaixo. 
+Essa configuração permite que, ao executar `git mergetool`, o Git abra automaticamente o VS Code para resolver os conflitos. 
+
+> **Nota:** Para que esses comandos funcionem, o comando `code` deve estar configurado no seu terminal (no VS Code, use `Ctrl+Shift+P` e procure por "Shell Command: Install 'code' command in PATH").
+
+```bash
+git config --global merge.tool vscode
+git config --global mergetool.vscode.cmd 'code --wait $MERGED'
+```
+
+### Ferramentas Visuais Externas
+
+Quando os conflitos são numerosos ou envolvem código complexo, ferramentas visuais dedicadas oferecem uma interface de três painéis (sua versão / base comum / versão deles) que facilita muito a comparação.
+
+#### Meld
+
+Ferramenta open-source com interface simples, boa opção para quem está começando.
+
+```bash
+# Instalação no Ubuntu/Debian
+sudo apt install meld
+
+# Configuração no Git
+git config --global merge.tool meld
+```
+
+#### KDiff3
+
+Além da interface visual, o KDiff3 tenta mesclar automaticamente as partes que não têm conflito real, deixando para o usuário apenas o que precisa de decisão.
+
+```bash
+# Instalação no Ubuntu/Debian
+sudo apt install kdiff3
+
+# Configuração no Git
+git config --global merge.tool kdiff3
+```
+
+#### P4Merge
+
+Gratuito e disponível para Windows, macOS e Linux. Tem visual limpo e é bastante usado em ambientes profissionais.
+
+> **Observação:** O caminho do executável do P4Merge pode variar dependendo do seu sistema operacional e local de instalação. Certifique-se de ajustar o caminho nas configurações do Git caso a ferramenta não seja encontrada automaticamente.
+
+```bash
+# Após instalar (https://www.perforce.com/products/helix-core-apps/merge-diff-tool-p4merge )
+git config --global merge.tool p4merge
+# Exemplo de ajuste de caminho (se necessário):
+# git config --global mergetool.p4merge.path "/usr/local/bin/p4merge"
+
+
+### git mergetool
+
+#### O mergetool abre uma interface visual para resolver conflitos
+```bash
+git mergetool
+```
+
+#### O difftool permite comparar as versões antes de decidir
+```bash
+git difftool
+```
+
+### Workflow Completo com Mergetool
+
+```bash
+# 1. Merge gera conflito
+git merge feature/nova-funcionalidade
+
+# 2. Verifique os arquivos em conflito
+git status
+
+# 3. Abra a ferramenta configurada
+git mergetool
+# A ferramenta abre para cada arquivo em conflito, um por vez
+# Resolva, salve e feche
+
+# 4. Remova os arquivos .orig gerados (backup automático)
+> **Cuidado:** O comando `git clean` apaga arquivos permanentemente. Use apenas se tiver certeza de que quer remover os backups `.orig`.
+git clean -f *.orig
+
+# 5. Adicione e finalize
+git add arquivo-resolvido.py
+git commit -m "merge: resolve conflito em arquivo-resolvido.py"
+```
+
+### Git Aliases para Setup Rápido
+
+Adicione ao seu `~/.gitconfig` para trocar de ferramenta com um comando só:
+
+```bash
+git config --global alias.use-vscode '!git config --global merge.tool vscode && git config --global mergetool.vscode.cmd "code --wait $MERGED"'
+git config --global alias.use-meld '!git config --global merge.tool meld'
+git config --global alias.use-kdiff3 '!git config --global merge.tool kdiff3'
+git config --global alias.mt 'mergetool'
+```
+
+Uso:
+
+```bash
+git use-meld    # troca para Meld
+git mt          # abre o mergetool nos arquivos com conflito
+```
+
+### Comparativo das Ferramentas
+
+| Ferramenta | Plataforma | Custo | Destaques |
+|---|---|---|---|
+| **VS Code** | Linux, Windows, macOS | Gratuito | Integrado ao editor, sem instalação extra |
+| **Meld** | Linux, Windows, macOS | Gratuito / Open-source | Interface simples, ótimo para iniciantes |
+| **KDiff3** | Linux, Windows, macOS | Gratuito / Open-source | Auto-merge de partes não conflitantes |
+| **P4Merge** | Linux, Windows, macOS | Gratuito (proprietário) | Visual limpo, popular em equipes profissionais |
+
+### Quando usar ferramenta em vez de resolver manualmente?
+
+A edição direta do arquivo com os marcadores `<<<<<<<`, `=======`, `>>>>>>>` funciona bem para conflitos simples. Prefira uma ferramenta visual quando:
+
+- O arquivo tem mais de dois ou três blocos de conflito
+- O conflito envolve código que foi movido (refatoração), não apenas modificado
+- Você precisa ver o estado **antes das duas branches divergirem** (painel base)
+- A leitura dos marcadores dificulta entender o contexto ao redor
 
 ### Git GUI Tools
 
@@ -383,12 +517,6 @@ Resolver manualmente no editor de texto é a base para dominar o controle de ver
 #### SourceTree
 
 <!-- TODO: Interface de merge do SourceTree -->
-
-### git mergetool
-
-```bash
-# TODO: Configurar e usar mergetool
-```
 
 ### Configurando Merge Tool
 
@@ -417,6 +545,8 @@ Resolver manualmente no editor de texto é a base para dominar o controle de ver
 <!-- TODO: Mudanças em estrutura de pastas -->
 
 ## Prevenindo Conflitos
+
+Embora ferramentas ajudem a resolver, a melhor prática é a prevenção através de fluxos de trabalho inteligentes. Commits pequenos e atômicos, aliados a Pull/Fetch frequentes, garantem que a divergência entre a sua branch e a main seja mínima. Em sistemas de missão crítica, como os desenvolvidos em eletrônica aeroespacial, a fragmentação de tarefas em arquivos distintos e o uso de interfaces bem definidas são as defesas primárias contra colisões de código massivas.
 
 ### Comunicação
 
@@ -472,6 +602,13 @@ Resolver manualmente no editor de texto é a base para dominar o controle de ver
 
 ## Abortando um Merge
 
+A resolução de conflitos pode se tornar excessivamente complexa se houver muitos arquivos alterados simultaneamente. Nestes casos, o comando git merge --abort funciona como um 'botão de pânico'. Ele interrompe o processo de integração e restaura o repositório ao estado exato em que estava antes do comando de merge ser disparado. É uma prática recomendada usar o abort sempre que houver dúvida sobre a integridade da resolução manual, permitindo ao desenvolvedor reavaliar a estratégia de integração sem deixar o repositório em um estado 'sujo' ou quebrado.
+
+### Retorna ao estado anterior caso o merge esteja muito complexo
+```bash
+# TODO: git merge --abort
+```
+
 ### Quando Abortar
 
 <!-- TODO: Se você  fez algo errado ou quer recomeçar -->
@@ -485,6 +622,61 @@ Resolver manualmente no editor de texto é a base para dominar o controle de ver
 ### Efeito
 
 <!-- TODO: Volta ao estado anterior ao merge -->
+
+## Troubleshooting de Conflitos
+
+### Problemas Comuns
+
+<!-- TODO: Conflitos inesperados durante merge ou rebase -->
+
+Quando um conflito parece aparecer sem motivo, vale revisar se a branch local está desatualizada ou se o merge anterior foi interrompido no meio.
+
+### Reiniciar o Merge
+
+```bash
+git merge --abort
+```
+
+Use esse comando quando quiser cancelar o merge atual e voltar ao estado anterior para tentar novamente com mais calma.
+
+### Desfazer o Merge
+
+```bash
+git reset --merge HEAD~1
+```
+
+Esse caminho é útil quando você quer desfazer o merge e voltar um passo, mantendo apenas o necessário para recomeçar.
+
+### Merge Corrompido
+
+<!-- TODO: Quando o merge ficou em estado inconsistente -->
+
+Se o merge ficar corrompido ou travado, a abordagem mais segura costuma ser abortar, revisar o histórico e tentar o processo novamente depois de atualizar a branch.
+
+### Ferramentas de Ajuda
+
+```bash
+git mergetool
+git merge --continue
+```
+
+O `git mergetool` ajuda a visualizar e resolver conflitos com uma ferramenta externa. Depois de corrigir os arquivos, `git merge --continue` finaliza o merge.
+
+### Quando Pedir Ajuda
+
+<!-- TODO: Avisar o time quando a resolução não estiver clara -->
+
+Se a origem do conflito não estiver clara, comunique o time antes de forçar uma solução. É melhor alinhar a intenção do que aplicar uma correção que esconda um problema maior.
+
+### Logs para Debug
+
+```bash
+git status
+git log --oneline --graph --decorate -n 20
+git diff
+```
+
+Esses comandos ajudam a entender o que mudou, onde o conflito começou e qual foi o último estado válido da branch.
 
 ## Conflitos Complexos
 
@@ -548,6 +740,10 @@ Cenário:
 ```
 
 ### Comunicar com o Autor
+
+#### Use o git blame para identificar quem editou a linha e converse com o autor para entender a intenção do código original.
+
+   A resolução técnica de um conflito é apenas metade do trabalho. A outra metade é política/social. O comando git blame deve ser usado como uma ferramenta de rastreabilidade para identificar o autor da mudança divergente. Antes de concluir o merge, uma breve consulta ao autor evita a deleção de lógicas intencionais (edge cases) que podem não ser óbvias à primeira vista.
 
 <!-- TODO: Perguntar intenção das mudanças -->
 
@@ -645,6 +841,9 @@ Cenário:
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
-<!-- Adicione seu nome quando contribuir:
-- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+<!-- Adicione seu nome quando contribuir: Filipe Alves de Sousa
+- [@seu-usuario](https://github.com/filipe19) - Estratégias e Ferramentas de Resolução (#46)
 -->
+<!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
+<!-- Adicione seu nome quando contribuir: Kaique Pinheiro 
+[@AtlasExploit](https://github.com/AtlasExploit) - Ferramentas de Merge: VS Code, Meld, KDiff3, P4Merge, aliases e workflow (#47) -->

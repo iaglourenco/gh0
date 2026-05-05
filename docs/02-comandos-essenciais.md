@@ -288,14 +288,14 @@ Um commit deve representar uma única mudança lógica.
 
 O comando `git restore` foi introduzido no Git 2.23 (junto com o `git switch`) para separar as responsabilidades que antes ficavam sobrecarregadas no `git checkout`. Seu propósito principal é **desfazer mudanças** em arquivos, permitindo restaurá-los para estados anteriores, seja no diretório de trabalho (*working directory*) ou na área de preparação (*staging area*).
 
-Este comando é focado em recuperar o conteúdo dos arquivos substituindo a versão atual pela versão do histórico, sendo uma ferramenta essencial para segurança durante o desenvolvimento.
+Por padrão, `git restore <arquivo>` restaura o conteúdo do arquivo no diretório de trabalho a partir do **index/staging area**. Como o index normalmente reflete o `HEAD`, isso muitas vezes equivale à versão do último commit, mas não sempre. Para restaurar explicitamente a partir de um commit ou outro ponto do histórico, use `--source`.
 
 ### Desfazendo Mudanças
 
-O `git restore` possui duas áreas principais de atuação, dependendo de onde você deseja restaurar o conteúdo: o diretório de trabalho (*working tree*) e a área de preparação (*staging area*). Além disso, você pode usar `--source` para definir de qual commit, branch ou referência esse conteúdo será recuperado.
+O `git restore` possui duas áreas de atuação principais, dependendo de onde as modificações estão no seu repositório:
 
 #### 1. Desfazer mudanças no diretório de trabalho
-Se você modificou um arquivo, mas **não o adicionou** com `git add`, pode descartar as mudanças e restaurá-lo para a versão do último commit:
+Se você modificou um arquivo, mas **não o adicionou** com `git add`, pode descartar as mudanças no diretório de trabalho e restaurá-lo para o conteúdo que está no **index** (que normalmente coincide com o último commit, quando não há mudanças staged):
 
 ```bash
 # Descarta todas as modificações não "staged" do arquivo

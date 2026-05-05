@@ -287,31 +287,161 @@ Um commit deve representar uma única mudança lógica.
 
 ## git log
 
-<!-- TODO: Explique git log -->
-Interpretando a Saída
+O comando `git log` é usado para visualizar o histórico de commits do seu repositório. Ele mostra informações detalhadas sobre cada commit realizado, incluindo autor, data, mensagem e identificador único (hash).
 
-### Visualizando Histórico
+## Sintaxe Básica
 
-<!-- TODO: O que git log mostra -->
-Exibe a lista cronológica de todos os commits realizados.
-Ao rodar git log, você verá:
-- commit : O ID único (SHA-1) daquela versão.
-- Author: Quem fez a alteração.
-- Date: Quando foi feita.
-- Mensagem: O porquê da alteração.
-
-### Opções Úteis
+**Formato padrão (detalhado):**
 
 ```bash
-git log --oneline    # Versão resumida (ID e mensagem)
-git log --graph      # Visualização visual das ramificações
-git log -p           # Mostra o log com as diferenças de código (diff) incluídas
-git log --oneline --graph --decorate # Este comando mostra o histórico como um gráfico visual, essencial para ver onde as branches de funcionalidades de IA se ramificam da main.
+git log
 ```
 
-### Interpretando a Saída
+Este comando exibe:
+- **Hash do commit**: Identificador único (ex: `a1b2c3d4e5f6...`)
+- **Autor**: Nome e e-mail de quem fez o commit
+- **Data**: Quando o commit foi realizado
+- **Mensagem**: Descrição do que foi feito
 
-<!-- TODO: Como ler as informações do git log -->
+**Formato resumido (uma linha por commit):**
+
+```bash
+git log --oneline
+```
+
+Mostra apenas o hash abreviado e a mensagem do commit, ideal para ter uma visão geral rápida do histórico.
+
+## Entendendo o Output
+
+Quando você executa `git log`, verá algo assim:
+
+```
+commit a1b2c3d4e5f6g7h8i9j0 (HEAD -> main, origin/main)
+Author: João Silva <joao@email.com>
+Date:   Mon May 1 14:30:00 2023 -0300
+
+    docs: adiciona seção sobre git init
+
+commit k9l8m7n6o5p4q3r2s1t0
+Author: Maria Santos <maria@email.com>
+Date:   Mon May 1 10:15:00 2023 -0300
+
+    fix: corrige exemplo de git clone
+```
+
+**Elementos importantes:**
+- **(HEAD -> main, origin/main)**: Indica onde está o ponteiro HEAD e os branches
+- **Hash do commit**: Identificador único de 40 caracteres (exibido completo)
+- **Author**: Nome e e-mail configurados no Git
+- **Date**: Data e hora do commit com timezone
+- **Mensagem**: Descrição do que foi alterado
+
+## Opções Úteis
+
+**Visualização gráfica de branches:**
+```bash
+git log --graph
+```
+Mostra um gráfico ASCII com a estrutura de branches e merges.
+
+**Ver todos os branches:**
+```bash
+git log --all
+```
+Exibe commits de todos os branches, não apenas o atual.
+
+**Mostrar referências (tags e branches):**
+```bash
+git log --decorate
+```
+Indica onde estão as branches e tags no histórico.
+
+**Combinando opções (recomendado):**
+```bash
+git log --oneline --graph --all
+```
+Formato compacto com visualização gráfica de todos os branches.
+
+## Filtros de Busca
+
+**Por autor:**
+```bash
+git log --author="João Silva"
+```
+
+**Por mensagem de commit:**
+```bash
+git log --grep="docs"
+```
+Busca commits que contenham "docs" na mensagem.
+
+**Por período:**
+```bash
+git log --since="2 weeks ago"
+git log --until="2023-05-01"
+```
+
+**Combinando filtros:**
+```bash
+git log --author="Maria" --since="1 month ago" --oneline
+```
+
+## Exemplo Prático
+
+Para ver um histórico visual completo do projeto:
+
+```bash
+git log --oneline --graph --all --decorate
+```
+
+Resultado esperado:
+
+```
+* a1b2c3d (HEAD -> main, origin/main) docs: adiciona seção sobre git init
+* k9l8m7n (feat/nova-funcionalidade) feat: implementa nova feature
+| * b2c3d4e (fix/correcao-bug) fix: corrige erro de digitação
+|/
+* m7n6o5p docs: atualiza README
+* q3r2s1t Initial commit
+```
+
+**Interpretando o gráfico:**
+- `*` = Commit
+- `|` = Linha do branch
+- `/` = Merge ou divergência de branches
+- Os hashes são abreviados (7 caracteres)
+- As referências (HEAD, branches) aparecem entre parênteses
+
+## git log vs git reflog
+
+**git log:**
+- Mostra o histórico de **commits** do projeto
+- Lista apenas commits que fazem parte do histórico oficial
+- Útil para ver o que foi desenvolvido
+
+**git reflog:**
+- Mostra **todas as ações** realizadas no repositório local
+- Inclui mudanças de branch, resets, rebases, merges
+- Útil para recuperar trabalho perdido
+
+Exemplo de quando usar cada um:
+- "Quais commits foram feitos no projeto?" → `git log`
+- "Fiz um reset errado, como voltar?" → `git reflog`
+
+## Navegando no Pager
+
+Quando o histórico é longo, o Git usa um pager (less) para exibir o conteúdo:
+
+- **Descer**: Seta para baixo ou Enter
+- **Subir**: Seta para cima
+- **Próxima página**: Espaço
+- **Buscar**: Digite `/` seguido do termo
+- **Sair**: Pressione `q`
+
+**Dica**: Se você não quiser usar o pager, adicione `--no-pager`:
+```bash
+git --no-pager log --oneline
+```
 
 ## git diff
 

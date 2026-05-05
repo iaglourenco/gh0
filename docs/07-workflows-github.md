@@ -459,13 +459,13 @@ Você pode usar seu **próprio domínio** (ex: `docs.meusite.com`) com GitHub Pa
 
 ### O que São
 
-GitHub Discussions é um **fórum de comunidade** integrado ao repositório. É o espaço para conversas abertas, dúvidas, ideias e anlúncios — sem a formalidade de uma issue.
+GitHub Discussions é um **fórum de comunidade** integrado ao repositório. É o espaço para conversas abertas, dúvidas, ideias e anúncios — sem a formalidade de uma issue.
 
 ### Quando Usar
 
 - **Q&A**: responder dúvidas da comunidade
 - **Ideias**: sugestões que ainda não são issues concretas
-- **Anlúncios**: comunicados sobre novas versões ou mudanças
+- **Anúncios**: comunicados sobre novas versões ou mudanças
 - **Mostrar e contar**: compartilhar projetos feitos com a ferramenta
 
 ### Diferença de Issues
@@ -758,13 +758,12 @@ Deixar a branch `main` desprotegida permite pushes diretos acidentais que podem 
 
 ## Recursos Adicionais
 
-<!-- TODO: Links sobre workflows -->
-
 - [GitHub Flow Guide](https://guides.github.com/introduction/flow/)
 - [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [GitHub Pages](https://pages.github.com/)
-- <!-- Mais recursos -->
+- [GitHub Docs em Português](https://docs.github.com/pt)
+- [Learn Git Branching](https://learngitbranching.js.org/)
 
 ## Resumo
 

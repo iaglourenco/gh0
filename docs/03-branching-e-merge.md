@@ -376,23 +376,79 @@ git merge --squash feature-nome
 git commit -m "feat: pacote de funcionalidades finalizado"
 ```
 
-### Squash vs Merge Commit: Quando usar?
+## Rebase: Uma Alternativa ao Merge
 
-A escolha entre preservar o histórico completo ou resumi-lo depende do contexto do seu trabalho e das regras da equipe:
+O `git rebase` é uma alternativa poderosa ao `git merge`. Enquanto o merge cria um novo commit que une dois históricos, o rebase **reescreve o histórico do projeto**, movendo a base da sua branch atual para o topo de outra branch.
 
-- **Use Merge Commit (`--no-ff`):** Quando a sua branch representa uma funcionalidade grande e complexa, onde o histórico de decisões (os commits individuais) tem grande valor futuro para auditoria ou para uma possível reversão parcial.
-- **Use Squash:** Quando a sua branch possui muitos commits pequenos de "trabalho em andamento" (como "wip", "arrumando erro", "tentando consertar bug"). O squash limpa essa "poluição" visual, transformando tudo em um único commit limpo e direto para a `main`.
+### Como Funciona
 
-### Estratégias Avançadas de Merge
+Imagine que você criou uma branch `feature` a partir da `main`. Enquanto você trabalhava, novos commits foram adicionados à `main`.
 
-Além das estratégias padrão, o Git possui algoritmos específicos para lidar com a forma como os arquivos são combinados durante um merge de múltiplas vias:
+**Situação Inicial:**
+```text
+      A---B---C (main)
+           \
+            D---E (feature)
+```
 
-- **Recursive:** É o algoritmo padrão para merges de três vias (three-way merge) quando há apenas um ancestral comum. Ele constrói uma árvore de merge baseada no ancestral e é muito eficiente em detectar e lidar com arquivos renomeados de forma inteligente.
-- **Resolve:** Semelhante ao recursive, mas projetado especificamente para lidar de forma segura com merges que possuem múltiplos cruzamentos de histórico. É muito seguro e rápido, mas pode falhar em situações de renomeação de arquivos muito complexas.
-- **Ours:** Esta estratégia força o Git a ignorar completamente as mudanças da branch que está sendo mesclada em caso de conflito, mantendo apenas a "nossa" versão (a branch atual). O histórico registra que o merge aconteceu, mas o código permanece intocado pelas mudanças externas.
-- **Theirs:** É o oposto exato da estratégia `ours`. Em caso de conflito estrutural, o Git descarta sumariamente as nossas alterações e aceita automaticamente a versão "deles" (da branch que está entrando). Deve ser utilizado com extrema cautela.
+Se você fizer um **merge** da `main` na `feature`, o Git criará um novo commit de merge (F), preservando o histórico exato de quando as coisas aconteceram:
+```text
+      A---B---C (main)
+           \   \
+            D---E---F (feature)
+```
 
+Se você fizer um **rebase** da `feature` na `main`, o Git "desconecta" os commits D e E, avança a base da `feature` para o commit C (o mais recente da main), e reaplica as suas mudanças no topo. Os commits antigos (D e E) são descartados e novos commits (D' e E') são criados:
+```text
+      A---B---C (main)
+               \
+                D'---E' (feature)
+```
 
+O resultado é um histórico perfeitamente linear, como se você tivesse começado a trabalhar a partir do código mais recente da `main`.
+
+### Vantagens e Desvantagens
+
+**Vantagens:**
+- Mantém o histórico do projeto limpo e linear (sem commits de merge poluindo o log).
+- Facilita a leitura do histórico com ferramentas como `git log` ou `git bisect`.
+- Ajuda a resolver conflitos passo a passo (commit por commit) em vez de todos de uma vez.
+
+**Desvantagens:**
+- Reescreve o histórico do Git (muda os hashes dos commits).
+- Pode ser perigoso se usado incorretamente em branches compartilhadas.
+- Conflitos podem precisar ser resolvidos várias vezes (uma vez para cada commit reaplicado).
+
+### A Regra de Ouro do Rebase
+
+> **NUNCA faça rebase de commits que já foram enviados (pushed) para um repositório público/compartilhado.**
+
+Se você fizer rebase de uma branch que outras pessoas já baixaram, você estará reescrevendo um histórico que os colegas já possuem. Quando eles tentarem sincronizar, o Git ficará confuso, resultando em uma bagunça de commits duplicados e conflitos difíceis de resolver. Use o rebase **apenas para limpar o seu trabalho local** antes de integrá-lo.
+
+### Exemplo Prático de Uso
+
+O cenário mais comum é atualizar sua branch local com as novidades da branch principal antes de abrir um Pull Request:
+
+```bash
+# 1. Garanta que a main local está atualizada
+git checkout main
+git pull origin main
+
+# 2. Volte para a sua branch de feature
+git checkout feature/minha-nova-tela
+
+# 3. Faça o rebase da sua branch no topo da main
+git rebase main
+
+# 4. Se houver conflitos, o Git vai pausar.
+# Resolva os conflitos nos arquivos, adicione-os e continue:
+# git add <arquivo-resolvido>
+# git rebase --continue
+
+# 5. (Opcional) Se precisar enviar para o repositório remoto após um rebase
+# Como o histórico mudou, você precisará forçar o push
+git push origin feature/minha-nova-tela --force-with-lease
+```
 
 ## Deletando Branches
 
@@ -643,6 +699,7 @@ Criar uma branch a partir de uma `main` antiga na sua máquina, resultando em de
 Este conteúdo é colaborativo. Contribuidores deste arquivo:
 
 - [@daniballester](https://github.com/daniballester) - Issue #19 - Seção "O que são Branches"
+- [@hailtonDavid](https://github.com/hailtonDavid) - Issue #68 - Seção "Rebase"
 
 - [@lukitkat](https://github.com/Lukitkat) - Issue #24 - Seção "Documentar estratégias de merge"
 

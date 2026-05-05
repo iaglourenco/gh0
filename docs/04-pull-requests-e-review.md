@@ -130,14 +130,40 @@ Sempre teste as suas alterações localmente antes de abrir um Pull Request. Cer
 
 ### O que é Code Review?
 
-É a prática sistemática de analisar o código escrito por outro desenvolvedor. O objetivo é encontrar possíveis falhas estruturais, de lógica ou de segurança antes que o código seja efetivamente mesclado.
+O Code Review (Revisão de Código) é a prática de analisar e avaliar o código escrito por outro desenvolvedor antes que ele seja integrado oficialmente ao projeto principal (a branch `main`). Pense nisso como uma "revisão de texto" antes de publicar um livro: o objetivo não é julgar o autor, mas sim garantir que a obra final tenha a melhor qualidade possível, esteja livre de erros estruturais ou lógicos, e siga os padrões estabelecidos pelo projeto.
 
-### Por que Revisar Código?
+### Por que é importante?
 
-- **Qualidade:** Garante que o código atende aos padrões da arquitetura do projeto.
-- **Prevenção de Bugs:** Dois pares de olhos veem melhor que um.
+O processo de Code Review é uma das ferramentas mais valiosas na engenharia de software moderna, pois atua como a última linha de defesa antes da produção. Sua importância reside em:
 
-- **Compartilhamento de Conhecimento:** Evita que apenas uma pessoa saiba como determinada parte do sistema funciona.
+- **Prevenção de Bugs:** Um segundo (ou terceiro) par de olhos tem muito mais facilidade para identificar falhas lógicas, variáveis esquecidas ou problemas de segurança que passaram despercebidos pelo autor original.
+- **Manutenção de Padrões:** Ajuda a garantir que todo o código do projeto siga o mesmo estilo e a mesma arquitetura, evitando que o repositório vire uma bagunça ("código espaguete").
+- **Economia de Tempo:** Corrigir um erro durante a fase de revisão é infinitamente mais rápido e barato do que consertar um bug depois que ele já está rodando em produção.
+
+### Benefícios para a equipe
+
+Além das vantagens técnicas, o Code Review transforma a cultura da equipe de desenvolvimento:
+
+- **Distribuição de Conhecimento:** Quando você lê o código de um colega, você aprende novas abordagens e funções. Ao mesmo tempo, o autor recebe dicas valiosas. Isso nivela o conhecimento técnico de todo o time.
+- **Responsabilidade Compartilhada:** Se um bug chega à produção, a responsabilidade não é apenas de quem escreveu o código, mas também de quem o revisou e aprovou. A qualidade se torna um esforço coletivo.
+- **Integração de Novos Membros:** Para desenvolvedores iniciantes, o Code Review é a melhor forma de entender as regras de negócio e os padrões do projeto de forma prática e supervisionada.
+- **Comunicação Mais Forte:** O processo de revisão, quando focado no código e não na pessoa, exercita a empatia, a argumentação técnica e a comunicação construtiva dentro do grupo.
+
+### Exemplo Prático: O que analisar em um Code Review?
+
+Imagine que um colega submeteu o seguinte trecho de código em Python em um Pull Request:
+
+``` python
+# Código original na PR
+def calc(v, t):
+    return v + (v * t)
+```
+#### Como agir na revisão?
+Em vez de focar apenas se o código funciona ou criticar as escolhas do autor, você deve avaliar a legibilidade e a manutenibilidade para o futuro do projeto. Um bom comentário de revisão seria:
+
+> "A lógica do cálculo está ótima! Como sugestão, o que acha de renomearmos a função e as variáveis para ficarem mais descritivas, como calcular_preco_final(valor_produto, taxa_imposto)? Assim fica muito mais fácil para outros desenvolvedores entenderem o contexto no futuro!"
+
+Este exemplo demonstra perfeitamente como o Code Review melhora o código e distribui boas práticas sem ofender o autor original.
 
 ### Como Ser um Bom Revisor
 Revisar código exige empatia e atenção aos detalhes.
@@ -581,7 +607,105 @@ Para aprofundar seu conhecimento na gestão do repositório, consulte estes link
 
 Pull Requests e revisões de código são habilidades interpessoais e técnicas tão cruciais quanto o próprio ato de programar. Eles garantem a saúde do sistema, distribuem conhecimento, uniformizam padrões e criam um ambiente cooperativo. Ao dominar PRs pequenos, bem documentados e a arte de um feedback construtivo, você se torna um profissional pronto para atuar em times de engenharia de ponta.
 
+
+# Revisão de Código: Como ser um bom revisor
+
+A revisão de código (code review) é uma etapa essencial para manter a qualidade e consistência de qualquer projeto colaborativo. Mais do que apontar erros, é uma oportunidade de ensinar, aprender e melhorar o código em equipe.
+
+## Antes de começar: mentalidade
+
+- **A revisão é sobre o código, não sobre a pessoa.** Critique a implementação, não o autor.
+- **Não leve para o lado pessoal.** Você e o revisor estão no mesmo time. Um código revisado em 10 minutos foi escrito em horas. Tenha humildade para ouvir.
+- **Faça elogios.** Se algo ficou bom, diga! Isso incentiva os contribuidores.
+- **Existem várias soluções para o mesmo problema.** Distinga entre boas práticas e gosto pessoal.
+
+Fonte: [Dev.to](https://dev.to/christiantld/boas-praticas-de-code-review-para-bons-programadores-3999)[reference:0]
+
+## O que revisar?
+
+Use um checklist mental. Alguns pontos importantes:
+
+- ✅ **Propósito:** Entendo o que o código faz? Ele cumpre o que a issue/PR descreve?
+- ✅ **Lógica:** Existem bugs óbvios? Casos extremos (edge cases) foram tratados?
+- ✅ **Segurança:** Validação de entrada? Risco de injeção SQL, XSS, etc.?
+- ✅ **Performance:** Loops desnecessários? Consultas repetidas (N+1)?
+- ✅ **Manutenibilidade:** Nomes de variáveis são claros? Funções fazem uma coisa só? Código complexo tem comentários?
+
+Fonte: Google Engineering Practices[reference:1]
+
+## Como dar feedback
+
+### ✨ Escreva comentários objetivos e construtivos
+
+Prefira frases como "Eu sugiro que..." em vez de acusações diretas.
+
+- ❌ Evite: "Você está fazendo errado."
+- ✅ Prefira: "O código faz X, mas talvez seja melhor Y porque Z."
+
+### 🔍 Faça perguntas
+
+Se algo não ficou claro, pergunte. Isso abre diálogo em vez de gerar conflito.
+
+- Exemplo: "Não entendi por que essa validação foi feita aqui. Você pode explicar?"
+
+### 📏 Use comentários em linha
+
+No GitHub, você pode clicar no número de uma linha nos arquivos alterados ("Files changed") e deixar um comentário bem específico. Se quiser sugerir uma correção, use o botão `+/-` de "suggestion".
+
+### 📦 Priorize o feedback
+
+Separe o que é crítico (correção obrigatória) do que é sugestão de estilo.
+
+- Exemplo de sugestão não bloqueante: *"[nit] Considere trocar esta variável de 'x' para 'userCount' para ficar mais claro. Não é impeditivo."*
+
+Fonte: Code Review Excellence Playbook[reference:2]
+
+## Como finalizar uma revisão no GitHub
+
+Depois de comentar todas as linhas e sugerir mudanças, clique no botão **"Review changes"** (perto do canto superior direito). Você verá três opções:
+
+| Opção            | Quando usar                                                                  |
+| ---------------- | ---------------------------------------------------------------------------- |
+| **Comment**      | Feedback geral sem aprovação. Útil se você pretende fechar o PR após revisar.|
+| **Approve**      | O código está bom e pode ser mesclado (merge).                               |
+| **Request changes** | Há problemas que precisam ser corrigidos antes do merge.                  |
+
+Sempre agradeça ao contribuidor pelo esforço! Um simples "obrigado" faz muita diferença, especialmente para novos colaboradores.
+
+Fonte: GitHub Docs[reference:3] e Carpentries GitHub Skills[reference:4]
+
+## Dicas bônus
+
+- **Limite o tamanho do PR:** Até 400 linhas por revisão. PRs muito grandes são cansativos e menos revisados.
+- **Revisão não é formatação:** Use linters para isso. Foque em lógica e segurança.
+- **Teste localmente se possível:** Para mudanças complexas, baixe o branch e teste na sua máquina.
+- **Use o checklist do projeto** se houver um.
+
+Fonte: Code Review Best Practices[reference:5]
+
+---
+
+## 💡 Boas práticas em um piscar de olhos
+
+| Faça ✅                                 | Evite ❌                                   |
+| --------------------------------------- | ------------------------------------------ |
+| Critique o código, não a pessoa         | "Você fez isso errado"                     |
+| Pergunte ("você considerou X?")         | Exija mudanças sem explicação              |
+| Elogie partes boas                      | Foque só nos problemas                     |
+| Seja específico e sugira melhorias      | Use sarcasmo ou hipérbole ("sempre", "nunca") |
+| Forneça referências                     | Faça comentários vagos                     |
+
+---
+
+## 📚 Referências
+
+- [Boas práticas de Code Review (Dev.to)](https://dev.to/christiantld/boas-praticas-de-code-review-para-bons-programadores-3999)
+- [Google Engineering Practices – Code Review](https://google.github.io/eng-practices/review/)
+- [GitHub Docs: About pull request reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews)
+- [Luizalabs – Guia de boas práticas para revisão de código](https://github.com/luizalabs/dev-guide/blob/master/code-review/README.md)
+- [A practical guide for better, faster code reviews (GitHub)](https://github.com/mawrkus/pull-request-review-guide)
+
 ## 👥 Contribuidores
 
 - [@marcos-vinicius](https://github.com/MarcosvvMarques) 
-
+- [@cristianomendes3](https://github.com/cristianomendes3)

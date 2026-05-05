@@ -282,12 +282,42 @@ Após o merge do PR, a issue #58 será fechada automaticamente.
 
 GitHub Projects é uma ferramenta de **gestão de projeto estilo Kanban** integrada ao GitHub. Permite organizar issues e PRs em quadros visuais com colunas customizáveis.
 
+O **GitHub Projects** é a ferramenta nativa de gerenciamento de trabalho do GitHub, projetada para funcionar como um **quadro Kanban totalmente integrado** ao seu repositório, *issues* e *pull requests*. Ele elimina a necessidade de ferramentas externas, mantendo **código, documentação e planejamento em um único ecossistema**.
+
+> Esta seção orienta como a equipe pode organizar tarefas, acompanhar o andamento do desenvolvimento e manter *issues*, *pull requests* e planejamento centralizados no GitHub.
+
+#### Principais recursos:
+
+- **Quadro Kanban nativo:** Visualize e organize tarefas em colunas personalizáveis.
+- **Integração direta com Issues e PRs:** Cards podem ser criados automaticamente ao vincular issues ou abrir PRs.
+- **Campos personalizados (Custom Fields):** Adicione metadados como ``Priority``, ``Size``, ``Type``, ``Assignee`` e ``Iteration`` para filtrar e agrupar dados.
+- **Relatórios e Gráficos (Charts):** Painéis automáticos de produtividade, distribuição por prioridade, burn-down e velocity.
+- **Planejamento de Sprints:** Utilize o campo ``Iteration`` para agrupar tarefas em ciclos com datas de início e fim, acompanhando o progresso em tempo real.
+
 ### Criando um Project
 
 1. Acesse a aba **"Projects"** no repositório ou perfil
 2. Clique em **"New project"**
 3. Escolha um template (Board, Table, Roadmap)
 4. Adicione issues e PRs ao projeto
+
+Para configurar um novo projeto no GitHub:
+
+1. Acesse a aba **Projects** no seu repositório ou no perfil da organização.
+2. Clique em **New project**.
+3. Selecione o template **Kanban** (recomendado para fluxos ágeis) ou **Table**.
+4. Defina um nome descritivo (ex: Projeto de IA) e clique em **Create project**.
+5. Vincule repositórios: Vá em ⋮ (menu superior) > **Settings** > **Repositories** e adicione os repositórios que alimentarão o quadro.
+6. Ative campos personalizados: Clique em **+ Add field** e crie:
+
+    - ``Priority`` (Single select: Alta, Média, Baixa)
+    - ``Size`` (Single select: P, M, G, XL)
+    - ``Iteration`` (Iterações automáticas para sprints)
+
+```sh
+# Exemplo de como vincular um projeto via CLI
+gh project create --owner "seu-org" --title "Projeto de IA"
+```
 
 ### Colunas
 
@@ -301,11 +331,59 @@ Colunas padrão de um projeto Kanban:
 
 O GitHub Projects suporta **automações baseadas em eventos**: quando um PR é aberto, move para "In Progress"; quando é mergeado, move para "Done". Configure em Settings do projeto.
 
-### Views
+O GitHub Projects permite criar regras de automação nativas (sem necessidade de GitHub Actions externos) que reagem a eventos do repositório:
+
+1. Acesse ⋮ > **Workflows** > **Add workflow**.
+2. Configure a regra para **PR** → **Review automaticamente**:
+    - *Trigger*: ``When a pull request is opened or reopened``
+    - *Action*: ``Move item to column: Review``
+3. Para mover issues automaticamente:
+``When an issue is assigned or labeled as "ready" → Move to: In Progress``
+``When an issue is closed → Move to: Done``
+
+**Vinculação automática entre Issues e PRs**:
+O GitHub detecta palavras-chave no corpo do PR ou commits para criar links bidirecionais e disparar automações:
+
+```
+# No corpo do Pull Request ou mensagem de commit:
+Fixes #42          # Fecha a issue #42 e marca como Done
+Closes #15, #16    # Fecha múltiplas issues
+Resolves BUG-123   # Funciona com chaves customizadas de rastreamento
+Related to #88     # Apenas vincula, sem fechar
+```
+
+Para fechar issues de **outros repositórios**, use a sintaxe completa: `Fixes owner/repo#42`.
+
+Quando o PR é merged, as issues vinculadas são fechadas automaticamente e, se configurado, movidas para a coluna ``Done``.
 
 - **Board**: visualização Kanban com cartões em colunas
 - **Table**: visualização em planilha com campos customizáveis
 - **Roadmap**: linha do tempo para planejamento de longo prazo
+
+O GitHub Projects oferece múltiplas visões para adaptar o quadro às diferentes necessidades da equipe:
+
+- **Board:** Visão Kanban tradicional. Ideal para o acompanhamento diário, drag-and-drop de cards e validação do fluxo ``To Do → In Progress → Review → Done``.
+- **Table:** Planilha interativa. Permite edição em massa, ordenação por ``Priority``, ``Size`` ou ``Assignee``, e filtros avançados (ex: ``Priority:"Alta" Size:"G"``).
+- **Roadmap:** visão em linha do tempo baseada em campos de data, útil para acompanhar entregas, marcos e prazos. Arraste barras para ajustar prazos sem alterar o status.
+- **Insights e Charts:** Acesse a aba **Charts** para gerar gráficos automáticos:
+    - Pizza: Distribuição de tarefas por ``Priority`` ou ``Type``
+    - Barras: Conclusão por ``Iteration`` (Sprint)
+- **Planejamento de Sprints:**
+    1. Ative o campo ``Iteration`` nas configurações do projeto.
+    2. Crie iterações com datas (ex: ``Sprint 12: 05/11 – 19/11``).
+    3. Use **Board** > **Group by** > ``Iteration`` para visualizar o que entra em cada ciclo.
+    4. Acompanhe a saúde do sprint no **Charts** com métricas de *completion rate* e *scope changes*.
+
+> *Boa prática*: Realize o planning semanal usando a view **Table** para arrastar itens do backlog para a ``Iteration`` ativa, e faça o review na view **Board + Charts** para validar o fluxo e ajustar prioridades.
+
+### Boas práticas para a equipe
+
+- Mantenha as tarefas sempre vinculadas a uma issue.
+- Atualize o status dos cards conforme o andamento da atividade.
+- Use `Priority` e `Size` antes de iniciar uma tarefa.
+- Abra pull requests vinculados às issues correspondentes.
+- Mova tarefas para `Review` apenas quando estiverem prontas para revisão.
+- Revise os gráficos ao final de cada sprint para identificar atrasos e melhorias no fluxo.
 
 ## GitHub Actions
 

@@ -373,3 +373,27 @@ A configuração de nome e e-mail não é apenas burocrática; ela é o que gara
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->
 - [Rafael Ziani de Carvalho](https://github.com/steinbukken7321) - Configuração Inicial do Git
+
+---
+
+---
+## SSH Keys
+
+As chaves SSH garantem uma autenticação segura e criptografada entre sua máquina local e o GitHub, eliminando a necessidade de credenciais manuais em cada operação.
+
+### Por que utilizar SSH?
+* **Segurança:** Autenticação baseada em criptografia de chave pública/privada.
+* **Eficiência:** Elimina prompts de senha recorrentes.
+* **Automação:** Requisito para fluxos de CI/CD e scripts automatizados.
+
+### Gerando o Par de Chaves (Key Pair)
+No terminal, execute o comando utilizando o algoritmo Ed25519 (recomendado por segurança e performance):
+```bash
+ssh-keygen -t ed25519 -C "saimomgozn@gmail.com"
+
+> **Nota para sistemas legados:** Caso o ambiente não ofereça suporte ao Ed25519, utilize o RSA com 4096 bits como alternativa:
+> ```bash
+> ssh-keygen -t rsa -b 4096 -C "saimomgozn@gmail.com"
+> ```
+   
+   

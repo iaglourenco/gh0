@@ -22,7 +22,7 @@ Um **workflow** (fluxo de trabalho) de desenvolvimento é um conjunto padronizad
 
 ### O que é Fork?
 
-Um **Fork** é uma cópia completa de um repositório de outra pessoa para a sua própria conta no GitHub. Diferente de um simples clone local, o fork cria um repositório remoto sob o seu controle, permitindo que você faça alterações livremente sem afetar o projeto original.
+Um **Fork** é uma cópia completa de um repositório de outra pessoa para a sua própria conta no GitHub. Diferentemente de um simples clone local, o fork cria um repositório remoto sob o seu controle, permitindo que você faça alterações livremente sem afetar o projeto original.
 
 ### Quando Usar
 
@@ -59,7 +59,7 @@ git remote add upstream https://github.com/dono-original/nome-do-repo.git
 Nunca trabalhe diretamente na branch `main`. Crie uma branch específica para a sua contribuição:
 
 ```bash
-git checkout -b feature/minha-contribuicao
+git switch -c feature/minha-contribuicao
 ```
 
 #### 5. Fazer Mudanças e Commit
@@ -92,10 +92,10 @@ Antes de começar uma nova contribuição (ou se o seu PR estiver demorando), ma
 git fetch upstream
 
 # Garante que você está na sua main
-git checkout main
+git switch main
 
-# Mescla as novidades na sua main local
-git merge upstream/main
+# Atualiza a sua main local apenas se for possível avançar em fast-forward
+git merge --ff-only upstream/main
 
 # Atualiza o seu fork no GitHub
 git push origin main

@@ -136,14 +136,14 @@ A CLI oficial do GitHub (`gh`) traz as funcionalidades do GitHub diretamente par
 # Autenticar-se na sua conta do GitHub
 gh auth login
 
-# Clonar um repositório (substitui o git clone)
-gh repo clone iaglourenco/gh0
+# Clonar um repositório do GitHub (alternativa conveniente ao git clone)
+gh repo clone <owner>/<repo>
 
 # Listar issues abertas no repositório atual
 gh issue list
 
 # Visualizar detalhes de uma issue específica
-gh issue view 42
+gh issue view <numero-da-issue>
 
 # Criar um novo Pull Request a partir da branch atual
 gh pr create --title "feat: adiciona nova funcionalidade" --body "Detalhes aqui"

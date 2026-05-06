@@ -125,40 +125,79 @@ O fluxo tradicional de trabalho em projetos colaborativos ou Open Source segue u
 
 ### Pré-requisitos
 
-**Antes de abrir um PR, certifique-se de que:**
+Antes de abrir um PR, certifique-se de ter:
 
-- Suas alterações estão em uma branch separada (nunca trabalhe direto na main).
-
-- Seu código está testado localmente e funcionando.
-
-- Seus commits possuem mensagens claras e descritivas.
-- As alterações estão alinhadas com a issue que você se propôs a resolver.
+- Uma conta no GitHub
+- Um repositório com pelo menos uma branch diferente da `main` (ou um fork com uma branch)
+- Commits feitos nessa branch com as suas alterações
+- Permissão de escrita no repositório, ou um fork próprio
 
 ### Passo a Passo
 
 #### 1. Fazer Push da Branch
 
-Primeiro, envie sua branch local para o repositório remoto:
+Envie sua branch local para o GitHub com o comando:
 
 ```bash
-git push origin nome-da-sua-branch
+git push origin nome-da-branch
+```
+
+Se for a primeira vez que você envia essa branch, o Git pode sugerir o comando completo:
+
+```bash
+git push --set-upstream origin nome-da-branch
 ```
 
 #### 2. Abrir PR no GitHub
 
-Acesse a página do repositório no GitHub. Logo após fazer o push, o GitHub geralmente exibe um banner amarelo com o botão "Compare & pull request". Caso não apareça, vá até a aba "Pull requests" e clique no botão verde "New pull request", selecionando a sua branch como origem e a main como destino.
+Após o push, acesse o repositório no GitHub. Você verá um **banner amarelo** no topo da página com uma mensagem como:
+
+> "sua-branch had recent pushes X seconds ago"
+
+Clique no botão verde **"Compare & pull request"** para iniciar a criação do PR.
+
+Caso o banner não apareça, você também pode:
+1. Clicar na aba **Pull requests**
+2. Clicar em **New pull request**
+3. Selecionar a branch de origem no menu **compare**
+
+**Ao abrir a tela de criação do PR, verifique:**
+
+- **Base branch**: a branch que vai *receber* as mudanças (geralmente `main`)
+- **Compare branch**: a sua branch com as mudanças que você quer propor
+
+**Criando PR a partir de um Fork:**
+
+Se você está contribuindo para um repositório que não é seu (como neste projeto), o fluxo é o mesmo, mas você deve:
+
+1. Navegar ao repositório **original** (upstream)
+2. Clicar em **Compare & pull request** no banner
+3. Clicar em **compare across forks**
+4. Selecionar o repositório base (original) e a branch de destino
+5. Selecionar o seu fork e a sua branch de origem
 
 #### 3. Preencher Informações
 
-Uma comunicação clara no Pull Request economiza tempo de todos os colaborados e envolvidos.
+Após confirmar as branches, preencha as informações do PR nos campos à direita:
+
+- **Reviewers**: pessoas que você quer que revisem (ex: colegas, professor)
+- **Assignees**: a pessoa responsável pelo PR (geralmente você mesmo)
+- **Labels**: categorias como `documentation`, `bug`, `enhancement`
+- **Milestone**: sprint ou marco relacionado
 
 ##### Título do PR
 
-O título deve ser conciso e usar o padrão do projeto (ex: Conventional Commits).
+O título deve ser curto, descritivo e escrito no **imperativo** (como se fosse um comando):
 
-- Exemplo ideal: feat: "adiciona autenticação por JWT na API."
+```
+✅ "Adiciona explicação sobre git commit"
+✅ "Corrige typo na seção de branching"
+✅ "Preenche conteúdo da seção git init"
 
-- Exemplo ruim: atualizando arquivos.
+❌ "Minha contribuição"
+❌ "atualizei o arquivo"
+❌ "WIP"
+```
 
 ##### Descrição
 A descrição deve fornecer todo o contexto necessário para o revisor.
@@ -167,14 +206,42 @@ A descrição deve fornecer todo o contexto necessário para o revisor.
 
 - O que foi feito e qual problema isso resolve.
 
-- Como o revisor pode testar as alterações localmente.
+A descrição é o lugar para **explicar o contexto e as mudanças**. Um bom modelo:
+
+```markdown
+## O que este PR faz?
+Descreva o propósito principal das mudanças.
+
+## O que mudou?
+- Item 1 que foi alterado
+- Item 2 que foi adicionado
+
+## Como testar?
+Passo a passo para verificar que as mudanças funcionam.
+
+## Issues relacionadas
+Closes #Número-da-issue
+```
+
+> Se ainda não estiver pronto para revisão, clique na seta ao lado de **"Create pull request"** e selecione **"Create Draft Pull Request"**. PRs em rascunho não podem ser mergeados até serem marcados como prontos.
 
 - Screenshots ou GIFs caso tenha alterado a interface (Front-end).
 #### 4. Referenciar Issues
 
-Você pode vincular o seu PR a uma Issue existente no GitHub. Se você usar palavras-chave específicas na descrição, o GitHub fechará a issue automaticamente quando o PR sofrer o merge.
+Você pode vincular seu PR a uma issue usando palavras-chave especiais na descrição. Quando o PR for mergeado, a issue será fechada automaticamente:
 
-Exemplos:  Closes #123, Fixes #456, Resolves #102.
+```markdown
+Closes #123
+Fixes #456
+Resolves #789
+```
+
+Você pode referenciar múltiplas issues e de outros repositórios:
+
+```markdown
+Closes #123, Fixes #456
+Closes usuario/repositorio#789
+```
 
 ## Anatomia de um Bom Pull Request
 
@@ -1033,13 +1100,33 @@ O GitHub web possui atalhos de teclado produtivos em um PR:
 
 ### Exemplo 1: Primeiro Pull Request
 
-**Você é encarregado de adicionar um botão na página de login.**
+Cenário: você quer contribuir com o projeto `gh0` preenchendo uma seção de um arquivo de documentação.
 
-1. Cria a branch feat/btn-login.
+```bash
+# Passo 1: Fazer fork do repositório no GitHub (botão Fork)
 
-2. Adiciona o HTML e CSS do botão.
+# Passo 2: Clonar seu fork
+git clone https://github.com/SEU-USUARIO/gh0.git
+cd gh0
 
-3. Faz o push e abre o PR com o título: feat: adiciona botão de login social.
+# Passo 3: Configurar o upstream
+git remote add upstream https://github.com/iaglourenco/gh0.git
+
+# Passo 4: Criar uma branch descritiva
+git switch -c seu-nome/adiciona-secao-git-init
+
+# Passo 5: Fazer as alterações no arquivo indicado na issue
+# (editar docs/02-comandos-essenciais.md, por exemplo)
+
+# Passo 6: Adicionar e fazer commit
+git add docs/02-comandos-essenciais.md
+git commit -m "docs: adiciona explicação sobre git init"
+
+# Passo 7: Enviar a branch para o seu fork
+git push origin seu-nome/adiciona-secao-git-init
+```
+
+Agora acesse o GitHub, clique em **"Compare & pull request"** no banner amarelo, preencha o título, a descrição (com `Closes #Número-da-issue`) e clique em **"Create pull request"**.
 
 4. Na descrição, anexa uma foto do antes/depois da tela.
    
@@ -1104,20 +1191,45 @@ Fazer alterações locais baseadas nos feedbacks, mas dar "push" ignorando as th
 
 ## Workflow Diagram
 
-Fluxograma básico de um Pull Request:
+Fluxo completo de uma contribuição via Pull Request:
+
 ```
-Local                   Remoto (GitHub)
-  
-[ main ]                  [ main ]
-   |                         | (10. Merge)
-   |-- (3. Branch)           ^
-   |                         | (9. Approve)
-[ feature ]               [ feature PR ]
-   |                         ^
-   |-- (4. Commits)          | (7. Code Review)
-   |                         |
-   +------------------> (6. Open PR)
-      (5. Push)
+[Repositório Original]
+        |
+        | fork
+        ↓
+ [Seu Fork no GitHub]
+        |
+        | git clone
+        ↓
+ [Seu Computador (local)]
+        |
+        | git switch -c feature/minha-contribuicao
+        ↓
+  [Nova Branch local]
+        |
+        | editar arquivos
+        | git add + git commit
+        ↓
+  [Commits na Branch]
+        |
+        | git push origin feature/minha-contribuicao
+        ↓
+ [Branch no Seu Fork]
+        |
+        | Abrir Pull Request no GitHub
+        ↓
+  [Pull Request Aberto]
+        |
+        |--- CI/CD checks (automático)
+        |--- Revisão por pares
+        |--- Discussão e ajustes
+        ↓
+     [Aprovado]
+        |
+        | Merge
+        ↓
+[Repositório Original (main)]
 ```
 
 ## Recursos Adicionais
@@ -1130,86 +1242,29 @@ Para aprofundar seu conhecimento na gestão do repositório, consulte estes link
 
 - [GitHub Pull Request Documentation](https://docs.github.com/en/pull-requests)
 - [Code Review Best Practices](https://google.github.io/eng-practices/review/)
+- [Beginner's Guide to GitHub: Creating a Pull Request](https://github.blog/developer-skills/github/beginners-guide-to-github-creating-a-pull-request/)
+- [Creating a Pull Request from a Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
+- <!-- Mais recursos -->
 
 ## Resumo
 
-Pull Requests e revisões de código são habilidades interpessoais e técnicas tão cruciais quanto o próprio ato de programar. Eles garantem a saúde do sistema, distribuem conhecimento, uniformizam padrões e criam um ambiente cooperativo. Ao dominar PRs pequenos, bem documentados e a arte de um feedback construtivo, você se torna um profissional pronto para atuar em times de engenharia de ponta.
+Um **Pull Request** é a principal forma de colaborar no GitHub. Ele não é um comando Git, mas uma funcionalidade da plataforma que permite propor, revisar e discutir mudanças antes de integrá-las ao projeto.
 
+**Para criar um PR:**
+1. Crie uma branch, faça commits e envie com `git push origin nome-da-branch`
+2. No GitHub, clique em **Compare & pull request** no banner amarelo
+3. Selecione a **branch de destino** (base) e a **branch de origem** (compare)
+4. Preencha um título descritivo, uma descrição clara e vincule a issue com `Closes #Número`
+5. Clique em **Create pull request** (ou **Draft** se ainda não estiver pronto)
+6. Aguarde revisão, responda aos comentários e atualize o PR com novos commits
+7. Após aprovado, o mantenedor faz o merge
 
-# Revisão de Código: Como ser um bom revisor
-
-A revisão de código (code review) é uma etapa essencial para manter a qualidade e consistência de qualquer projeto colaborativo. Mais do que apontar erros, é uma oportunidade de ensinar, aprender e melhorar o código em equipe.
-
-## Antes de começar: mentalidade
-
-- **A revisão é sobre o código, não sobre a pessoa.** Critique a implementação, não o autor.
-- **Não leve para o lado pessoal.** Você e o revisor estão no mesmo time. Um código revisado em 10 minutos foi escrito em horas. Tenha humildade para ouvir.
-- **Faça elogios.** Se algo ficou bom, diga! Isso incentiva os contribuidores.
-- **Existem várias soluções para o mesmo problema.** Distinga entre boas práticas e gosto pessoal.
-
-Fonte: [Dev.to](https://dev.to/christiantld/boas-praticas-de-code-review-para-bons-programadores-3999)[reference:0]
-
-## O que revisar?
-
-Use um checklist mental. Alguns pontos importantes:
-
-- ✅ **Propósito:** Entendo o que o código faz? Ele cumpre o que a issue/PR descreve?
-- ✅ **Lógica:** Existem bugs óbvios? Casos extremos (edge cases) foram tratados?
-- ✅ **Segurança:** Validação de entrada? Risco de injeção SQL, XSS, etc.?
-- ✅ **Performance:** Loops desnecessários? Consultas repetidas (N+1)?
-- ✅ **Manutenibilidade:** Nomes de variáveis são claros? Funções fazem uma coisa só? Código complexo tem comentários?
-
-Fonte: Google Engineering Practices[reference:1]
-
-## Como dar feedback
-
-### ✨ Escreva comentários objetivos e construtivos
-
-Prefira frases como "Eu sugiro que..." em vez de acusações diretas.
-
-- ❌ Evite: "Você está fazendo errado."
-- ✅ Prefira: "O código faz X, mas talvez seja melhor Y porque Z."
-
-### 🔍 Faça perguntas
-
-Se algo não ficou claro, pergunte. Isso abre diálogo em vez de gerar conflito.
-
-- Exemplo: "Não entendi por que essa validação foi feita aqui. Você pode explicar?"
-
-### 📏 Use comentários em linha
-
-No GitHub, você pode clicar no número de uma linha nos arquivos alterados ("Files changed") e deixar um comentário bem específico. Se quiser sugerir uma correção, use o botão `+/-` de "suggestion".
-
-### 📦 Priorize o feedback
-
-Separe o que é crítico (correção obrigatória) do que é sugestão de estilo.
-
-- Exemplo de sugestão não bloqueante: *"[nit] Considere trocar esta variável de 'x' para 'userCount' para ficar mais claro. Não é impeditivo."*
-
-Fonte: Code Review Excellence Playbook[reference:2]
-
-## Como finalizar uma revisão no GitHub
-
-Depois de comentar todas as linhas e sugerir mudanças, clique no botão **"Review changes"** (perto do canto superior direito). Você verá três opções:
-
-| Opção            | Quando usar                                                                  |
-| ---------------- | ---------------------------------------------------------------------------- |
-| **Comment**      | Feedback geral sem aprovação. Útil se você pretende fechar o PR após revisar.|
-| **Approve**      | O código está bom e pode ser mesclado (merge).                               |
-| **Request changes** | Há problemas que precisam ser corrigidos antes do merge.                  |
-
-Sempre agradeça ao contribuidor pelo esforço! Um simples "obrigado" faz muita diferença, especialmente para novos colaboradores.
-
-Fonte: GitHub Docs[reference:3] e Carpentries GitHub Skills[reference:4]
-
-## Dicas bônus
-
-- **Limite o tamanho do PR:** Até 400 linhas por revisão. PRs muito grandes são cansativos e menos revisados.
-- **Revisão não é formatação:** Use linters para isso. Foque em lógica e segurança.
-- **Teste localmente se possível:** Para mudanças complexas, baixe o branch e teste na sua máquina.
-- **Use o checklist do projeto** se houver um.
-
-Fonte: Code Review Best Practices[reference:5]
+**Boas práticas essenciais:**
+- PRs pequenos e focados são melhores do que PRs grandes
+- Descreva bem o que foi feito e por quê
+- Teste as mudanças antes de abrir o PR
+- Seja responsivo: responda comentários em tempo hábil
+- Revisores: sejam construtivos, empáticos e expliquem o porquê das sugestões
 
 ---
 
@@ -1235,6 +1290,12 @@ Fonte: Code Review Best Practices[reference:5]
 
 ## 👥 Contribuidores
 
+<!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
+<!-- Adicione seu nome quando contribuir:
+- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+-->
+
+- [@gomesgeorgelucas](https://github.com/gomesgeorgelucas) - Passo a passo de como criar um Pull Request
 - [@marcos-vinicius](https://github.com/MarcosvvMarques) 
 
 - [@RfaelDePadua](https://github.com/RfaelDePadua) - Seção "O que é um Pull Request (PR)?"

@@ -179,28 +179,55 @@ genéricas no histórico.
 
 ### O que São
 
-Um commit atômico é um commit que encapsula apenas **uma única mudança lógica e coesa**. Em vez de agrupar dezenas de alterações não relacionadas no mesmo pacote, o commit atômico foca em apenas uma tarefa ou bug específico, garantindo que o histórico do projeto conte uma história clara.
+Commits atômicos representam **uma única mudança lógica** no projeto. Ao invés de agrupar várias alterações não relacionadas em um commit gigante, você divide o trabalho em pequenos commits, cada um com um propósito claro e específico.
+
+Um commit atômico deve:
+- Fazer uma coisa só (ex: adicionar uma função, corrigir um bug, atualizar documentação)
+- Ser independente – pode ser aplicado ou desfeito sem quebrar outras funcionalidades
+- Ter uma mensagem que descreva exatamente o que foi mudado e por quê
 
 ### Por que Usar
 
-- **Facilita o Code Review:** Revisores entendem as mudanças muito mais rápido.
-- **Reversão Segura:** Se algo quebrar, você pode dar `git revert` apenas naquela mudança específica sem perder o trabalho de outras *features*.
-- **Cherry-pick:** Permite puxar uma alteração específica para outra branch sem arrastar lixo junto.
-- **Debug Simplificado:** O `git bisect` fica muito mais preciso na hora de encontrar qual commit introduziu um bug.
+Manter commits atômicos traz benefícios significativos para o histórico do projeto:
+
+- **Facilita o code review** – Revisores entendem rapidamente cada mudança isolada
+- **Permite reverter seletivamente** – Se um bug aparecer, você pode reverter apenas o commit problemático (`git revert`)
+- **Ajuda no `cherry-pick`** – Você pode aplicar uma funcionalidade específica em outra branch sem trazer tudo
+- **Facilita o `bisect`** – Encontrar o commit que introduziu um bug fica muito mais rápido com commits pequenos
+- **Histórico limpo e compreensível** – `git log --oneline` mostra uma linha do tempo clara e significativa, sem poluição de mudanças misturadas
 
 ### Como Fazer
 
-1. **Faça modificações pequenas:** Terminou uma função lógica? Faça o commit.
-2. **Use o `git add -p`:** Se você mexeu em vários arquivos, adicione à área de preparação (staging) apenas os pedaços de código que fazem sentido juntos.
-3. **Não misture refatoração com novas *features*:** Se você corrigiu a indentação de um arquivo inteiro e depois criou um botão, faça dois commits separados.
+Para criar commits atômicos na prática:
+
+1. **Planeje antes de codificar** – Divida mentalmente a tarefa em etapas menores
+2. **Use `git add -p`** – Adicione apenas partes específicas de um arquivo (interactive staging)
+3. **Commite com frequência** – Sempre que uma pequena unidade de trabalho estiver pronta
+4. **Não tenha medo de muitos commits** – Commits locais são baratos; você pode reorganizá-los depois com `rebase -i`
+5. **Combine com squash** – Se exagerou nos commits muito pequenos, agrupe os relacionados antes de compartilhar
 
 ### Exemplos
 
 ```bash
-# ✅ BOM: commits separados para mudanças diferentes
-git commit -m "feat: adiciona validação de formato de email no backend"
-git commit -m "feat: implementa feedback visual de senha fraca no frontend"
-git commit -m "docs: atualiza documentação da API de login"
+# ✅ BOM: commits separados por responsabilidade
+git commit -m "feat: adiciona validação de formato de email"
+git commit -m "feat: adiciona validação de força de senha"
+git commit -m "docs: documenta novas validações no README"
+
+# ❌ RUIM: tudo em um commit (mudanças não relacionadas)
+git commit -m "adiciona validações e atualiza documentação e corrige typo"
+
+# ✅ BOM: mesmo arquivo, partes diferentes
+git add -p src/auth.js   # seleciona apenas a parte da validação de email
+git commit -m "feat: valida formato de email"
+git add -p src/auth.js   # agora a parte da senha
+git commit -m "feat: valida força da senha"
+
+```bash
+# ✅ BOM: commits separados
+git commit -m "feat: adiciona validação de email"
+git commit -m "feat: adiciona validação de senha"
+git commit -m "docs: documenta validações"
 
 # ❌ RUIM: tudo misturado e difícil de rastrear
 git commit -m "adiciona validações no front e back e documenta API"
@@ -496,15 +523,214 @@ Ao iniciar um novo repositório, um bom fluxo seria:
 5. **Automatize o changelog** com o `standard-version` a cada nova release.
 ## Histórico Limpo
 
-Um histórico de Git deve contar a história de como o software foi construído de maneira lógica.
+Manter um histórico limpo no Git significa organizar commits e branches de forma que qualquer pessoa consiga entender facilmente a evolução do projeto. Um bom histórico facilita debugging, code review, manutenção e colaboração em equipe.
+
+Um histórico limpo geralmente possui:
+
+- Commits pequenos e organizados por responsabilidade
+- Mensagens claras e descritivas
+- Poucos commits “ruído” como `fix typo`, `teste`, `wip`
+- Branches organizadas antes do merge
+- Linha do tempo compreensível no `git log --oneline`
 
 ### Rebasing
 
-(Conceito avançado). Permite reescrever a linha do tempo. É comum usar `git pull --rebase` em vez de `git pull` para evitar commits de merge desnecessários quando atualizamos nossa branch com a `main`, mantendo o histórico em uma linha reta.
+`git rebase` reaplica commits de uma branch sobre outra, criando um histórico mais linear e fácil de ler.
+
+Diferente do `merge`, o rebase evita commits extras de merge e mantém a linha do tempo mais limpa.
+
+#### Rebase vs Merge
+Quando usar `rebase`
+
+Use rebase quando:
+
+- Você quer atualizar sua branch com a `main`
+- Ainda está trabalhando localmente
+- Deseja reorganizar ou limpar commits antes do Pull Request
+- Quer um histórico linear
+
+```bash
+# Atualiza sua branch com a main
+git fetch upstream
+git rebase upstream/main
+```
+
+Quando usar `merge`
+
+Use merge quando:
+
+- A branch já foi compartilhada com outras pessoas
+- Você quer preservar o histórico exato das integrações
+- Está trabalhando em branches colaborativas
+
+```bash
+git merge upstream/main
+```
+
+#### Exemplo Visual
+##### Histórico com merge
+
+```
+A---B---C main
+     \   
+      D---E feature
+           \
+            M
+```
+
+##### Histórico com rebase
+
+```
+A---B---C---D'---E' feature
+```
+
+O histórico com rebase costuma ficar mais simples de navegar usando:
+
+```bash
+git log --oneline --graph
+```
 
 ### Squashing Commits
 
-Antes de realizar o merge de uma branch (seja no terminal ou via Pull Request no GitHub), a técnica de "Squash" permite aglutinar 10 commits pequenos ("tentativa 1", "arrumando typo", "agora vai") em 1 único commit limpo e significativo na `main`.
+Durante o desenvolvimento é normal criar commits intermediários como:
+
+```bash
+fix typo
+ajuste
+teste
+wip
+```
+
+Antes de abrir um Pull Request, o ideal é combinar commits relacionados usando squash. Isso reduz ruído e deixa o histórico mais profissional.
+
+#### Exemplo
+
+##### Antes do squash
+
+```
+feat: adiciona autenticação
+fix: corrige typo
+wip
+ajuste login
+docs: atualiza exemplo
+```
+
+##### Depois do squash
+
+```
+feat: adiciona autenticação com validação de login
+docs: atualiza documentação da autenticação
+```
+
+### Interactive Rebase
+
+O git `rebase -i` (interactive rebase) permite reorganizar, editar, remover ou combinar commits.
+
+É uma das ferramentas mais importantes para limpar o histórico antes de compartilhar código.
+
+```bash
+# Reorganiza os últimos 5 commits
+git rebase -i HEAD~5
+```
+
+Ao executar o comando, o Git abrirá uma lista semelhante a esta:
+
+```
+pick a1b2c3 feat: adiciona login
+pick d4e5f6 fix typo
+pick g7h8i9 ajuste login
+```
+
+Você pode alterar os comandos:
+
+```
+pick a1b2c3 feat: adiciona login
+squash d4e5f6 fix typo
+squash g7h8i9 ajuste login
+```
+
+Principais opções:
+
+- `pick` → mantém o commit
+- `squash` → combina com o commit anterior
+- `reword` → altera a mensagem
+- `drop` → remove o commit
+
+### Evite Reescrever Histórico Publicado
+
+Reescrever histórico altera hashes de commits. Isso pode causar conflitos e problemas para outras pessoas que já baixaram a branch.
+
+Por isso:
+
+- ✅ É seguro usar `rebase -i` em branches locais/pessoais
+- ⚠️ Evite rebase em branches compartilhadas
+- ❌ Nunca reescreva histórico de branches públicas como main
+
+Cuidado com `push --force`
+
+Após um rebase, às vezes é necessário forçar o push:
+
+```bash
+git push --force
+```
+
+Isso sobrescreve o histórico remoto e pode apagar commits de outras pessoas.
+
+Prefira:
+
+```bash
+git push --force-with-lease
+```
+
+O `--force-with-lease` adiciona uma camada de segurança e evita sobrescrever alterações remotas inesperadamente.
+
+### Recovery com Reflog
+
+O `git reflog` registra todas as movimentações do HEAD, incluindo commits perdidos, rebases e resets.
+
+Ele é extremamente útil para recuperar trabalho aparentemente perdido.
+
+#### Exemplo
+
+```bash
+git reflog
+```
+
+Saída:
+
+```
+a1b2c3 HEAD@{0}: rebase finished
+d4e5f6 HEAD@{1}: commit: adiciona autenticação
+g7h8i9 HEAD@{2}: reset: moving to HEAD~1
+```
+
+Se você perdeu um commit após um reset ou rebase:
+
+```bash
+git reset --hard d4e5f6
+```
+
+Ou criar uma branch de recuperação:
+
+```bash
+git switch -c recovery-branch d4e5f6
+```
+
+### Resumo
+
+Um histórico limpo melhora significativamente a colaboração e a manutenção do projeto.
+
+Boas práticas importantes:
+
+- Faça commits atômicos
+- Use mensagens descritivas
+- Evite commits “ruído”
+- Faça squash antes do merge
+- Use `rebase -i` para organizar commits locais
+- Não reescreva histórico publicado
+- Use `reflog` para recuperar alterações perdidas
+
+Com isso, comandos como `git log --oneline` passam a contar a história do projeto de forma clara e organizada.
 
 ### Evitar Force Push
 

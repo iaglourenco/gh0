@@ -591,50 +591,40 @@ git merge feature/nova-funcionalidade
 # 2. Verifique os arquivos em conflito
 git status
 
-# 3. Abra a ferramenta configurada
-git mergetool
-# A ferramenta abre para cada arquivo em conflito, um por vez
-# Resolva, salve e feche
+Antes de iniciar mudanças grandes, comunique à equipe qual branch você está usando, quais arquivos serão alterados e qual funcionalidade está sendo desenvolvida.
+
+Exemplo:
+- Branch: `feature/login`
+- Arquivos: `auth.py`, `login.html`
+
+Isso evita que várias pessoas modifiquem o mesmo arquivo sem necessidade e ajuda a identificar possíveis problemas antes do desenvolvimento avançar.
 
 # 4. Remova os arquivos .orig gerados (backup automático)
 > **Cuidado:** O comando `git clean` apaga arquivos permanentemente. Use apenas se tiver certeza de que quer remover os backups `.orig`.
 git clean -f *.orig
 
-# 5. Adicione e finalize
-git add arquivo-resolvido.py
-git commit -m "merge: resolve conflito em arquivo-resolvido.py"
-```
-
-### Git Aliases para Setup Rápido
-
-Adicione ao seu `~/.gitconfig` para trocar de ferramenta com um comando só:
+Mantenha sua branch sincronizada com a branch principal regularmente para reduzir diferenças acumuladas.
 
 ```bash
-git config --global alias.use-vscode '!git config --global merge.tool vscode && git config --global mergetool.vscode.cmd "code --wait $MERGED"'
-git config --global alias.use-meld '!git config --global merge.tool meld'
-git config --global alias.use-kdiff3 '!git config --global merge.tool kdiff3'
-git config --global alias.mt 'mergetool'
+git fetch origin
+git merge origin/main
 ```
 
-Uso:
+Ficar sincronizado evita conflitos complexos. Além disso, rodar testes após o merge garante que a cobertura identifique conflitos lógicos imediatamente.
 
+### Commits Pequenos e Frequentes
+
+Trabalhe com mudanças granulares. Commits menores facilitam a integração e tornam a resolução de conflitos muito mais simples, pois o volume de alterações em cada merge é reduzido.
+
+Exemplo:
 ```bash
-git use-meld    # troca para Meld
-git mt          # abre o mergetool nos arquivos com conflito
+git add .
+git commit -m "Implementa validação de senha no backend"
 ```
-
-### Comparativo das Ferramentas
-
-| Ferramenta | Plataforma | Custo | Destaques |
-|---|---|---|---|
-| **VS Code** | Linux, Windows, macOS | Gratuito | Integrado ao editor, sem instalação extra |
-| **Meld** | Linux, Windows, macOS | Gratuito / Open-source | Interface simples, ótimo para iniciantes |
-| **KDiff3** | Linux, Windows, macOS | Gratuito / Open-source | Auto-merge de partes não conflitantes |
-| **P4Merge** | Linux, Windows, macOS | Gratuito (proprietário) | Visual limpo, popular em equipes profissionais |
 
 ### Quando usar ferramenta em vez de resolver manualmente?
 
-A edição direta do arquivo com os marcadores `<<<<<<<`, `=======`, `>>>>>>>` funciona bem para conflitos simples. Prefira uma ferramenta visual quando:
+Adote o **Trunk-based development**, mantendo o ciclo de vida das branches curto (dias, não semanas). Dividir o trabalho em entregas menores permite que o código seja integrado à `main` antes que grandes divergências ocorram.
 
 - O arquivo tem mais de dois ou três blocos de conflito
 - O conflito envolve código que foi movido (refatoração), não apenas modificado
@@ -643,7 +633,14 @@ A edição direta do arquivo com os marcadores `<<<<<<<`, `=======`, `>>>>>>>` f
 
 ### Git GUI Tools
 
-#### GitKraken
+Evite branches de longa duração utilizando **Feature Toggles**. Isso permite que você faça o merge de código ainda em desenvolvimento para a `main` com a funcionalidade desativada, garantindo a sincronia sem quebrar a produção.
+
+Exemplo:
+```bash
+if (featureFlags.NOVO_SISTEMA_LOGIN) {
+  renderNovoLogin();
+}
+```
 
 <!-- TODO: Interface de merge do GitKraken -->
 

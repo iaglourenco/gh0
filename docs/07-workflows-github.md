@@ -4,38 +4,49 @@
 
 ## 📋 Objetivos de Aprendizagem
 
-- Entender o que são workflows de desenvolvimento e por que são necessários
-- Dominar o Fork Workflow para contribuições em projetos Open Source
-- Conhecer os principais modelos de branching (GitHub Flow, Git Flow, Trunk-Based)
-- Utilizar recursos avançados do GitHub (Issues, Projects, Actions, Pages)
-- Aplicar boas práticas de segurança e colaboração na plataforma
+Ao final deste módulo, você será capaz de:
+
+- Entender os principais workflows de colaboração com Git e GitHub
+- Escolher o workflow adequado para cada tipo de projeto
+- Utilizar recursos como Issues, Projects, Actions e Pages
+- Automatizar tarefas com GitHub Actions
+- Publicar sites estáticos com GitHub Pages
+- Proteger branches e gerenciar contribuições com segurança
 
 ## 🎯 Introdução
 
-O GitHub evoluiu de um simples serviço de hospedagem de código para uma plataforma completa de colaboração e automação de engenharia de software. Hoje, ele oferece ferramentas integradas para gerenciamento de projetos, integração contínua (CI/CD), segurança de código e publicação de documentação.
+O GitHub vai muito além de simplesmente hospedar código. É uma **plataforma completa de colaboração e automação** que oferece ferramentas para gerenciar projetos, automatizar processos, publicar documentação e muito mais.
+
+Conhecer os workflows e recursos disponíveis é fundamental para trabalhar de forma eficiente em equipe.
 
 ## O que é um Workflow?
 
-Um **workflow** (fluxo de trabalho) de desenvolvimento é um conjunto padronizado de práticas, regras e processos que uma equipe adota para colaborar no mesmo código-fonte. Ele define como as branches são criadas, como o código é revisado e como as versões chegam à produção, garantindo organização e minimizando conflitos.
+Um **workflow de desenvolvimento** é um conjunto de práticas, convenções e processos que uma equipe adota para colaborar em um projeto de software. Ele define como o código é escrito, revisado, integrado e entregue.
+
+Escolher um bom workflow ajuda a:
+- Evitar conflitos de código
+- Garantir qualidade com revisões
+- Manter o histórico organizado
+- Facilitar a integração contínua
 
 ## Fork Workflow
 
 ### O que é Fork?
 
-Um **Fork** é uma cópia completa de um repositório de outra pessoa para a sua própria conta no GitHub. Diferentemente de um simples clone local, o fork cria um repositório remoto sob o seu controle, permitindo que você faça alterações livremente sem afetar o projeto original.
+Fork é uma **cópia completa de um repositório na sua conta do GitHub**. Você passa a ter controle total sobre essa cópia, podendo fazer alterações sem afetar o repositório original. É a base para contribuições em projetos open source.
 
 ### Quando Usar
 
-O Fork Workflow é o padrão absoluto para:
-- Contribuir para projetos **Open Source** (onde você não tem permissão de escrita).
-- Fazer grandes experimentações baseadas em um projeto existente.
-- Criar a sua própria versão de um software livre.
+- Contribuir para projetos **open source** sem acesso de escrita direto
+- Experimentar mudanças sem risco ao projeto original
+- Criar sua própria versão personalizada de um projeto
+- Em disciplinas e cursos colaborativos (como este!)
 
 ### Passo a Passo
 
 #### 1. Fork do Repositório
 
-Acesse a página do repositório original no GitHub e clique no botão **"Fork"** no canto superior direito. Isso criará uma cópia do repositório na sua conta (`seu-usuario/nome-do-repo`).
+Acesse o repositório original no GitHub e clique no botão **"Fork"** no canto superior direito. Escolha sua conta como destino. O GitHub criará uma cópia em `https://github.com/SEU-USUARIO/repositorio`.
 
 #### 2. Clone do Fork
 
@@ -111,14 +122,17 @@ git push origin main
 
 ### O que é
 
-Workflow de desenvolvimento simples e ágil chamado GitHub Flow, onde todas as mudanças partem da branch main e retornam para ela via Pull Request.
+
+GitHub Flow é um workflow de desenvolvimento **simples e ágil** criado pelo GitHub, ideal para projetos com deploy contínuo. Nesse fluxo, todas as mudanças partem da branch principal (`main`) e retornam para ela por meio de Pull Requests.
 
 ### Princípios
 
-1. Main está sempre pronta para deploy (deployable)
-2. Uso de branches curtas e descritivas
-3. Pull Requests são usados para discussão e revisão de código
-4. Mudanças só entram na main após review e aprovação
+1. A `main` está **sempre pronta para deploy** — nunca quebre a branch principal
+2. Use **branches curtas e descritivas** para cada tarefa ou funcionalidade
+3. Abra **Pull Requests** cedo para discussão, feedback e revisão de código
+4. Mudanças só entram na `main` após review e aprovação
+5. Faça o **deploy imediatamente** após o merge na `main`
+
 
 ### Fluxo Completo
 
@@ -134,168 +148,159 @@ flowchart LR
 
 ### Quando Usar
 
-Projetos que utilizam deploy contínuo (Continuous Deployment) e precisam de agilidade no desenvolvimento, especialmente em equipes pequenas ou médias.
+
+Ideal para projetos web com **deploy contínuo** ou **Continuous Deployment**, como SaaS, aplicações web e projetos que precisam de agilidade no desenvolvimento, especialmente em equipes pequenas ou médias.
 
 ### GitHub Flow vs Git Flow
 
 - GitHub Flow é mais simples e direto
-- Não possui branches de release ou develop
-- Ideal para deploy contínuo
+- Não possui branches de `release` ou `develop`
+- É ideal para deploy contínuo
 - Git Flow é mais estruturado e indicado para projetos com versões planejadas
+
 
 ## Git Flow
 
 ### O que é
 
-É um workflow clássico, rigoroso e altamente estruturado, criado por Vincent Driessen. Ele define papéis estritos para diferentes branches e foca no lançamento de "versões" pontuais do software.
+Git Flow é um workflow **mais estruturado**, criado por Vincent Driessen, indicado para projetos com ciclos de release definidos. Utiliza múltiplas branches com papéis específicos.
 
 ### Branches Principais
 
 #### main (ou master)
 
-Contém apenas o código que está rodando em produção atualmente. Cada commit na `main` deve ser acompanhado de uma tag de versão (ex: `v1.2.0`).
+Contém o **código em produção**. Apenas código testado e aprovado chega aqui, geralmente via merge de `release` ou `hotfix`.
 
 #### develop
 
-É a branch onde a equipe de desenvolvimento integra as funcionalidades para o próximo lançamento. É a "main" do dia a dia dos desenvolvedores.
+Branch de **desenvolvimento ativo**. Todas as features são integradas aqui antes de ir para produção.
 
 ### Branches de Suporte
 
 #### feature/*
 
-Criadas a partir da `develop`. Servem para desenvolver novas funcionalidades. Quando prontas, voltam para a `develop`.
+Branches para **novas funcionalidades**. Partem de `develop` e são mescladas de volta em `develop` ao concluir. Ex: `feature/login-social`
 
 #### release/*
 
-Criadas a partir da `develop` quando há funcionalidades suficientes para um novo lançamento. Aqui só se faz correção de bugs finais e ajustes de versão. Quando pronta, vai para a `main` (produção) e volta para a `develop`.
+Branches de **preparação de release**. Partem de `develop`, recebem apenas correções de bugs e são mescladas em `main` e `develop`. Ex: `release/v1.2.0`
 
 #### hotfix/*
 
-Criadas a partir da `main`. Servem para corrigir um erro crítico que está acontecendo em produção agora. Após a correção, a hotfix vai para a `main` e também volta para a `develop` para que o erro não volte na próxima versão.
+Branches para **correções urgentes em produção**. Partem de `main` e são mescladas em `main` e `develop`. Ex: `hotfix/corrige-login`
 
 ### Fluxo Visual
 
-Imagine duas linhas centrais grossas (`main` e `develop`) que correm paralelamente, com `features` saindo e voltando da `develop`, `releases` fazendo a ponte entre `develop` e `main`, e `hotfixes` agindo como curativos de emergência na `main`.
+```
+main     ─────────────────────────────────────► produção
+           ↑ hotfix          ↑ release
+develop  ──────────────────────────────────────
+              ↑ feature   ↑ feature
+```
 
 ### Quando Usar
 
-Projetos que possuem ciclos de lançamento longos e planejados, como aplicativos de celular (iOS/Android), jogos, software instalado no computador (desktop apps) ou sistemas de bancos, onde não se pode simplesmente "atualizar o site" a qualquer minuto.
+Ideal para projetos com **releases planejadas** e versionamento semântico (v1.0, v2.1...), como bibliotecas, apps mobile e software corporativo.
+
+### Ferramentas
+
+A extensão `git-flow` automatiza o fluxo:
+```bash
+# Instalar (Linux/Mac)
+brew install git-flow
+
+# Iniciar git flow no projeto
+git flow init
+
+# Criar feature
+git flow feature start minha-feature
+
+# Finalizar feature
+git flow feature finish minha-feature
+```
 
 ## Trunk-Based Development
 
 ### O que é
 
-Um workflow onde todos os desenvolvedores fazem commits diretos (ou PRs minúsculos que duram poucas horas) em uma única branch principal (o "tronco" ou *trunk* - geralmente a `main`). 
+Trunk-Based Development é um workflow onde **todos os desenvolvedores commitam frequentemente na branch principal** (`main`/`trunk`). Branches são curtíssimas (horas, não dias).
 
 ### Características
 
-- Quase não existem branches de vida longa.
-- Exige forte uso de **Feature Flags** (botões de liga/desliga no código) para esconder código que ainda não está pronto dos usuários em produção.
-- Depende de uma suíte de testes automatizados impecável.
+- **Integração contínua real**: código integrado várias vezes ao dia
+- **Feature flags**: funcionalidades novas ficam ocultas até estarem prontas
+- **Testes automatizados**: essenciais para garantir qualidade
+- **Branches efêmeras**: vivem menos de 1 dia
 
 ### Quando Usar
 
-Equipes sêniores altamente maduras e disciplinadas que possuem processos de CI/CD (Integração e Entrega Contínuas) extremamente confiáveis. (Google, Facebook e Netflix operam de forma similar a isso).
+Indicado para **equipes maduras** com cultura forte de testes, CI/CD bem estruturado e desenvolvedores experientes. Muito usado em grandes empresas como Google e Facebook.
 
 ## Issues
 
 ### O que São Issues
 
-As Issues no GitHub são usadas para organizar tarefas, reportar problemas e discutir melhorias em um projeto.
-
-Elas funcionam como um sistema de gerenciamento de tarefas, permitindo acompanhar o progresso do trabalho e facilitar a colaboração entre os membros da equipe.
+Issues são o **sistema de rastreamento de tarefas** do GitHub. Funcionam como um quadro de discussão para reportar bugs, sugerir funcionalidades, fazer perguntas e organizar o trabalho do projeto.
 
 ### Tipos de Issues
 
-As issues podem representar diferentes tipos de atividades:
-
 - **Bug**: algo não está funcionando corretamente
-- **Feature**: sugestão de nova funcionalidade
-- **Question**: dúvidas sobre o projeto
-- **Documentation**: melhorias ou criação de documentação
-- **Discussion**: ideias e debates
+- **Feature**: solicitação de nova funcionalidade
+- **Question**: dúvida ou pedido de esclarecimento
+- **Documentation**: melhoria ou correção na documentação
+- **Task**: tarefa de trabalho a ser realizada
 
 ### Criando Issues
 
-Para criar uma issue:
-
-1. Acesse a aba "Issues" do repositório
-2. Clique em "New Issue"
-3. Adicione um título claro e objetivo
-4. Descreva o problema ou sugestão com detalhes
-5. Adicione labels, assignees e milestones (se necessário)
-6. Clique em "Submit new issue"
-
-Uma boa issue deve ser clara, objetiva e conter contexto suficiente para que outra pessoa consiga entender e trabalhar nela.
+Clique em **"New issue"** e preencha:
+- **Título**: claro e objetivo (ex: `[BUG] Login falha com email inválido`)
+- **Descrição**: contexto, passos para reproduzir, comportamento esperado
+- **Labels**: categorize a issue
+- **Assignees**: atribua responsáveis
+- **Milestone**: vincule a um objetivo/sprint
 
 ### Templates de Issues
 
-Os templates de issues são modelos pré-definidos que ajudam a padronizar a criação de novas issues.
-
-Eles ficam localizados na pasta:
-
-.github/ISSUE_TEMPLATE/
-
-Com templates, é possível garantir que todas as informações importantes sejam preenchidas, como descrição, passos para reproduzir um bug e comportamento esperado.
+Crie templates em `.github/ISSUE_TEMPLATE/` para padronizar a abertura de issues. O GitHub oferece templates prontos para bug reports e feature requests, ou você pode criar os seus.
 
 ### Labels (Etiquetas)
 
-Labels são etiquetas usadas para categorizar issues e facilitar a organização.
-
-Exemplos de labels comuns:
-
-- bug → problemas no sistema
-- enhancement → melhorias
-- documentation → mudanças na documentação
-- good first issue → ideal para iniciantes
-- help wanted → precisa de ajuda
-
-Labels ajudam a priorizar e identificar rapidamente o tipo de tarefa.
+Labels são **etiquetas coloridas** que categorizam e filtram issues e PRs. Facilite muito a organização e a busca de itens por tipo, prioridade ou status.
 
 #### Labels Comuns
 
-- `bug`: Algo não está funcionando conforme o esperado. (Geralmente vermelha).
-- `enhancement`: Uma melhoria ou nova funcionalidade.
-- `documentation`: Questões relacionadas ao README ou Wiki.
-- `good first issue`: Ideal para recém-chegados ao projeto que querem contribuir e não sabem por onde começar.
-- `help wanted`: Os mantenedores precisam de ajuda da comunidade com isso.
+- `bug` - Algo não está funcionando
+- `enhancement` - Nova funcionalidade ou melhoria
+- `documentation` - Melhorias na documentação
+- `good first issue` - Bom para iniciantes no projeto
+- `help wanted` - Precisa de ajuda da comunidade
+- `wontfix` - Não será corrigido/implementado
 
 ### Milestones (Marcos)
 
-Milestones são usados para agrupar issues relacionadas a um objetivo específico, como uma versão ou sprint.
-
-Exemplo:
-- Versão 1.0
-- Sprint 2
-
-Eles ajudam a acompanhar o progresso de entregas maiores dentro do projeto.
+Milestones **agrupam issues por objetivo ou release**. Permitem acompanhar o progresso de uma versão ou sprint, mostrando quantas issues estão abertas/fechadas para aquele marco.
 
 ### Assignees
 
-Assignees definem quem é responsável por trabalhar em uma issue.
-
-Ao atribuir uma issue a alguém, fica claro quem está responsável pela tarefa, evitando duplicidade de trabalho.
+Assignees são os **responsáveis por uma issue ou PR**. Um item pode ter múltiplos assignees. Aparece no perfil da pessoa e facilita saber quem está trabalhando no quê.
 
 ### Linking Issues e PRs
 
+Use palavras-chave na descrição do PR para **fechar issues automaticamente** após o merge:
 
-É possível vincular issues a Pull Requests utilizando palavras-chave no commit ou na descrição do PR.
-
-Exemplos:
-
-```bash
-Fixes #54
-Closes #10
-Relates #20
+```
+Closes #58
+Fixes #58
+Resolves #58
 ```
 
-Quando um Pull Request com "Fixes" ou "Closes" é mergeado, a issue correspondente é fechada automaticamente.
+Após o merge do PR, a issue #58 será fechada automaticamente.
 
 ## Projects (GitHub Projects)
 
 ### GitHub Projects
 
-É uma ferramenta de gestão de projetos poderosa embutida no GitHub, funcionando como um Kanban (estilo Trello/Jira), mas profundamente conectada ao seu código.
+GitHub Projects é uma ferramenta de **gestão de projeto estilo Kanban** integrada ao GitHub. Permite organizar issues e PRs em quadros visuais com colunas customizáveis.
 
 O **GitHub Projects** é a ferramenta nativa de gerenciamento de trabalho do GitHub, projetada para funcionar como um **quadro Kanban totalmente integrado** ao seu repositório, *issues* e *pull requests*. Ele elimina a necessidade de ferramentas externas, mantendo **código, documentação e planejamento em um único ecossistema**.
 
@@ -311,7 +316,10 @@ O **GitHub Projects** é a ferramenta nativa de gerenciamento de trabalho do Git
 
 ### Criando um Project
 
-Vá na aba "Projects" da sua organização ou perfil, clique em "New project". 
+1. Acesse a aba **"Projects"** no repositório ou perfil
+2. Clique em **"New project"**
+3. Escolha um template (Board, Table, Roadmap)
+4. Adicione issues e PRs ao projeto
 
 Para configurar um novo projeto no GitHub:
 
@@ -333,23 +341,15 @@ gh project create --owner "seu-org" --title "Projeto de IA"
 
 ### Colunas
 
-<!-- TODO: To Do, In Progress, Review, Done -->
-
-Um fluxo Kanban básico para equipes de desenvolvimento pode conter quatro colunas principais. Para configurá-las:
-
-1. No seu projeto, clique em **+ Add field** e edite o campo ``Status`` conforme a estrutura abaixo:
-    - ``To Do``: Backlog priorizado e pronto para ser iniciado.
-    - ``In Progress``: Tarefas em desenvolvimento ativo ou branch criada.
-    - ``Review``: PRs abertos aguardando code review ou aprovação de QA.
-    - ``Done``: Tarefas com PR *merged*, testadas e entregues.
-2. Clique em ⋮ na coluna > **Configure** para definir limites de WIP (Work In Progress) e regras de agrupamento.
-3. Use a opção **Group by** > ``Status`` para que o GitHub distribua automaticamente os cards nas colunas corretas.
-
-> **Dica:** Mantenha a coluna ``To Do`` sempre priorizada. Itens não classificados com ``Priority`` ou ``Size`` devem ser triados antes de entrar em ``In Progress``.
+Colunas padrão de um projeto Kanban:
+- **To Do**: tarefas planejadas mas não iniciadas
+- **In Progress**: trabalho em andamento
+- **In Review**: aguardando revisão
+- **Done**: concluído
 
 ### Automatização
 
-Você pode configurar o GitHub Projects para mover os cartões sozinhos. Por exemplo, quando você abre um PR vinculado a uma issue, o cartão da issue move para "In Review". Quando faz o merge, move para "Done".
+O GitHub Projects suporta **automações baseadas em eventos**: quando um PR é aberto, move para "In Progress"; quando é mergeado, move para "Done". Configure em Settings do projeto.
 
 O GitHub Projects permite criar regras de automação nativas (sem necessidade de GitHub Actions externos) que reagem a eventos do repositório:
 
@@ -376,8 +376,9 @@ Para fechar issues de **outros repositórios**, use a sintaxe completa: `Fixes o
 
 Quando o PR é merged, as issues vinculadas são fechadas automaticamente e, se configurado, movidas para a coluna ``Done``.
 
-### Views
-<!-- TODO: Board, Table, Roadmap -->
+- **Board**: visualização Kanban com cartões em colunas
+- **Table**: visualização em planilha com campos customizáveis
+- **Roadmap**: linha do tempo para planejamento de longo prazo
 
 O GitHub Projects oferece múltiplas visões para adaptar o quadro às diferentes necessidades da equipe:
 
@@ -887,83 +888,141 @@ on:
 
 ### O que é
 
-É um serviço gratuito do GitHub que transforma o código do seu repositório em um site publicado na internet (`seu-usuario.github.io/nome-do-repo`). 
+GitHub Pages é um serviço gratuito do GitHub que permite **hospedar sites estáticos diretamente de um repositório**. É amplamente usado para documentação técnica, portfólios pessoais e landing pages de projetos open source.
 
 ### Casos de Uso
 
-Perfeito para hospedar sites estáticos (HTML/CSS/JS puros), portfolios, currículos online, documentação de bibliotecas e landing pages. Não roda linguagens de servidor (como PHP ou Node.js/Express).
+- **Documentação de projetos**: transformar arquivos Markdown em site navegável
+- **Portfólio pessoal**: exibir seus projetos e habilidades
+- **Landing pages**: página de apresentação de um software
+- **Blogs**: usando Jekyll ou outros geradores estáticos
+- **Slides**: apresentações no formato web
 
 ### Habilitando Pages
 
-Vá em **Settings > Pages**. Escolha a branch onde está o seu código fonte e clique em Save. Em alguns minutos seu site estará no ar.
+1. Acesse o repositório no GitHub
+2. Clique em **Settings** (engrenagem, menu superior)
+3. No menu lateral, clique em **Pages**
+4. Em **"Source"**, selecione a branch desejada (ex: `main`)
+5. Escolha a pasta (`/ (root)` ou `/docs`)
+6. Clique em **Save**
+7. Aguarde alguns minutos — o GitHub exibirá a URL do seu site: `https://seu-usuario.github.io/repositorio`
 
 ### Fontes (Sources)
 
-Você pode configurar o Pages para ler a raiz da sua branch `main`, apenas ler a pasta `/docs` da `main`, ou até mesmo ler uma branch especial chamada `gh-pages`.
+- **`main` branch** — publica a partir da branch principal (pasta raiz ou `/docs`)
+- **`docs/` folder** — publica apenas o conteúdo da pasta `/docs` da branch `main`
+- **`gh-pages` branch** — branch dedicada exclusivamente ao conteúdo do site
 
 ### Jekyll
 
-O GitHub Pages tem suporte nativo ao Jekyll, um gerador de sites estáticos escrito em Ruby, excelente para criar blogs suportados diretamente pelo Markdown do repositório.
+O GitHub Pages usa **Jekyll** como gerador de sites estáticos por padrão. Ele converte automaticamente arquivos Markdown (`.md`) em HTML.
+
+Para personalizar o tema, crie um arquivo `_config.yml` na raiz do repositório:
+
+```yaml
+# _config.yml
+title: Documentação Git & GitHub
+description: Projeto colaborativo de documentação
+theme: minima
+```
+
+**Temas disponíveis** (suportados nativamente):
+- `minima` — simples e limpo
+- `cayman` — ideal para projetos
+- `slate` — tema escuro elegante
+- `minimal` — mínimo e rápido
+
+O build do Jekyll ocorre **automaticamente** a cada push. Não é necessário instalar nada localmente.
 
 ### Custom Domain
 
-Você pode comprar um domínio na internet (ex: `meuprojetofoda.com`) e configurá-lo no Settings do GitHub Pages para não ter que usar a URL padrão do GitHub. Ele até gera o certificado SSL (HTTPS) de graça.
+Você pode usar seu **próprio domínio** (ex: `docs.meusite.com`) com GitHub Pages:
+
+1. Em **Settings > Pages**, insira seu domínio no campo **"Custom domain"**
+2. No seu provedor de DNS, crie um registro CNAME apontando para `seu-usuario.github.io`
+3. O GitHub provisiona automaticamente um **certificado HTTPS gratuito** via Let's Encrypt
+4. Marque **"Enforce HTTPS"** para garantir conexões seguras
+
+> O certificado HTTPS é gerado automaticamente — não há custo adicional.
 
 ## GitHub Discussions
 
 ### O que São
 
-São fóruns de comunidade integrados ao repositório. Pense neles como o "Reddit" ou "Stack Overflow" do seu projeto.
+GitHub Discussions é um **fórum de comunidade** integrado ao repositório. É o espaço para conversas abertas, dúvidas, ideias e anúncios — sem a formalidade de uma issue.
+
+### Quando Usar
+
+- **Q&A**: responder dúvidas da comunidade
+- **Ideias**: sugestões que ainda não são issues concretas
+- **Anúncios**: comunicados sobre novas versões ou mudanças
+- **Mostrar e contar**: compartilhar projetos feitos com a ferramenta
 
 ### Diferença de Issues
 
-- **Issues:** São para tarefas acionáveis e rastreáveis (Bugs e novas features). Quando a tarefa acaba, a issue fecha.
-- **Discussions:** São para perguntas abertas, suporte à comunidade, anúncios, debates de arquitetura e compartilhamento de ideias. Podem ficar abertas para sempre.
+| Issues | Discussions |
+|--------|-------------|
+| Tarefas e bugs concretos | Conversas e ideias abertas |
+| Tem status aberto/fechado | Pode ser marcada como respondida |
+| Linkada a PRs e commits | Formato de fórum com respostas |
+| Fluxo de trabalho | Comunidade e suporte |
 
 ## GitHub Wiki
 
 ### O que É
 
-Cada repositório no GitHub possui uma aba "Wiki" que é, na verdade, um repositório Git separado feito exclusivamente para hospedar documentação longa.
+GitHub Wiki é um espaço de **documentação colaborativa** vinculado ao repositório. Funciona como um wiki tradicional, com páginas interligadas em Markdown.
 
 ### Quando Usar
 
-Quando o `README.md` fica gigantesco e difícil de ler, é hora de mover a documentação pesada (guias de arquitetura, tutoriais passo a passo para usuários) para a Wiki do projeto.
+- Documentação **extensa** que não cabe no README
+- **Knowledge base** sobre como usar ou contribuir
+- Guias internos de equipe
+- FAQ do projeto
 
 ## GitHub Gists
 
 ### O que São
 
-O Gists (`gist.github.com`) é um serviço secundário do GitHub focado em compartilhar pequenos trechos de código (snippets), arquivos únicos ou anotações rápidas sem a necessidade de criar um repositório inteiro.
+Gists são uma forma simples de **compartilhar trechos de código (snippets)** sem precisar criar um repositório completo. Cada gist é um mini-repositório Git.
 
 ### Tipos
 
-Gists podem ser **Públicos** (qualquer um pode achar buscando no Google) ou **Secretos** (não aparecem em buscas, apenas quem tem o link exato consegue acessar - útil para compartilhar código temporário com um colega).
+- **Públicos**: visíveis para todos, indexáveis por buscadores
+- **Secretos**: acessíveis apenas por quem tem o link (não são privados!)
 
 ## Code Owners
 
 ### Arquivo CODEOWNERS
 
-Em projetos grandes, você pode criar um arquivo chamado `CODEOWNERS` na raiz (ou na pasta `.github/`). Ele define automaticamente quem são os responsáveis (reviewers) quando alguém tenta alterar determinados arquivos.
+O arquivo `CODEOWNERS` define **revisores automáticos por arquivo ou pasta**. Quando um PR toca esses arquivos, os usuários listados são solicitados automaticamente para revisar.
 
-```text
-# .github/CODEOWNERS
-# Todos os arquivos markdown devem ser revisados pelo time de documentação
-*.md @minha-org/time-de-documentacao
+```
+# CODEOWNERS
+# Toda a pasta /docs/ deve ser revisada pelo time de documentacao
+/docs/ @documentacao-team
 
-# Tudo na pasta de banco de dados deve ser aprovado pelo João
-/src/database/ @joaosilva
+# Arquivos JavaScript revisados por @javascript-team
+*.js @javascript-team
+
+# Usuário específico para arquivos de configuração
+*.yml @devops-lead
 ```
 
 ## Branch Protection (Proteção de Branch)
 
 ### O que É
 
-As **Branch Protection Rules** (Regras de Proteção de Branch) são configurações do GitHub que impedem ações destrutivas ou não revisadas em branches críticas do repositório (geralmente `main` ou `master`). Elas garantem que todo código integrado passe por um processo de revisão e testes antes de ser aceito, protegendo a estabilidade do projeto.
+Branch protection é um conjunto de **regras para proteger branches críticas** (como `main`), impedindo pushes diretos, exigindo revisões e garantindo qualidade.
 
 ### Regras Comuns e Essenciais
 
-Para configurar uma branch protection robusta, recomenda-se ativar as seguintes opções:
+- **Require pull request**: proibir push direto na branch
+- **Require reviews**: exigir N aprovações antes do merge
+- **Require status checks**: testes devem passar antes do merge
+- **Require conversation resolution**: todos os comentários resolvidos
+- **Restrict push**: apenas certos usuários/times podem fazer push
 
 - **Require a pull request before merging:** Impede que qualquer pessoa faça um `git push` direto para a branch protegida. Todo código deve chegar via PR.
   - **Require approvals:** Exige um número mínimo de aprovações (geralmente 1 ou 2) de outros desenvolvedores antes do merge.
@@ -974,7 +1033,11 @@ Para configurar uma branch protection robusta, recomenda-se ativar as seguintes 
 - **Include administrators:** Garante que as regras de proteção também se apliquem aos administradores do repositório. Em interfaces mais novas, como **rulesets**, esse conceito pode aparecer com opções relacionadas a impedir bypass das regras.
 - **Restrict who can push to matching branches:** Permite definir exatamente quais pessoas ou equipes têm permissão de push (caso o push direto seja permitido em casos excepcionais).
 
-### Configurando
+1. Acesse **Settings > Branches**
+2. Clique em **"Add branch ruleset"** (ou "Add rule" em repositórios clássicos)
+3. Digite o nome da branch (ex: `main`)
+4. Marque as regras desejadas
+5. Clique em **Save changes**
 
 Para adicionar ou editar regras de proteção em um repositório onde você tem permissão de administrador:
 
@@ -985,48 +1048,91 @@ Para adicionar ou editar regras de proteção em um repositório onde você tem 
 5. Marque as caixas das regras desejadas (conforme a lista acima).
 6. Clique em **Create** ou **Save changes** no final da página.
 
-## Security (Segurança)
+Dependabot é um bot que **monitora dependências do projeto** e abre PRs automaticamente quando encontra versões com vulnerabilidades de segurança ou atualizadas. Configure em **Settings > Security > Dependabot**.
 
 ### Dependabot
 
-O GitHub possui um robô chamado Dependabot. Ele varre o seu projeto constantemente. Se ele descobrir que a biblioteca que você usa (ex: React, Django, etc) tem uma vulnerabilidade de segurança conhecida, ele abrirá um Pull Request sozinho no seu repositório sugerindo a atualização para a versão segura.
+Permitem **reportar vulnerabilidades de segurança** de forma privada antes da divulgação pública (responsible disclosure). Acesse em **Security > Advisories**.
 
 ### Secret Scanning
 
-O GitHub varre todo o código que sobe para a plataforma. Se você comitar um Token da AWS ou uma chave da API do Google, o GitHub detectará em segundos, alertará você e, em muitos casos, informará diretamente a empresa parceira para que ela invalide a sua chave automaticamente por segurança.
+Recurso que **escaneia commits em busca de segredos expostos** (tokens, senhas, chaves de API). Se detectar, envia alerta imediato. Ativo automaticamente em repositórios públicos.
 
 ## Notifications
 
+### Configurar Notificações
+
+Acesse **Settings > Notifications** para configurar como receber alertas:
+- **Email**: notificações por e-mail
+- **Web**: sino de notificações no GitHub
+- **Mobile**: app GitHub para iOS/Android
+
 ### Watching
 
-Você pode controlar o nível de notificações que recebe de um repositório clicando no botão "Watch" no topo da tela:
-- **Participating and @mentions:** Só recebe e-mail se marcarem seu nome ou comentarem nas suas issues. (Padrão e recomendado).
-- **All Activity:** Recebe e-mail de absolutamente tudo (PRs, issues). Cuidado, isso lotará sua caixa de entrada em projetos grandes.
-- **Ignore:** Silencia o repositório completamente.
+Nos repositórios, você pode definir o nível de acompanhamento:
+- **Not watching**: apenas quando mencionado
+- **Participating and @mentions**: issues/PRs que você participa
+- **Watching**: todas as atividades do repositório
+- **All activity**: absolutamente tudo
 
-## GitHub CLI (Ferramenta de Linha de Comando)
+### Unsubscribe
+
+Em qualquer issue ou PR, role até o final e clique em **"Unsubscribe"** para parar de receber notificações daquele item específico.
+
+## GitHub CLI
 
 ### Instalação
 
-O GitHub construiu a ferramenta `gh` para que você possa fazer tudo o que o site faz, mas direto do terminal.
-Para instalar no Windows (via winget): `winget install --id GitHub.cli`
-Mac (Homebrew): `brew install gh`
+```bash
+# Windows (winget)
+winget install GitHub.cli
+
+# Mac (Homebrew)
+brew install gh
+
+# Linux (Ubuntu/Debian)
+sudo apt install gh
+
+# Autenticar
+gh auth login
+```
 
 ### Comandos Úteis
 
 ```bash
-# Faz o login autenticado via navegador
-gh auth login
+# Clonar repositório
+gh repo clone usuario/repositorio
+
+# Criar PR
+gh pr create --title "docs: minha contribuição" --body "Closes #58"
+
+# Listar issues abertas
+gh issue list
+
+# Ver status do PR
+gh pr status
+
+# Disparar workflow manualmente
+gh workflow run nome-do-workflow.yml
+
+# Fazer fork
+gh repo fork usuario/repositorio --clone
+```
+
+## Integrations & Apps
 
 # Clona um repositório mais facilmente
 gh repo clone organizacao/nome-projeto
 
-# Cria um PR direto do terminal
-gh pr create --title "Minha feature" --body "Detalhes"
+Aplicativos que se integram ao GitHub para adicionar funcionalidades. Instale em **Settings > Integrations > GitHub Apps**.
 
-# Vê todas as issues abertas
-gh issue list
-```
+### Popular Apps
+
+- **Slack** — notificações de PRs e issues no canal
+- **Discord** — alertas da equipe
+- **Codecov** — cobertura de testes
+- **SonarCloud** — qualidade e segurança do código
+- **Renovate** — atualização automática de dependências
 
 ## Exemplos Práticos
 
@@ -1037,50 +1143,163 @@ gh issue list
 4. Faça o push e abra um Pull Request para a biblioteca original. 
 5. Responda educadamente aos reviews dos mantenedores.
 
-### Exemplo 2: Automatizar Testes com Actions
-1. Crie o arquivo `.github/workflows/ci.yml`.
-2. Configure o step para rodar `npm run test`.
-3. Toda vez que você abrir um PR, o GitHub mostrará um sinal verde de que seu código está testado e seguro.
+```bash
+# 1. Fork pelo GitHub (botão Fork)
+# 2. Clone seu fork
+git clone https://github.com/SEU-USUARIO/projeto.git
+cd projeto
+
+# 3. Configure upstream
+git remote add upstream https://github.com/ORIGINAL/projeto.git
+
+# 4. Crie branch
+git switch -c fix/corrige-bug-login
+
+# 5. Faça alterações, commit e push
+git add .
+git commit -m "fix: corrige validação de login"
+git push origin fix/corrige-bug-login
+
+# 6. Abra PR no GitHub
+```
+
+### Exemplo 2: Criar Documentação com Pages
+
+```bash
+# 1. Certifique-se que existe um README.md na raiz
+# 2. Acesse Settings > Pages
+# 3. Source: branch 'main', pasta '/ (root)'
+# 4. Save
+# Site disponível em: https://seu-usuario.github.io/repositorio
+
+# Para personalizar com Jekyll:
+cat > _config.yml << 'EOF'
+title: Minha Documentação
+description: Projeto incrível
+theme: cayman
+EOF
+
+git add _config.yml
+git commit -m "docs: configura tema Jekyll"
+git push
+```
+
+### Exemplo 3: Automatizar Testes com Actions
+
+```yaml
+# .github/workflows/ci.yml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npm test
+```
+
+## Workflows de Equipe
+
+### Async vs Sync
+
+Com Git e GitHub, equipes podem trabalhar de forma **totalmente assíncrona**: cada pessoa contribui no seu tempo, PRs ficam abertos para revisão, e o histórico de commits documenta as decisões. Isso elimina a necessidade de estar online ao mesmo tempo.
+
+### Code Review Culture
+
+- Revise o código, não a pessoa
+- Explique o motivo dos comentários
+- Use perguntas ao invés de ordens ("O que acha de...?")
+- Aprove quando estiver bom o suficiente, não perfeito
+- Agradecer boas contribuições também é parte da cultura
+
+### Release Management
+
+Use **tags e releases** para marcar versões estáveis:
+```bash
+# Criar tag
+git tag -a v1.0.0 -m "Versão 1.0.0"
+git push origin v1.0.0
+```
+No GitHub, crie uma Release a partir da tag para anexar changelogs e binários.
 
 ## Erros Comuns
 
-1. **Não Atualizar o Fork:** Tentar abrir um PR com um código base que está dois meses atrasado em relação ao projeto original. Ocorrerão dezenas de conflitos. Use `git fetch upstream`.
-2. **Main Desprotegida:** Ter um projeto comercial e esquecer de ligar a *Branch Protection* na `main`. É só questão de tempo até alguém fazer um Force Push por acidente e deletar o histórico do time.
-3. **Não Configurar Notificações:** Perder conversas importantes no GitHub porque todos os e-mails estão indo para o spam, atrasando o trabalho da equipe inteira.
+### Erro 1: Não Atualizar Fork
+
+Se você não sincronizar seu fork com o repositório original, seu código fica desatualizado e os PRs geram conflitos. Sempre execute antes de começar:
+```bash
+git fetch upstream
+git merge upstream/main
+```
+
+### Erro 2: Ignorar Issues
+
+Trabalhar sem vincular issues é um erro comum. Issues documentam **o porquê** de cada mudança. Sempre crie ou comente em uma issue antes de começar e use `Closes #N` no PR.
+
+### Erro 3: Não Configurar Branch Protection
+
+Deixar a branch `main` desprotegida permite pushes diretos acidentais que podem quebrar o projeto. Configure regras de proteção logo no início do projeto.
 
 ## Boas Práticas
 
-- **Documente o Workflow:** O arquivo `CONTRIBUTING.md` do seu projeto deve explicar se vocês usam Git Flow, GitHub Flow, etc.
-- **Automatize:** Deixe robôs (GitHub Actions) fazerem tarefas chatas de verificação e formatação. Humanos focam na lógica e arquitetura.
-- **Feche as Issues:** Vincule sempre seus PRs a issues (`Closes #45`) para manter o painel limpo automaticamente.
-- **Mantenha PRs Pequenos:** Workflow nenhum salva a equipe se os PRs levarem 3 semanas para serem feitos e mudarem 5 mil linhas de código de uma vez.
+- **Documente o workflow** da equipe no CONTRIBUTING.md
+- **Use templates** de issues e PRs para padronizar contribuições
+- **Automatize o que puder** com GitHub Actions (testes, lint, deploy)
+- **Comunique mudanças** de processo via Discussions ou README
+- **Faça revisões regulares** do estado das issues e do backlog
+- **Mantenha o fork atualizado** antes de começar qualquer tarefa
+- **Nomeie branches de forma descritiva**: `usuario/acao-contexto`
+- **Escreva commits atômicos**: uma mudança lógica por commit
 
 ## Exercícios
 
-1. Encontre um repositório Open Source público com a label `good first issue` no GitHub.
-2. Realize o fluxo de **Fork Workflow** para esse repositório na sua máquina local.
-3. Crie um repositório seu e habilite o **GitHub Projects** em formato de Kanban. Crie e arraste 3 issues.
-4. Vá nas **Settings** do seu repositório pessoal e ative o **Branch Protection** na sua branch principal, exigindo PR.
+1. **Fork e contribua**: faça fork deste repositório, adicione conteúdo e abra um PR
+2. **Crie um GitHub Project**: organize as issues abertas em um quadro Kanban
+3. **Configure GitHub Pages**: publique este repositório como site estático
+4. **Crie um workflow de CI**: arquivo `.github/workflows/ci.yml` que roda um comando simples a cada push
 
 ## Recursos Adicionais
 
-- [GitHub Flow Guide Oficial](https://docs.github.com/en/get-started/using-github/github-flow)
-- [Documentação do GitHub Actions](https://docs.github.com/en/actions)
-- [Guia Oficial do GitHub Pages](https://pages.github.com/)
+- [GitHub Flow Guide](https://guides.github.com/introduction/flow/)
+- [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [GitHub Pages](https://pages.github.com/)
+- [GitHub Docs em Português](https://docs.github.com/pt)
+- [Learn Git Branching](https://learngitbranching.js.org/)
 
 ## Resumo
 
-- O **GitHub Flow** é excelente para agilidade contínua; o **Git Flow** serve para cronogramas de releases rigorosos.
-- Use **Forks** quando não tiver permissão para mexer no repositório original.
-- Organize o trabalho usando **Issues** (tarefas) e **Projects** (Kanban).
-- Aumente a qualidade da engenharia automatizando processos com **GitHub Actions**.
-- Proteja o trabalho da sua equipe habilitando regras de **Branch Protection**.
+Neste módulo você aprendeu os principais workflows e recursos do GitHub:
+
+| Recurso | Para que serve |
+|---------|---------------|
+| **Fork Workflow** | Contribuir em projetos sem acesso direto |
+| **GitHub Flow** | Workflow simples para deploy contínuo |
+| **Git Flow** | Workflow estruturado para releases |
+| **Issues** | Rastrear tarefas, bugs e melhorias |
+| **Projects** | Gestão visual no estilo Kanban |
+| **Actions** | Automação de CI/CD e tarefas |
+| **Pages** | Hospedar sites estáticos gratuitamente |
+| **Branch Protection** | Garantir qualidade na branch principal |
+
+Combinando esses recursos, você terá um fluxo de trabalho profissional e colaborativo.
 
 ---
 
 ## 👥 Contribuidores
 
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
+
+- [@Davidamascen07](https://github.com/Davidamascen07) - Seção GitHub Pages e conteúdo completo do arquivo
+- [Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
+
 <!-- Adicione seu nome quando contribuir:
 - [@seu-usuario](https://github.com/seu-usuario) - Seção X
 -->

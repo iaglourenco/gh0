@@ -728,20 +728,137 @@ O Git reconhece automaticamente como uma alteração do tipo renomeação, deixa
 
 ## Fluxo de Trabalho Básico
 
-O fluxo de trabalho clássico (e infinito) do desenvolvedor no Git é:
+O fluxo de trabalho no Git segue um ciclo organizado: **modificar → adicionar → commitar → enviar**. Entender cada etapa é fundamental para trabalhar de forma eficiente.
 
-```mermaid
-sequenceDiagram
-    participant WD as Working Directory
-    participant SA as Staging Area
-    participant Repo as Repository
-    
-    WD->>SA: git add
-    SA->>Repo: git commit
-    Repo-->>WD: git restore
+### Sequência Completa do Git
+
+```
+init/clone → edit files → git status → git add → git status → git commit → git push
 ```
 
-### Exemplo Completo
+### Diagrama Visual do Fluxo
+
+```mermaid
+graph TD
+    subgraph "1. Ambiente Local"
+        A[Working Directory] -->|git add| B[Staging Area]
+        B -->|git commit| C[Local Repository]
+    end
+    
+    subgraph "2. Ambiente Remoto"
+        C -->|git push| D[Remote Repository]
+        D -->|git pull| C
+    end
+    
+    D -.->|sync| E[GitHub]
+    D <-->|push/pull| F[origin]
+    D <-->|fetch| G[upstream]
+```
+
+### Exemplo Prático Completo (passo-a-passo)
+
+```bash
+# 1. Iniciar ou clonar repositório
+git clone https://github.com/usuario/repositorio.git
+# Output: Cloning into 'repositorio'...
+# remote: Enumerating objects: 10, done.
+
+# 2. Criar branch de trabalho
+git checkout -b docs/fluxo-trabalho-basico
+# Output: Switched to a new branch 'docs/fluxo-trabalho-basico'
+
+# 3. Modificar arquivos (edit files)
+echo "# Novo arquivo" > novo.md
+
+# 4. Verificar status (antes do add)
+git status
+# Output: On branch docs/fluxo-trabalho-basico
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#     novo.md
+
+# 5. Adicionar à staging area
+git add novo.md
+git status
+# Output: On branch docs/fluxo-trabalho-basico
+# Changes to be committed:
+#   new file:   novo.md
+
+# 6. Fazer commit
+git commit -m "docs: adiciona arquivo de exemplo"
+# Output: [docs/fluxo-trabalho-basico abc1234] docs: adiciona arquivo de exemplo
+#  1 file changed, 1 insertion(+)
+#  create mode 100644 novo.md
+
+# 7. Enviar para remoto (push)
+git push origin docs/fluxo-trabalho-basico
+# Output: Enumerating objects: 5, done.
+# To https://github.com/usuario/repositorio.git
+#  * [new branch] docs/fluxo-trabalho-basico -> docs/fluxo-trabalho-basico
+# Branch 'docs/fluxo-trabalho-basico' set up to track remote branch from 'origin'.
+```
+
+### Entendendo os Remotes: origin e upstream
+
+Quando você faz um fork de um projeto, dois remotes são configurados:
+
+| Remote | Descrição | Quando usar |
+|--------|-----------|-------------|
+| **origin** | Seu fork no GitHub (sua cópia) | Para onde você faz `push` das suas alterações |
+| **upstream** | Repositório original do projeto | Para buscar atualizações com `git fetch` ou `git pull` |
+
+```bash
+# Verificar remotes configurados
+git remote -v
+
+# Exemplo de saída:
+# origin    https://github.com/seu-usuario/gh0.git (fetch)
+# origin    https://github.com/seu-usuario/gh0.git (push)
+# upstream  https://github.com/professor/gh0.git (fetch)
+# upstream  https://github.com/professor/gh0.git (push)
+
+# Atualizar fork com upstream
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+```
+
+### Branch Workflow Básico
+
+Trabalhe sempre em uma branch separada da main:
+
+```bash
+# Criar e mudar para nova branch
+git checkout -b nome-da-branch
+
+# Ciclo completo de trabalho
+git add .                              # Adicionar todas as mudanças
+git commit -m "tipo: descrição"       # Commitar com mensagem clara
+git push -u origin nome-da-branch      # Enviar pela primeira vez
+
+# Nas próximas vezes, apenas:
+git push
+```
+
+### ✅ Checklist do Aluno
+
+Após completar o ciclo, verifique:
+
+- [ ] Repositório clonado ou iniciado com `git clone` ou `git init`
+- [ ] Branch de trabalho criada com `git checkout -b`
+- [ ] Arquivos modificados/adicionados no editor
+- [ ] `git status` executado **antes** do `git add` (verificar mudanças)
+- [ ] `git add` executado para adicionar à staging area
+- [ ] `git status` executado **depois** do `git add` (confirmar staging)
+- [ ] `git commit` feito com mensagem clara e descritiva
+- [ ] `git push` enviado para o remoto (origin)
+
+**Sequência feita com sucesso? ✓**
+
+### Comando Rápido (atalho para repetição)
+
+Para repetir o ciclo N vezes durante o dia (após a primeira configuração da branch):
 
 ```bash
 git clone https://github.com/meu-usuario/projeto.git
@@ -752,6 +869,13 @@ git add app.js index.html
 git commit -m "feat: adiciona lógica inicial do app"
 git log --oneline
 ```
+
+### Próximos Passos
+
+Agora que você dominou o fluxo básico, explore:
+
+- **[03-branching-e-merge.md](03-branching-e-merge.md)** - Criando e gerenciando branches
+- **[04-pull-requests-e-review.md](04-pull-requests-e-review.md)** - Enviando PRs para revisão
 
 ## Comandos de Consulta
 

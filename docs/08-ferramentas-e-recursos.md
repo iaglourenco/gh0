@@ -4,201 +4,302 @@
 
 ## 📋 Objetivos de Aprendizagem
 
-<!-- TODO: Objetivos sobre ferramentas e recursos -->
+Ao final deste capítulo, você será capaz de:
+- Conhecer e escolher interfaces gráficas (GUIs) para trabalhar com Git.
+- Instalar e configurar extensões em editores de código (como VS Code) para otimizar o fluxo de trabalho.
+- Descobrir ferramentas avançadas de terminal para aumentar a produtividade.
+- Acessar recursos de aprendizado, cheatsheets e tutoriais para aprofundamento contínuo.
 
 ## 🎯 Introdução
 
-<!-- TODO: Git além da linha de comando -->
-<!-- Ecossistema Rico de ferramentas -->
+Embora a linha de comando seja a forma mais pura e poderosa de interagir com o Git, ela não é a única. O ecossistema em torno do Git e do GitHub é gigantesco. Existem ferramentas visuais que tornam a resolução de conflitos mais fácil, extensões de editores que mostram quem escreveu cada linha de código em tempo real, e ferramentas de terminal que adicionam "superpoderes" ao seu fluxo diário. Conhecer essas ferramentas é essencial para trabalhar de forma profissional e eficiente.
 
-## Git GUI Tools
+## Git GUI Tools (Interfaces Gráficas)
+
+Nem tudo precisa ser feito no terminal. As interfaces gráficas (GUIs) são excelentes para visualizar a árvore de histórico (commits) e para revisar o que você modificou antes de fazer um commit.
 
 ### GitHub Desktop
 
-<!-- TODO: Cliente oficial do GitHub -->
+O cliente oficial e gratuito criado pelo próprio GitHub.
 
 #### Características
-
-<!-- TODO: Interface simples, integração GitHub -->
+Possui uma interface extremamente limpa e amigável. Foca em simplificar o fluxo básico de commit, push, pull e criação de Pull Requests. Não possui recursos avançados de Git.
 
 #### Quando Usar
-
-<!-- TODO: Iniciantes, operações básicas -->
+Ideal para iniciantes que ainda se sentem intimidados pela linha de comando, ou para designers e gerentes de produto que precisam versionar arquivos, mas não precisam dos recursos complexos do Git.
 
 #### Download
-
-<!-- TODO: Link e instruções -->
+Disponível em: [desktop.github.com](https://desktop.github.com/)
 
 ### GitKraken
 
-<!-- TODO: Cliente visual poderoso -->
+Um dos clientes Git visuais mais poderosos, populares e bonitos do mercado.
 
 #### Características
-
-<!-- TODO: Graph visual, merge tool, integrações -->
+Seu maior destaque é o "Commit Graph" visual, lindamente renderizado no centro da tela. Possui uma ferramenta de resolução de conflitos nativa fantástica e integrações diretas com GitHub, GitLab e Bitbucket.
 
 #### Recursos Avançados
-
-<!-- TODO: GitFlow integrado, resolução de conflitos -->
+Suporte nativo a Git Flow, arrastar e soltar (drag and drop) para fazer rebase ou merge, e um terminal integrado.
 
 #### Planos
-
-<!-- TODO: Free vs Pro -->
+Possui versão gratuita (apenas para repositórios públicos e locais) e planos Pro pagos para uso comercial e repositórios privados.
+Disponível em: [gitkraken.com](https://www.gitkraken.com/)
 
 ### SourceTree
 
-<!-- TODO: Cliente da Atlassian -->
+A alternativa gratuita e poderosa mantida pela Atlassian (empresa criadora do Jira e Bitbucket).
 
 #### Características
-
-<!-- TODO: Gratuito, Git Flow, visualização -->
+100% gratuito. Suporta repositórios grandes e possui uma interface muito completa para usuários avançados, incluindo suporte total a Git Flow e LFS.
 
 #### Plataformas
-
-<!-- TODO: Windows e macOS -->
+Disponível para Windows e macOS.
 
 ### Tower
 
-<!-- TODO: Cliente premium -->
+Conhecido como "o cliente Git para profissionais", é uma ferramenta premium (paga).
 
 #### Características
+Interface nativa incrivelmente refinada para macOS (e também disponível para Windows). Oferece recursos como "Desfazer" global (Ctrl+Z para ações do Git), gerenciamento avançado de submódulos e suporte excelente a drag-and-drop.
 
-<!-- TODO: Interface refinada, recursos avançados -->
+### Outros Clientes
+- **GitFiend:** Interface simples e open source.
+- **Fork:** Rápido, leve e muito amado por desenvolvedores experientes.
+- **SmartGit:** Focado em usuários que lidam com projetos gigantescos.
 
-### Outros
+## Extensions e Plugins (Extensões de Editores)
 
-<!-- TODO: GitFiend, Fork, SmartGit -->
+A maneira mais produtiva de usar o Git hoje em dia é integrá-lo diretamente ao editor onde você escreve o código.
 
-## Extensions e Plugins
+### VS Code (Visual Studio Code)
 
-### VS Code
+O VS Code já vem com um painel de "Source Control" excelente nativamente, mas algumas extensões o tornam perfeito:
+
+O VS Code permite instalar extensões para adicionar novos recursos ao editor, como integração com Git, suporte a linguagens de programação, temas, atalhos, ferramentas de produtividade e integração com plataformas como o GitHub.
+
+Para instalar uma extensão no VS Code:
+
+1. Abra o **Visual Studio Code**;
+2. Clique no ícone de **Extensions** na barra lateral esquerda;
+3. Ou use o atalho `Ctrl + Shift + X`;
+4. Pesquise pelo nome da extensão desejada;
+5. Clique em **Install**;
+6. Após a instalação, algumas extensões podem pedir para reiniciar o VS Code ou configurar opções adicionais.
+
+Também é possível instalar extensões diretamente pelo terminal usando o comando:
+
+```bash
+code --install-extension nome-da-extensao
+code --install-extension eamodio.gitlens
+```
+**Fonte:** [Documentação oficial do VS Code sobre extensões](https://code.visualstudio.com/docs/getstarted/extensions)
 
 #### GitLens
 
-<!-- TODO: Extensão popular para Git -->
+Extensão popular para o VS Code que melhora a integração com o Git, permitindo visualizar informações detalhadas sobre commits, autores, histórico de arquivos e alterações no código diretamente no editor.
 
 ##### Recursos
 
-- <!-- Blame inline -->
-- <!-- Histórico de arquivo -->
-- <!-- Comparações -->
-- <!-- Graph -->
+- **Blame inline:** mostra, ao lado de cada linha do código, quem fez a última alteração, quando ela foi feita e em qual commit.
+- **Histórico de arquivo:** permite visualizar todas as alterações feitas em um arquivo ao longo do tempo.
+- **Comparações:** facilita comparar versões diferentes de um arquivo, commits ou branches.
+- **Graph:** exibe um grafo visual do histórico do repositório, mostrando commits, branches, merges e tags.
+
+> **Em outras IDEs**
+>
+> - **IntelliJ IDEA:** possui recursos nativos parecidos com o GitLens, como histórico de arquivos, comparação entre versões, visualização de commits e o recurso **Annotate**, que mostra quem alterou cada linha do código.
+> - **Sublime Text / Sublime Merge:** o Sublime Text pode ser usado junto com o **Sublime Merge** para visualizar histórico, commits, branches e alterações do repositório de forma gráfica.
+
+**Fonte:** [GitLens no Visual Studio Marketplace](https://marketplace.visualstudio.com/itemdetails?itemName=eamodio.gitlens)
 
 #### Git Graph
 
-<!-- TODO: Visualizar grafo de commits -->
+Extensão para o VS Code que permite visualizar o histórico de commits do repositório em formato de grafo. Ela ajuda a entender melhor a evolução do projeto, mostrando branches, merges, tags e commits de maneira visual e organizada.
 
-#### GitHub Pull Requests
+##### Recursos
 
-<!-- TODO: Gerenciar PRs no VS Code -->
+- **Visual log:** exibe os commits em uma linha do tempo gráfica, facilitando a leitura do histórico.
+- **Branches:** mostra as ramificações do projeto e ajuda a entender em qual branch cada alteração foi feita.
+- **Merges:** permite visualizar quando branches foram unidas ao projeto principal.
+- **Tags:** identifica versões importantes do projeto, como releases.
+- **Comparações:** facilita comparar commits e verificar quais arquivos foram modificados.
 
-### JetBrains IDEs
+> **Em outras IDEs**
+>
+> - **IntelliJ IDEA:** possui a aba **Git Log**, que permite visualizar commits, branches, merges e tags em formato gráfico, funcionando como uma alternativa ao Git Graph.
+> - **Sublime Text / Sublime Merge:** o **Sublime Merge** oferece uma visualização gráfica do histórico do repositório, mostrando commits, branches e merges de forma clara e organizada.
 
-<!-- TODO: Git integrado -->
+**Fonte:** [Git Graph no Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
+
+#### GitHub Pull Requests and Issues
+
+Extensão do VS Code que permite gerenciar **Pull Requests** e **Issues** do GitHub diretamente no editor. Com ela, é possível visualizar PRs, revisar alterações, comentar trechos de código, aprovar ou solicitar mudanças e acompanhar discussões sem precisar sair do VS Code.
+
+##### Recursos
+
+- **Listagem de Pull Requests:** mostra os PRs abertos no repositório diretamente dentro do VS Code.
+- **Revisão de código:** permite analisar arquivos modificados, comparar alterações e verificar o que será incorporado ao projeto.
+- **Comentários em trechos de código:** possibilita comentar linhas específicas durante a revisão.
+- **Aprovação ou solicitação de mudanças:** ajuda no fluxo de revisão, permitindo aprovar um PR ou pedir ajustes antes do merge.
+- **Integração com Issues:** permite acompanhar tarefas, problemas e discussões relacionadas ao projeto.
+
+> **Em outras IDEs**
+>
+> - **IntelliJ IDEA:** possui integração com GitHub, permitindo visualizar Pull Requests, revisar alterações, comentar código e acompanhar branches diretamente pela IDE.
+> - **Sublime Text / Sublime Merge:** o fluxo de Pull Requests costuma ser feito com apoio do navegador ou do GitHub Desktop. O **Sublime Merge** pode auxiliar na visualização dos commits, branches e alterações antes de abrir ou revisar um PR no GitHub.
+
+**Fontes:** [GitHub Pull Requests no VS Code](https://code.visualstudio.com/blogs/2018/09/10/introducing-github-pullrequests); [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
+
+
+#### Settings e Keybindings para Git
+
+Além de instalar extensões, o VS Code permite configurar preferências e atalhos relacionados ao Git. Por exemplo, é possível criar atalhos para abrir o Git Graph, acessar o painel de controle de versão, visualizar histórico de arquivos ou abrir rapidamente a Command Palette.
+
+Alguns atalhos úteis são:
+
+- `Ctrl + Shift + G`: abrir o painel de Source Control;
+- `Ctrl + Shift + P`: abrir a Command Palette;
+- `Ctrl + Shift + X`: abrir a aba de extensões;
+- `Ctrl + '` : abrir o terminal integrado.
+
+#### Ganhos de produtividade
+
+O uso dessas extensões aumenta a produtividade porque reduz a necessidade de executar comandos Git manualmente no terminal para tarefas visuais e repetitivas. O GitLens facilita a análise de autoria e histórico, o Git Graph melhora a visualização dos commits, o GitHub Pull Requests centraliza revisões de código no editor e o Gitmoji ajuda a padronizar mensagens de commit.
+
+Dessa forma, o desenvolvedor consegue trabalhar com mais organização, rapidez e clareza dentro do próprio VS Code.
+
+
+### JetBrains IDEs (IntelliJ, WebStorm, PyCharm)
+
+As IDEs da JetBrains possuem uma das melhores integrações Git do mercado construída diretamente no núcleo do programa, sem precisar de plugins.
 
 #### Recursos
-
-<!-- TODO: Merge tool, history, branches -->
+Destaca-se pela sua ferramenta de resolução de "Three-way Merge", considerada por muitos como a melhor da indústria para resolver conflitos de código complexos.
 
 ### Sublime Text
 
-<!-- TODO: Package Sublime Merge -->
+A mesma empresa que cria o Sublime Text oferece o **Sublime Merge**, um cliente Git incrivelmente leve, rápido e com integração perfeita ao editor.
 
-### Vim
+### Vim / Neovim
 
-<!-- TODO: vim-fugitive plugin -->
+Para os puristas do terminal, o plugin **vim-fugitive** do Tim Pope é essencial. Ele é tão poderoso que seu criador o chama de "um cliente Git tão impressionante que deveria ser ilegal".
 
-## Terminal Tools
+## Terminal Tools (Ferramentas de Linha de Comando)
+
+Para quem prefere não sair do terminal, mas quer interfaces mais ricas.
 
 ### tig
 
-<!-- TODO: Interface ncurses para Git -->
+Uma interface em modo texto (TUI) baseada em ncurses. Ela transforma o seu terminal em uma interface navegável do `git log`.
 
 ```bash
-# TODO: Instalação e uso básico
+# Ubuntu
+sudo apt install tig
+# macOS
+brew install tig
+
+# Para usar, basta digitar:
+tig
 ```
 
 ### lazygit
 
-<!-- TODO: TUI simples para Git -->
+Uma ferramenta moderna, escrita em Go, que oferece uma interface visual maravilhosa (TUI) diretamente no seu terminal, controlada quase totalmente por atalhos de teclado fáceis de memorizar.
 
 ```bash
-# TODO: Instalação e uso
+# Instalação macOS
+brew install lazygit
+
+# Para usar:
+lazygit
 ```
 
 ### gh (GitHub CLI)
 
-<!-- TODO: CLI oficial do GitHub -->
+A CLI oficial do GitHub (`gh`) traz as funcionalidades do GitHub diretamente para o seu terminal. Ela permite gerenciar repositórios, issues, pull requests e até GitHub Actions sem precisar abrir o navegador.
 
 #### Comandos Principais
 
 ```bash
-# TODO: gh repo, gh pr, gh issue, gh workflow
+# Autenticar-se na sua conta do GitHub
+gh auth login
+
+# Clonar um repositório do GitHub (alternativa conveniente ao git clone)
+gh repo clone <owner>/<repo>
+
+# Listar issues abertas no repositório atual
+gh issue list
+
+# Visualizar detalhes de uma issue específica
+gh issue view <numero-da-issue>
+
+# Criar um novo Pull Request a partir da branch atual
+gh pr create --title "feat: adiciona nova funcionalidade" --body "Detalhes aqui"
+
+# Listar e verificar o status de GitHub Actions
+gh run list
 ```
 
 ### hub
 
-<!-- TODO: Extensão Git para GitHub (predecessor do gh) -->
+# Cria um Pull Request do seu terminal
+gh pr create --title "Minha feature" --body "Detalhes"
 
-## Diff Tools
+# Lista as issues abertas
+gh issue list
 
-### Meld
-
-<!-- TODO: Diff e merge visual -->
-
-### Beyond Compare
-
-<!-- TODO: Ferramenta comercial poderosa -->
-
-### KDiff3
-
-<!-- TODO: Open source -->
-
-### P4Merge
-
-<!-- TODO: Gratuito da Perforce -->
-
-### Configurando Diff Tool
-
-```bash
-# TODO: git config --global diff.tool meld
+# Verifica o status dos testes (GitHub Actions)
+gh run list
 ```
 
-## Merge Tools
+### hub
 
-<!-- TODO: Ferramentas para resolver conflitos -->
+O predecessor não-oficial (mas muito famoso) do `gh`. Ele funcionava como um "wrapper" em cima do comando `git`, adicionando superpoderes como `git pull-request`. Hoje em dia, é recomendado migrar para o `gh`.
 
-### Configurando
+## Diff Tools e Merge Tools
+
+Quando o conflito aperta, as ferramentas nativas podem não ser suficientes. Você pode configurar o Git para abrir ferramentas externas focadas exclusivamente em comparar textos.
+
+### Ferramentas Populares
+- **Meld:** Muito popular no Linux, open source, visualiza e resolve conflitos de 3 vias muito bem.
+- **Beyond Compare:** Ferramenta comercial poderosíssima para comparação de arquivos, pastas e dados.
+- **KDiff3:** Ferramenta open source clássica e robusta.
+- **P4Merge:** Ferramenta gratuita da Perforce, com interface limpa e excelente para merges de 3 vias.
+
+### Configurando no Git
+
+Você pode definir uma ferramenta globalmente. Exemplo usando o Meld:
 
 ```bash
-# TODO: git config --global merge.tool
+# Define a ferramenta de Diff
+git config --global diff.tool meld
+
+# Define a ferramenta de Merge
+git config --global merge.tool meld
+
+# Para usá-las, em vez de "git diff" ou resolver manual:
+git difftool
+git mergetool
 ```
 
-### Usando
+## Shell Enhancements (Melhorias no Terminal)
 
-```bash
-# TODO: git mergetool
-```
-
-## Shell Enhancements
+Seu terminal não precisa ser preto e branco.
 
 ### Oh My Zsh
 
-<!-- TODO: Framework para Zsh -->
+Framework incrivelmente popular para quem usa o shell `Zsh` (padrão atual do macOS).
 
 #### Git Plugin
-
-<!-- TODO: Aliases e prompts -->
-
-### Bash Git Prompt
-
-<!-- TODO: Mostrar branch no prompt -->
+O Oh My Zsh possui um plugin `git` que adiciona dezenas de aliases úteis e modifica o "prompt" (a linha onde você digita os comandos) para mostrar em qual branch você está, e se há arquivos modificados (geralmente com um `X` vermelho ou um `*` amarelo).
 
 ### Starship
 
-<!-- TODO: Cross-shell prompt moderno -->
+Um prompt cross-shell (funciona no Bash, Zsh, PowerShell, Fish) moderno, rápido e escrito em Rust. Ele mostra o status do seu repositório Git de forma elegante, além de detectar as linguagens do seu projeto (mostrando o ícone do Node.js, Python, etc.).
 
-## Comandos Avançados
+## Comandos Avançados do Git
+
+Comandos poderosos que podem salvar o seu dia:
 
 ### git bisect
 
@@ -290,7 +391,7 @@ O `git rebase` é uma ferramenta avançada para integrar alterações de uma bra
 
 Em vez de criar um "commit de merge" (que junta duas linhas do tempo e deixa o gráfico com ramificações), o rebase pega os commits da sua branch atual, os "levanta", e os aplica um a um exatamente no topo da branch de destino. O resultado final é um histórico perfeitamente linear, como se você tivesse começado a trabalhar a partir da versão mais recente do código.
 
-#### Rebase Interativo
+O "editor de vídeo" do Git. Permite juntar vários commits em um só (Squash), renomear mensagens passadas (Reword), editar commits antigos ou deletá-los (Drop).
 
 A flag `-i` (interativo) transforma o rebase em uma verdadeira máquina do tempo. Ele permite que você edite, junte, reorganize ou exclua commits antigos da sua branch antes de enviá-la para o repositório remoto.
 
@@ -489,18 +590,10 @@ git reset --hard 5a2b1c3
 ```
 
 #### Diferença reset vs revert
+- `git reset`: Apaga a história (volta no tempo).
+- `git revert <hash>`: Cria um NOVO commit que desfaz matematicamente o que o commit antigo fez. É a forma segura de desfazer coisas na branch `main`.
 
-<!-- TODO: reset reescreve, revert cria novo commit -->
-
-### git blame
-
-<!-- TODO: Ver quem modificou cada linha -->
-
-```bash
-# TODO: git blame arquivo.md
-```
-
-### git tag
+### git clean
 
 O comando `git tag` funciona como um marcador de página definitivo ou uma "etiqueta" colada em um momento específico do seu histórico. 
 
@@ -550,82 +643,81 @@ git push origin --tags
 
 ## Aliases Úteis
 
+Cansado de digitar os mesmos comandos longos? Crie atalhos!
+
 ### Configurando Aliases
 
+Você pode adicionar isso no seu arquivo `~/.gitconfig`:
+
 ```bash
-# TODO: Exemplos de aliases úteis
-# git config --global alias.st status
-# git config --global alias.co checkout
-# git config --global alias.lg "log --graph --oneline"
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.cm commit
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 ```
 
-### Aliases Recomendados
+O comando `git lg` acima vai gerar uma árvore visual lindíssima e colorida do seu histórico direto no terminal.
 
-<!-- TODO: Lista de aliases populares -->
-
-## Git LFS
+## Git LFS (Large File Storage)
 
 ### O que É
+O Git foi feito para texto. Colocar arquivos binários gigantes (como vídeos `.mp4`, arquivos 3D ou PSDs de Photoshop) faz o repositório ficar lento e pesado. O Git LFS substitui esses arquivos grandes no repositório por pequenos arquivos de ponteiro, enquanto armazena o conteúdo real num servidor otimizado.
 
-<!-- TODO: Large File Storage -->
-
-### Quando Usar
-
-<!-- TODO: Vídeos, imagens grandes, binários -->
-
-### Instalação
+### Instalação e Uso
 
 ```bash
-# TODO: git lfs install
+git lfs install
+# Avisa ao Git LFS para cuidar de todos os arquivos de Photoshop
+git lfs track "*.psd" 
+git add .gitattributes
 ```
 
-### Uso
+## Geradores e Helpers (Ajudantes Web)
 
-```bash
-# TODO: git lfs track "*.psd"
-```
+Ferramentas web gratuitas para iniciar projetos mais rápido:
 
-## Geradores e Helpers
+- **[gitignore.io](https://www.toptal.com/developers/gitignore):** Digite as tecnologias que você usa (ex: Node, Python, Windows) e ele gera o `.gitignore` perfeito.
+- **[choosealicense.com](https://choosealicense.com/):** Não é advogado? Este site do GitHub te ajuda a escolher a licença Open Source correta para o seu projeto.
+- **[keepachangelog.com](https://keepachangelog.com/):** Um padrão da indústria sobre como escrever um bom arquivo `CHANGELOG.md`.
 
-### gitignore.io
+## Learning Resources (Recursos de Aprendizagem)
 
-<!-- TODO: Gerar .gitignore templates -->
-
-### choosealicense.com
-
-<!-- TODO: Escolher licença para projeto -->
-
-### keepachangelog.com
-
-<!-- TODO: Padrão para CHANGELOG -->
-
-### Semantic Release
-
-<!-- TODO: Automatizar releases -->
+### Interativos
+- **[Learn Git Branching](https://learngitbranching.js.org/):** Provavelmente a melhor forma visual de entender branches e rebases brincando num jogo.
+- **GitHub Skills:** Cursos gratuitos e práticos do próprio GitHub que criam repositórios reais para você treinar ações automatizadas.
 
 ## Learning Resources
 
 ### Interactive
 
 #### Learn Git Branching
+É a ferramenta visual mais famosa para entender como os commits e as branches se comportam.
+- **Link:** [https://learngitbranching.js.org/](https://learngitbranching.js.org/)
+- **Quando usar:** Quando tiver dificuldade em visualizar o que o `merge` ou `rebase` fazem com o grafo.
+- **Destaque:** Traduzido para Português.
 
-<!-- TODO: Jogo interativo -->
-<!-- https://learngitbranching.js.org/ -->
+#### Oh My Git!
+Um jogo interativo de código aberto que utiliza uma interface de cartas.
+- **Link:** [https://ohmygit.org/](https://ohmygit.org/)
+- **Quando usar:** Para aprender de forma lúdica, ideal para quem está fugindo de documentações densas no início.
 
-#### GitHub Learning Lab
-
-<!-- TODO: Cursos hands-on -->
+#### GitHub Skills (Antigo Learning Lab)
+Cursos hands-on baseados em repositórios reais com feedback automático.
+- **Link:** [https://skills.github.com/](https://skills.github.com/)
 
 ### Books
 
-#### Pro Git
-
-<!-- TODO: Livro completo e gratuito -->
-<!-- https://git-scm.com/book/pt-br/v2 -->
+#### Pro Git (O Livro)
+A "bíblia" oficial do Git, escrita por Scott Chacon e Ben Straub.
+- **Link:** [https://git-scm.com/book/pt-br/v2](https://git-scm.com/book/pt-br/v2)
+- **Nível:** Iniciante (capítulos 1-3) ao Avançado (capítulos 7-10).
+- **Idioma:** Português e Inglês.
 
 #### Git from the Bottom Up
-
-<!-- TODO: Entendimento profundo -->
+Focado em como o Git funciona "por baixo do capô" (objetos, hashes e referências).
+- **Link:** [https://jwiegley.github.io/git-from-the-bottom-up/](https://jwiegley.github.io/git-from-the-bottom-up/)
+- **Nível:** Avançado.
 
 ### Cheat Sheets
 
@@ -650,105 +742,77 @@ Aqui estão algumas das melhores "colas" (cheat sheets) gratuitas para você sal
 ## Documentation
 
 ### Official Git Docs
-
-<!-- TODO: git-scm.com -->
+Referência técnica absoluta para todos os comandos e protocolos.
+- **Site:** [git-scm.com](https://git-scm.com/doc)
+- **Idioma:** Inglês.
 
 ### GitHub Docs
-
-<!-- TODO: docs.github.com -->
+Documentação completa da plataforma, cobrindo desde Issues até Actions e Segurança.
+- **Site:** [docs.github.com](https://docs.github.com/pt)
+- **Idioma:** Português disponível.
 
 ### Man Pages
-
+Você pode acessar a documentação direto no seu terminal:
 ```bash
-# TODO: git help <comando>
-# man git-<comando>
+git help <comando>
+# Exemplo: git help commit
 ```
 
 ## Troubleshooting Tools
 
 ### Git Doctor
-
+O repositório está estranho ou corrompido? Verifique a integridade interna do banco de dados do Git:
 ```bash
-# TODO: git fsck (verificar integridade)
+git fsck
 ```
 
-### Git Log Filtering
+### Git Log Filtering (Filtros Avançados)
 
+Procurando uma agulha no palheiro? O `git log` é incrível:
 ```bash
-# TODO: Filtros avançados de log
-# --author, --since, --grep, -S
+git log --author="Antonio"    # Só commits dessa pessoa
+git log --since="2023-01-01"  # Só a partir desta data
+git log --grep="fix: "        # Só commits cuja mensagem tenha essa palavra
+git log -S "funcaoQuebrada()" # Só commits que adicionaram ou apagaram esse trecho de código específico!
 ```
-
-### git show
-
-<!-- TODO: Inspecionar commits específicos -->
-
-## Productivity Tips
-
-### Keyboard Shortcuts
-
-<!-- TODO: Atalhos do GitHub -->
-
-### Browser Extensions
-
-#### Octotree
-
-<!-- TODO: Navegação em árvore -->
-
-#### Refined GitHub
-
-<!-- TODO: Melhorias na interface -->
-
-#### OctoLinker
-
-<!-- TODO: Navegação entre arquivos -->
-
-## Community Resources
-
-### GitHub Community Forum
-
-<!-- TODO: Fazer perguntas -->
-
-### Stack Overflow
-
-<!-- TODO: Tag [git] e [github] -->
-
-### Reddit
-
-<!-- TODO: r/git, r/github -->
 
 ## Configurações Avançadas
 
-### Git Config Global
+Algumas configurações globais que valem ouro:
 
 ```bash
-# TODO: Configurações úteis
-# core.autocrlf
-# pull.rebase
-# rerere.enabled
+# Como o Git deve lidar com quebras de linha entre Windows (CRLF) e Mac/Linux (LF)
+git config --global core.autocrlf true # No Windows
+git config --global core.autocrlf input # No Mac/Linux
+
+# Faz com que o "git pull" sempre faça rebase em vez de criar commits de merge sujos
+git config --global pull.rebase true
+
+O uso de emojis em commits ajuda a identificar rapidamente o tipo de alteração feita no projeto. Uma das convenções mais conhecidas é o **Gitmoji**, que associa cada emoji a uma intenção específica do commit.
+
+Essa prática pode ser combinada com **Conventional Commits**, deixando as mensagens mais padronizadas, legíveis e fáceis de entender no histórico do Git.
+
+Exemplos:
+
+- ✨ `feat: adiciona nova funcionalidade`
+- 🐛 `fix: corrige bug no login`
+- 📝 `docs: atualiza documentação`
+- 🎨 `style: melhora formatação do código`
+- ♻️ `refactor: reorganiza estrutura interna`
+- ✅ `test: adiciona testes unitários`
+
+Exemplo completo:
+
+```bash
+git commit -m "✨ feat: adiciona autenticação com GitHub"
 ```
 
-### Git Attributes
+> **Em outras IDEs**
+>
+> - **IntelliJ IDEA:** o Gitmoji pode ser usado diretamente no campo de mensagem de commit, junto com o padrão de escrita definido pela equipe, como `✨ feat: adiciona nova funcionalidade`.
+> - **Sublime Text / Sublime Merge:** também permite escrever mensagens de commit com emojis. O uso do Gitmoji não depende de uma extensão específica, pois está relacionado à forma como o desenvolvedor escreve e padroniza os commits.
 
-<!-- TODO: .gitattributes file -->
-
-### Git Hooks
-
-<!-- TODO: Automação local -->
-
-#### Pre-commit
-
-<!-- TODO: Lint, format antes de commit -->
-
-#### Pre-push
-
-<!-- TODO: Rodar testes antes de push -->
-
-## GitHub Features
-
-### Emoji in Commits
-
-<!-- TODO: Gitmoji, conventional commits -->
+**Fonte:** [Gitmoji — An emoji guide for your commit messages](https://gitmoji.dev/)
 
 ### Markdown Tips
 
@@ -772,11 +836,7 @@ Conteúdo oculto
 </details>
 ```
 
-## Continuous Integration
-
-### Travis CI
-
-<!-- TODO: Integração popular -->
+## Community Resources (Comunidades)
 
 ### CircleCI
 
@@ -917,25 +977,24 @@ git config --global alias.nuke "!git reset --hard HEAD && git clean -fd"
 
 ## Resumo
 
-<!-- TODO: Principais ferramentas e recursos -->
+### Essenciais Diários
+- Domine os conceitos na **CLI (linha de comando)** primeiro.
+- Adote uma ferramenta como **VS Code com GitLens** para facilitar revisões constantes.
+- Para gerenciar repositórios visualmente e resolver conflitos difíceis, considere o **GitKraken** ou o editor nativo da sua IDE (como as da JetBrains).
 
-### Essenciais
-
-- <!-- Git CLI -->
-- <!-- GitHub Desktop ou GitKraken -->
-- <!-- VS Code com GitLens -->
-- <!-- GitHub CLI (gh) -->
-
-### Recursos de Aprendizagem
-
-- <!-- Pro Git Book -->
-- <!-- Learn Git Branching -->
-- <!-- GitHub Learning Lab -->
+### Não Pare de Aprender
+- Explore o `git rebase -i` e o `git cherry-pick` quando estiver confortável com o básico.
+- Sempre tenha o link do **[Learn Git Branching](https://learngitbranching.js.org/)** guardado para visualizar mentalmente como o Git funciona.
 
 ---
 
 ## 👥 Contribuidores
-
 <!-- Este conteúdo é colaborativo. Contribuidores deste arquivo: -->
+<!-- Adicione seu nome quando contribuir:
+- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+-->
 <!-- Adicione seu nome quando contribuir: -->
+
+- [@p-esteves](https://github.com/p-esteves) - Seções de Recursos de Aprendizagem e Documentação (#64, #65)
+- [@camiwr](https://github.com/camiwr) - Seção Extensions e Plugins & GitHub Features
 - [@idarlandias](https://github.com/idarlandias) - Seção Cheat Sheets

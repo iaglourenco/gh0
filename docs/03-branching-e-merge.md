@@ -171,19 +171,75 @@ git switch feature/login
 
 ### Criar e Trocar em Um Comando
 
-Na prática, quase sempre que criamos uma branch, queremos ir imediatamente para ela. Existem atalhos para isso:
+    git checkout -b minha-feature
 
-```bash
-# Criar e trocar para nova branch em um comando
-git checkout -b <nome-da-branch>
+Ou com a sintaxe moderna:
 
-# OU (comando mais moderno)
-git switch -c <nome-da-branch>
+    git switch -c minha-feature
 
-# Exemplo
-git checkout -b feature/login
-git switch -c feature/login
-```
+---
+
+### Deletando Branches
+
+    git branch -d minha-feature   # deleta branch local (seguro)
+    git branch -D minha-feature   # força deleção
+    git push origin --delete minha-feature   # deleta branch remota
+
+---
+
+### Enviando Branch para o Repositório Remoto
+
+    git push origin minha-feature
+
+Esse comando envia a branch local para o repositório remoto (GitHub, por exemplo).
+
+---
+
+### Renomeando Branch
+
+    git branch -m novo-nome
+
+Ou renomeando uma específica:
+
+    git branch -m nome-antigo novo-nome
+
+---
+
+### Branch Local vs Remota
+
+- Local: existe apenas na sua máquina  
+- Remota: existe no servidor (ex: GitHub)  
+- Para compartilhar trabalho, é necessário fazer git push  
+
+---
+
+## Exemplo Prático: Feature Branch Workflow
+
+    # 1. Criar e entrar na branch
+    git checkout -b feature/login
+
+    # 2. Fazer alterações no código
+    git add .
+    git commit -m "feat: adiciona tela de login"
+
+    # 3. Enviar a branch para o repositório remoto
+    git push origin feature/login
+
+    # 4. Voltar para a branch principal
+    git checkout main
+
+    # 5. (Após merge) deletar a branch local
+    git branch -d feature/login
+
+---
+
+## Conceitos Importantes
+
+- Criar branch: permite desenvolver de forma isolada  
+- Listar branches: visualizar locais e remotas  
+- Navegar entre branches: alternar contexto de trabalho  
+- Deletar branches: manter o repositório organizado  
+- Local vs remoto: entender onde sua branch existe
 
 > `-c` significa "create" (criar)
 

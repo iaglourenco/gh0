@@ -50,59 +50,73 @@ Acesse o repositório original no GitHub e clique no botão **"Fork"** no canto 
 
 #### 2. Clone do Fork
 
+Baixe a SUA cópia (o fork) para a sua máquina local:
+
 ```bash
-git clone https://github.com/SEU-USUARIO/gh0.git
-cd gh0
+git clone https://github.com/seu-usuario/nome-do-repo.git
+cd nome-do-repo
 ```
 
 #### 3. Configurar Upstream
 
+Para manter seu fork atualizado com as mudanças que acontecem no projeto original, adicione o repositório original como um controle remoto chamado `upstream`:
+
 ```bash
-git remote add upstream https://github.com/iaglourenco/gh0.git
-# Verifique:
-git remote -v
+git remote add upstream https://github.com/dono-original/nome-do-repo.git
 ```
 
 #### 4. Criar Branch
 
+Nunca trabalhe diretamente na branch `main`. Crie uma branch específica para a sua contribuição:
+
 ```bash
-git switch -c seu-nome/descricao-da-tarefa
-# Exemplo:
-git switch -c davidamascen07/docs-github-pages
+git switch -c feature/minha-contribuicao
 ```
 
 #### 5. Fazer Mudanças e Commit
 
+Faça suas alterações no código, adicione os arquivos e crie commits com mensagens claras:
+
 ```bash
-git add docs/07-workflows-github.md
-git commit -m "docs: adiciona seção sobre GitHub Pages"
+git add .
+git commit -m "feat: adiciona nova funcionalidade XYZ"
 ```
 
 #### 6. Push para Fork
 
+Envie a branch com as suas alterações para o SEU fork no GitHub:
+
 ```bash
-git push origin seu-nome/descricao-da-tarefa
+git push origin feature/minha-contribuicao
 ```
 
 #### 7. Abrir Pull Request
 
-Após o push, o GitHub exibirá um banner **"Compare & pull request"**. Clique nele, preencha título e descrição (use `Closes #NUMERO` para linkar a issue) e clique em **"Create pull request"**.
+Vá até a página do repositório original no GitHub. Você verá um aviso sobre a sua nova branch com um botão **"Compare & pull request"**. Clique nele, preencha a descrição explicando o que você fez e submeta o PR para avaliação dos mantenedores.
 
 #### 8. Manter Fork Atualizado
 
+Antes de começar uma nova contribuição (ou se o seu PR estiver demorando), mantenha a sua branch `main` sincronizada com o projeto original:
+
 ```bash
+# Baixa as novidades do repositório original
 git fetch upstream
+
+# Garante que você está na sua main
 git switch main
-git merge upstream/main
+
+# Atualiza a sua main local apenas se for possível avançar em fast-forward
+git merge --ff-only upstream/main
+
+# Atualiza o seu fork no GitHub
 git push origin main
 ```
 
 ### Vantagens
 
-- **Segurança**: o repositório original nunca é afetado
-- **Experimentação livre**: teste ideias sem medo
-- **Contribuições externas**: qualquer pessoa pode contribuir
-- **Rastreabilidade**: todo trabalho fica registrado via PRs
+- **Segurança:** Mantenedores do projeto original não precisam dar permissão de escrita para estranhos.
+- **Experimentação Livre:** Você pode "quebrar" o seu fork à vontade sem medo de estragar o projeto principal.
+- **Escalabilidade:** Permite que milhares de pessoas contribuam para um mesmo projeto de forma organizada.
 
 ## GitHub Flow
 
@@ -122,8 +136,14 @@ GitHub Flow é um workflow de desenvolvimento **simples e ágil** criado pelo Gi
 
 ### Fluxo Completo
 
-```
-main → branch → commits → PR → review → merge → deploy
+```mermaid
+flowchart LR
+    A[main] --> B[branch]
+    B --> C[commits]
+    C --> D[PR]
+    D --> E[review]
+    E --> F[merge]
+    F --> G[deploy automático]
 ```
 
 ### Quando Usar
@@ -243,7 +263,7 @@ Clique em **"New issue"** e preencha:
 
 Crie templates em `.github/ISSUE_TEMPLATE/` para padronizar a abertura de issues. O GitHub oferece templates prontos para bug reports e feature requests, ou você pode criar os seus.
 
-### Labels
+### Labels (Etiquetas)
 
 Labels são **etiquetas coloridas** que categorizam e filtram issues e PRs. Facilite muito a organização e a busca de itens por tipo, prioridade ou status.
 
@@ -256,7 +276,7 @@ Labels são **etiquetas coloridas** que categorizam e filtram issues e PRs. Faci
 - `help wanted` - Precisa de ajuda da comunidade
 - `wontfix` - Não será corrigido/implementado
 
-### Milestones
+### Milestones (Marcos)
 
 Milestones **agrupam issues por objetivo ou release**. Permitem acompanhar o progresso de uma versão ou sprint, mostrando quantas issues estão abertas/fechadas para aquele marco.
 
@@ -276,7 +296,7 @@ Resolves #58
 
 Após o merge do PR, a issue #58 será fechada automaticamente.
 
-## Projects
+## Projects (GitHub Projects)
 
 ### GitHub Projects
 
@@ -389,22 +409,53 @@ O GitHub Projects oferece múltiplas visões para adaptar o quadro às diferente
 
 ### O que São Actions
 
-GitHub Actions é a plataforma de **CI/CD e automação** do GitHub. Permite criar workflows que rodam automaticamente em resposta a eventos no repositório (push, PR, issue, etc.).
+GitHub Actions é um recurso do GitHub usado para automatizar tarefas dentro de um repositório. Com ele, é possível executar testes, validar código, gerar documentação, publicar aplicações e criar fluxos de CI/CD diretamente a partir de eventos do próprio GitHub.
+
+Na prática, uma Action ajuda a responder perguntas como:
+
+- O código continua funcionando depois de um novo commit?
+- Um Pull Request pode ser revisado com segurança?
+- Os testes passam antes de permitir o merge?
+- Uma aplicação pode ser publicada automaticamente?
+
+Um workflow do GitHub Actions é definido por um arquivo YAML dentro da pasta `.github/workflows/`.
 
 ### Casos de Uso
 
-- **Testes automatizados**: rodar testes a cada push
-- **Build**: compilar o projeto automaticamente
-- **Deploy**: publicar em produção após merge na main
-- **Linting**: verificar qualidade do código
-- **Notificações**: avisar no Slack/Discord
-- **Geração de releases**: criar tags e changelogs
+GitHub Actions pode ser usado em diferentes situações, por exemplo:
 
-### Workflow File
+- Rodar testes automaticamente quando alguém faz `push`
+- Validar Pull Requests antes do merge
+- Executar tarefas agendadas com `schedule`
+- Publicar documentação ou sites estáticos
+- Fazer deploy de uma aplicação
+- Verificar formatação, lint ou qualidade do código
+
+Esse tipo de automação ajuda equipes a manterem qualidade, consistência e segurança no desenvolvimento.
+
+### Arquivo de Workflow
+
+Um workflow é criado dentro do diretório:
+
+```text
+.github/workflows/
+```
+
+O arquivo normalmente usa a extensão `.yml` ou `.yaml`.
+
+Exemplo:
+
+```text
+.github/workflows/ci.yml
+```
+
+Um exemplo básico de estrutura seria:
+
+Os workflows ficam dentro da pasta `.github/workflows/` e são escritos em YAML:
 
 ```yaml
 # .github/workflows/exemplo.yml
-name: CI
+name: Meu Workflow
 
 on:
   push:
@@ -413,63 +464,425 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  teste:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Executar testes
-        run: echo "Rodando testes..."
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Executar comando de teste
+        run: echo "Testes executados com sucesso"
 ```
 
-### Eventos (Triggers)
+Nesse exemplo:
+
+- `name` define o nome do workflow
+- `on` indica quais eventos iniciam a automação
+- `jobs` agrupa as tarefas executadas
+- `runs-on` define o ambiente de execução
+- `steps` lista os passos executados dentro do job
+- `uses` chama uma Action pronta
+- `run` executa um comando no terminal
+
+### Eventos
+
+Eventos são situações que disparam um workflow. Os mais comuns são `push`, `pull_request` e `schedule`.
+
+#### push
+
+Executa o workflow quando alguém envia commits para uma branch.
 
 ```yaml
 on:
-  push:              # a cada push
-  pull_request:      # quando PR é aberto/atualizado
-  schedule:          # agendado (cron)
-    - cron: '0 8 * * 1'  # toda segunda às 8h
-  workflow_dispatch: # execução manual
-  release:           # quando release é publicada
+  push:
+    branches: [main]
 ```
+
+#### pull_request
+
+Executa o workflow quando um Pull Request é aberto, atualizado ou reaberto.
+
+```yaml
+on:
+  pull_request:
+    branches: [main]
+```
+
+#### schedule
+
+Executa o workflow em horários programados usando sintaxe cron.
+
+```yaml
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+```
+
+Esse exemplo executa o workflow toda segunda-feira às 09:00 UTC.
 
 ### Jobs e Steps
 
-- **Workflow**: o arquivo YAML inteiro (`.github/workflows/*.yml`)
-- **Job**: conjunto de steps que rodam em uma mesma máquina virtual
-- **Step**: comando individual (run) ou action reutilizável (uses)
-- **Runner**: a máquina virtual que executa o job (`ubuntu-latest`, `windows-latest`, `macos-latest`)
+Um workflow pode ter um ou mais jobs. Um job é um conjunto de etapas executadas em um mesmo ambiente. Cada job pode rodar em uma máquina virtual, como `ubuntu-latest`, `windows-latest` ou `macos-latest`.
+
+Os steps são executados em ordem dentro de cada job. Eles podem executar comandos com `run` ou usar Actions prontas com `uses`.
+
+### Matrix Builds
+
+Matrix builds permitem executar o mesmo job em diferentes versões ou ambientes.
+
+```yaml
+name: Testes com matriz
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Verificar versão do Python
+        run: python --version
+```
+
+Nesse caso, o mesmo job será executado três vezes: uma com Python 3.8, outra com Python 3.9 e outra com Python 3.10.
+
+### Actions mais usadas
+
+Algumas Actions prontas são muito comuns:
+
+- `actions/checkout`: baixa o código do repositório para o ambiente do workflow
+- `actions/setup-node`: configura uma versão do Node.js
+- `actions/setup-python`: configura uma versão do Python
+- `actions/upload-artifact`: salva arquivos gerados durante o workflow
+- `actions/download-artifact`: baixa arquivos gerados por outro job
 
 ### Exemplo: CI Básico
 
-```yaml
-name: Testes
+CI significa Integração Contínua. A ideia é testar automaticamente cada mudança antes que ela seja incorporada ao projeto principal.
 
-on: [push, pull_request]
+```yaml
+name: CI Node.js
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
       - name: Instalar dependências
         run: npm install
 
       - name: Rodar testes
         run: npm test
-
-      - name: Verificar linting
-        run: npm run lint
 ```
+
+---
 
 ### Marketplace
 
-O [GitHub Marketplace](https://github.com/marketplace?type=actions) oferece **milhares de Actions pré-prontas** criadas pela comunidade. Exemplos populares:
-- `actions/checkout` — faz o checkout do repositório
-- `actions/setup-node` — configura Node.js
-- `actions/upload-artifact` — salva arquivos do build
-- `peaceiris/actions-gh-pages` — deploy para GitHub Pages
+O [GitHub Actions Marketplace](https://github.com/marketplace?type=actions) reúne milhares de actions prontas criadas pela comunidade. Exemplos úteis:
+
+| Action | O que faz |
+|---|---|
+| `actions/checkout@v4` | Baixa o código do repositório |
+| `actions/setup-node@v4` | Configura o Node.js |
+| `actions/setup-python@v5` | Configura o Python |
+| `actions/cache@v4` | Faz cache de dependências |
+| `actions/upload-artifact@v4` | Salva arquivos gerados pelo workflow |
+| `actions/download-artifact@v4` | Baixa arquivos salvos anteriormente |
+
+Para usar uma action do marketplace, basta referenciar com `uses`:
+
+```yaml
+- uses: actions/setup-node@v4
+  with:
+    node-version: '20'
+```
+
+> 💡 Sempre use uma versão fixada (ex: `@v4`) para evitar quebras inesperadas quando a action for atualizada.
+
+---
+
+### Build Matrix
+
+A build matrix permite testar em várias versões de linguagem ou sistema operacional ao mesmo tempo:
+
+```yaml
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18, 20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Rodar testes
+        run: npm test
+```
+
+Isso cria 9 combinações (3 SOs × 3 versões) e todas rodam em paralelo.
+
+---
+
+### Deploy Automático na Main
+
+Para fazer deploy apenas quando há merge na branch `main`:
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Build do projeto
+        run: npm run build
+
+      - name: Deploy para produção
+        run: npm run deploy
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+```
+
+---
+
+### Artifacts
+
+Artifacts são arquivos gerados durante o workflow que você quer preservar (relatórios, binários, logs):
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload dos artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 7
+```
+
+Para baixar um artifact em outro job:
+
+```yaml
+      - name: Download dos artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+```
+
+---
+
+### Secrets Management
+
+Nunca coloque senhas ou tokens diretamente no código. Use os **Secrets** do GitHub:
+
+**Como adicionar um Secret:**
+
+1. Vá em **Settings** do repositório
+2. Clique em **Secrets and variables > Actions**
+3. Clique em **New repository secret**
+4. Dê um nome (ex: `API_KEY`) e insira o valor
+
+**Como usar no workflow:**
+
+```yaml
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Usar secret
+        run: echo "Conectando com token seguro..."
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+```
+
+> ⚠️ Secrets nunca aparecem nos logs — o GitHub os oculta automaticamente.
+
+---
+
+### Cache de Dependências
+
+Cachear dependências evita baixar tudo do zero a cada execução, tornando o workflow mais rápido:
+
+```yaml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Rodar testes
+        run: npm test
+```
+
+Para projetos Python:
+
+```yaml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - run: pip install -r requirements.txt
+```
+
+---
+
+### Status Badges
+
+Badges mostram o status do workflow diretamente no `README.md`. A URL segue o padrão:
+
+```
+https://github.com/USUARIO/REPOSITORIO/actions/workflows/ARQUIVO.yml/badge.svg
+```
+
+Para adicionar ao README:
+
+```markdown
+![CI](https://github.com/hikazudani/gh0/actions/workflows/ci.yml/badge.svg)
+![Deploy](https://github.com/hikazudani/gh0/actions/workflows/deploy.yml/badge.svg)
+```
+
+| Status | Significado |
+|---|---|
+| ![passing](https://img.shields.io/badge/build-passing-brightgreen) | Workflow rodou com sucesso |
+| ![failing](https://img.shields.io/badge/build-failing-red) | Algum passo falhou |
+
+---
+
+### Workflows Avançados
+
+**Jobs com dependência (`needs`):**
+
+```yaml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run deploy
+```
+
+**Execução manual (`workflow_dispatch`):**
+
+```yaml
+on:
+  workflow_dispatch:
+    inputs:
+      ambiente:
+        description: 'Ambiente de deploy'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+```
+
+**Agendamento com cron:**
+
+```yaml
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # toda segunda-feira às 6h
+```
+
+---
+
+### Resumo
+
+| Recurso | Para que serve |
+|---|---|
+| `on: push` | Dispara o workflow a cada push |
+| `matrix` | Testa em múltiplas versões e SOs |
+| `needs` | Define ordem de execução dos jobs |
+| `secrets` | Armazena dados sensíveis com segurança |
+| `cache` | Acelera instalação de dependências |
+| `upload-artifact` | Preserva arquivos gerados no workflow |
+| `badge` | Exibe status do CI no README |
+| `workflow_dispatch` | Permite execução manual |
+| `schedule` | Agenda execuções automáticas |
+
 
 ## GitHub Pages
 
@@ -495,7 +908,7 @@ GitHub Pages é um serviço gratuito do GitHub que permite **hospedar sites est�
 6. Clique em **Save**
 7. Aguarde alguns minutos — o GitHub exibirá a URL do seu site: `https://seu-usuario.github.io/repositorio`
 
-### Fontes
+### Fontes (Sources)
 
 - **`main` branch** — publica a partir da branch principal (pasta raiz ou `/docs`)
 - **`docs/` folder** — publica apenas o conteúdo da pasta `/docs` da branch `main`
@@ -597,13 +1010,13 @@ O arquivo `CODEOWNERS` define **revisores automáticos por arquivo ou pasta**. Q
 *.yml @devops-lead
 ```
 
-## Branch Protection
+## Branch Protection (Proteção de Branch)
 
 ### O que É
 
 Branch protection é um conjunto de **regras para proteger branches críticas** (como `main`), impedindo pushes diretos, exigindo revisões e garantindo qualidade.
 
-### Regras Comuns
+### Regras Comuns e Essenciais
 
 - **Require pull request**: proibir push direto na branch
 - **Require reviews**: exigir N aprovações antes do merge
@@ -611,7 +1024,14 @@ Branch protection é um conjunto de **regras para proteger branches críticas** 
 - **Require conversation resolution**: todos os comentários resolvidos
 - **Restrict push**: apenas certos usuários/times podem fazer push
 
-### Configurando
+- **Require a pull request before merging:** Impede que qualquer pessoa faça um `git push` direto para a branch protegida. Todo código deve chegar via PR.
+  - **Require approvals:** Exige um número mínimo de aprovações (geralmente 1 ou 2) de outros desenvolvedores antes do merge.
+  - **Dismiss stale pull request approvals when new commits are pushed:** Se o autor adicionar novos commits após uma aprovação, a aprovação anterior é invalidada, exigindo nova revisão.
+  - **Require review from Code Owners:** Se houver um arquivo `CODEOWNERS`, exige que pelo menos um dos donos do código afetado aprove o PR.
+- **Require status checks to pass before merging:** Impede o merge se as Actions (testes automatizados, linters, etc.) falharem.
+  - **Require branches to be up to date before merging:** Garante que o PR seja testado com a versão mais recente da branch base antes de ser mergeado.
+- **Include administrators:** Garante que as regras de proteção também se apliquem aos administradores do repositório. Em interfaces mais novas, como **rulesets**, esse conceito pode aparecer com opções relacionadas a impedir bypass das regras.
+- **Restrict who can push to matching branches:** Permite definir exatamente quais pessoas ou equipes têm permissão de push (caso o push direto seja permitido em casos excepcionais).
 
 1. Acesse **Settings > Branches**
 2. Clique em **"Add branch ruleset"** (ou "Add rule" em repositórios clássicos)
@@ -619,13 +1039,18 @@ Branch protection é um conjunto de **regras para proteger branches críticas** 
 4. Marque as regras desejadas
 5. Clique em **Save changes**
 
-## Security
+Para adicionar ou editar regras de proteção em um repositório onde você tem permissão de administrador:
 
-### Dependabot
+1. Acesse a aba **Settings** do repositório.
+2. No menu lateral esquerdo, em "Code and automation", clique em **Branches**.
+3. Clique no botão **Add branch protection rule**.
+4. Em "Branch name pattern", digite o nome da branch (ex: `main`).
+5. Marque as caixas das regras desejadas (conforme a lista acima).
+6. Clique em **Create** ou **Save changes** no final da página.
 
 Dependabot é um bot que **monitora dependências do projeto** e abre PRs automaticamente quando encontra versões com vulnerabilidades de segurança ou atualizadas. Configure em **Settings > Security > Dependabot**.
 
-### Security Advisories
+### Dependabot
 
 Permitem **reportar vulnerabilidades de segurança** de forma privada antes da divulgação pública (responsible disclosure). Acesse em **Security > Advisories**.
 
@@ -696,7 +1121,8 @@ gh repo fork usuario/repositorio --clone
 
 ## Integrations & Apps
 
-### GitHub Apps
+# Clona um repositório mais facilmente
+gh repo clone organizacao/nome-projeto
 
 Aplicativos que se integram ao GitHub para adicionar funcionalidades. Instale em **Settings > Integrations > GitHub Apps**.
 
@@ -711,6 +1137,11 @@ Aplicativos que se integram ao GitHub para adicionar funcionalidades. Instale em
 ## Exemplos Práticos
 
 ### Exemplo 1: Contribuir para Open Source
+1. Faça o Fork de uma biblioteca que você gosta.
+2. Clone o Fork para o PC.
+3. Crie uma branch, arrume um bug que você encontrou.
+4. Faça o push e abra um Pull Request para a biblioteca original. 
+5. Responda educadamente aos reviews dos mantenedores.
 
 ```bash
 # 1. Fork pelo GitHub (botão Fork)
@@ -869,3 +1300,10 @@ Combinando esses recursos, você terá um fluxo de trabalho profissional e colab
 - [@Davidamascen07](https://github.com/Davidamascen07) - Seção GitHub Pages e conteúdo completo do arquivo
 - [Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
 
+<!-- Adicione seu nome quando contribuir:
+- [@seu-usuario](https://github.com/seu-usuario) - Seção X
+-->
+- [Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
+- [@hailtonDavid](https://github.com/hailtonDavid) - Issue #55 - Seção "Branch Protection"
+[Lucas Gabriel Carvalho dos Ramos](https://github.com/LucasGCRamos) - Explicação sobre GitHub Flow
+[Carol Anely Miranda Guzman](https://github.com/Carolanely) - Introdução sobre GitHub Actions

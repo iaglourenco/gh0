@@ -291,24 +291,28 @@ git merge feature/nova-tela
 
 ### Fast-Forward Merge
 
-<!-- TODO: O que é fast-forward -->
+O **Fast-Forward Merge** é o tipo de merge mais simples do Git. Ele ocorre quando a branch de destino (ex: `main`) não possui nenhum commit novo desde que a branch de origem (ex: `feature`) foi criada a partir dela. Em outras palavras, a branch de origem está simplesmente "na frente" da branch de destino, sem nenhuma divergência no histórico.
 
-<!-- Quando acontece: quando não há commits divergentes -->
+Nesse cenário, o Git não precisa criar um novo "merge commit" para unir os históricos. Ele simplesmente avança (fast-forward) o ponteiro da branch de destino para apontar para o mesmo commit da branch de origem. O resultado é um histórico perfeitamente linear.
 
-### Fast-Forward Merge
+**Quando ocorre:** Ao finalizar uma feature em uma base de código onde a branch `main` não sofreu alterações concorrentes.
 
-Acontece quando a branch de destino (`main`) **não teve nenhum commit novo** desde que a branch de `feature` foi criada. Como o caminho é direto, o Git simplesmente move o ponteiro da `main` "para frente" (fast-forward) até o commit mais recente da `feature`.
+**Comando:** O Git tenta fazer isso automaticamente por padrão quando você roda:
+```bash
+git merge <nome-da-branch>
+```
 
-```mermaid
-gitGraph
-   commit id: "A"
-   commit id: "B"
-   branch feature
-   checkout feature
-   commit id: "C"
-   commit id: "D"
-   checkout main
-   merge feature type: FAST_FORWARD
+**Diagrama Conceitual:**
+
+```text
+Antes do merge:
+main:    A---B
+              \
+feature:       C---D
+
+Depois do fast-forward merge (ponteiro main apenas avançou):
+main:    A---B---C---D
+feature:             D (main e feature apontam aqui)
 ```
 
 ### Three-Way Merge
@@ -357,14 +361,14 @@ git merge --ff-only feature/login
 
 ### --no-ff (No Fast-Forward)
 
-Esta estratégia força o Git a criar um commit de merge (com dois parents), mesmo que um fast-forward seja perfeitamente possível. A principal vantagem é a preservação histórica: fica claro no grafo do repositório onde uma feature começou e onde ela terminou, mantendo os commits daquela funcionalidade agrupados.
+A opção `--no-ff` força o Git a **sempre criar um merge commit**, mesmo que um fast-forward seja perfeitamente possível.
+
+**Vantagem (Histórico limpo vs Rastreabilidade):**
+Enquanto o fast-forward mantém o histórico perfeitamente linear (limpo), ele esconde o fato de que aqueles commits faziam parte de uma branch de feature específica. Ao usar `--no-ff`, você preserva a rastreabilidade, deixando claro no histórico onde a feature começou e onde ela foi integrada, agrupando visualmente os commits relacionados.
 
 ```bash
-# Força a criação de um commit de merge explícito
-git merge --no-ff feature/login
-
-# Ao rodar esse comando, o Git abrirá o seu editor de texto padrão
-# para que você confirme ou edite a mensagem do commit de merge gerado.
+# Força a criação de um merge commit para manter a rastreabilidade da feature
+git merge --no-ff <nome-da-branch>
 ```
 
 ### --squash
@@ -699,6 +703,7 @@ Criar uma branch a partir de uma `main` antiga na sua máquina, resultando em de
 Este conteúdo é colaborativo. Contribuidores deste arquivo:
 
 - [@daniballester](https://github.com/daniballester) - Issue #19 - Seção "O que são Branches"
+- [@hailtonDavid](https://github.com/hailtonDavid) - Issue #22 - Seção "Fast-Forward Merge"
 - [@hailtonDavid](https://github.com/hailtonDavid) - Issue #68 - Seção "Rebase"
 
 - [@lukitkat](https://github.com/Lukitkat) - Issue #24 - Seção "Documentar estratégias de merge"

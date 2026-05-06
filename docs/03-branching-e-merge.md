@@ -101,6 +101,8 @@ Recentemente, a comunidade Git mudou de **master** para **main** como nome padr�
 
 ### Listar Branches
 
+Para ver quais branches existem no seu repositório local:
+
 ```bash
 # Listar branches locais
 git branch
@@ -119,6 +121,8 @@ git branch --no-merged
 ```
 
 ### Criar uma Nova Branch
+
+Para criar uma ramificação a partir do ponto atual onde você está:
 
 ```bash
 # Criar uma nova branch (sem trocar para ela)
@@ -149,6 +153,8 @@ Use nomes descritivos e consistentes para suas branches:
 
 ### Trocar de Branch
 
+Para navegar entre as linhas do tempo (branches):
+
 ```bash
 # Trocar para uma branch existente
 git checkout <nome-da-branch>
@@ -164,6 +170,8 @@ git switch feature/login
 > **Nota:** O `git switch` é recomendado pois é mais específico que `git checkout` (que também serve para outras coisas).
 
 ### Criar e Trocar em Um Comando
+
+Na prática, quase sempre que criamos uma branch, queremos ir imediatamente para ela. Existem atalhos para isso:
 
 ```bash
 # Criar e trocar para nova branch em um comando
@@ -239,46 +247,72 @@ git stash pop
 
 ## Merge: Unindo Branches
 
-<!-- TODO: Conceito de merge -->
-
 ### O que é Merge?
 
-<!-- TODO: Integrar mudanças de uma branch em outra -->
+Merge é a operação de pegar as mudanças desenvolvidas em uma branch separada (ex: `feature`) e aplicá-las em outra branch (ex: `main`). É como dizer: "Ok, o código do universo paralelo está pronto, agora vamos trazê-lo para a realidade principal".
 
 ### Sintaxe Básica
 
+Para fazer um merge, você **sempre deve estar na branch de destino** (a branch que vai receber as mudanças).
+
 ```bash
-# TODO: Como fazer merge
-# git merge <nome-da-branch>
-# Primeiro checkout para branch destino, depois merge
+# 1. Troque para a branch que vai receber as alterações
+git switch main
+
+# 2. Execute o merge trazendo a branch desejada
+git merge <nome-da-branch-feature>
 ```
+
+### Assinatura de Commits de Merge (GPG Sign)
+
+Para garantir a máxima autenticidade e segurança do código, é possível assinar digitalmente os seus merges utilizando chaves GPG. Isso prova criptograficamente que a integração no repositório foi realmente autorizada e executada por você.
+```bash
+# Realiza o merge e assina digitalmente a transação
+git merge -S feature/nova-funcionalidade
 
 ### Exemplo de Merge
 
 ```bash
-# TODO: Exemplo completo
-# 1. Criar feature branch
-# 2. Fazer commits
-# 3. Voltar para main
-# 4. Fazer merge
+# Criar e ir para nova branch
+git switch -c feature/nova-tela
+
+# ... faço edições no código ...
+git add .
+git commit -m "feat: adiciona nova tela de perfil"
+
+# Volto para a branch principal
+git switch main
+
+# Incorporo a nova funcionalidade à main
+git merge feature/nova-tela
 ```
 
 ## Tipos de Merge
 
 ### Fast-Forward Merge
 
-<!-- TODO: O que é fast-forward -->
+O **Fast-Forward Merge** é o tipo de merge mais simples do Git. Ele ocorre quando a branch de destino (ex: `main`) não possui nenhum commit novo desde que a branch de origem (ex: `feature`) foi criada a partir dela. Em outras palavras, a branch de origem está simplesmente "na frente" da branch de destino, sem nenhuma divergência no histórico.
 
-<!-- Quando acontece: quando não há commits divergentes -->
+Nesse cenário, o Git não precisa criar um novo "merge commit" para unir os históricos. Ele simplesmente avança (fast-forward) o ponteiro da branch de destino para apontar para o mesmo commit da branch de origem. O resultado é um histórico perfeitamente linear.
 
+**Quando ocorre:** Ao finalizar uma feature em uma base de código onde a branch `main` não sofreu alterações concorrentes.
+
+**Comando:** O Git tenta fazer isso automaticamente por padrão quando você roda:
+```bash
+git merge <nome-da-branch>
 ```
-Antes:
+
+**Diagrama Conceitual:**
+
+```text
+Antes do merge:
 main:    A---B
               \
 feature:       C---D
 
-Depois (fast-forward):
+Depois do fast-forward merge (ponteiro main apenas avançou):
 main:    A---B---C---D
+feature:             D (main e feature apontam aqui)
 ```
 
 ### Three-Way Merge
@@ -307,28 +341,117 @@ feature:       D---E
 
 ## Estratégias de Merge
 
+Na linha de comando, podemos forçar o comportamento do merge através de opções (flags):
+
 ### --ff (Fast-Forward)
 
-<!-- TODO: Comportamento padrão -->
+O Fast-Forward é o comportamento padrão do Git quando não há commits divergentes entre a branch de destino e a branch que está sendo mesclada. Em vez de criar um novo commit de merge, o Git simplesmente "avança" o ponteiro da sua branch atual para apontar para o commit mais recente da branch de origem. Isso mantém o histórico linear e direto.
+
 
 ```bash
-# TODO: Explicar opção --ff
+
+# O Git tentará fazer um fast-forward por padrão se o histórico permitir
+git merge feature/login
+
+# Se você quiser garantir que o merge APENAS aconteça se for um fast-forward
+# (abortando a operação caso haja conflitos ou divergências):
+git merge --ff-only feature/login
+
 ```
 
 ### --no-ff (No Fast-Forward)
 
-<!-- TODO: Forçar merge commit -->
+A opção `--no-ff` força o Git a **sempre criar um merge commit**, mesmo que um fast-forward seja perfeitamente possível.
+
+**Vantagem (Histórico limpo vs Rastreabilidade):**
+Enquanto o fast-forward mantém o histórico perfeitamente linear (limpo), ele esconde o fato de que aqueles commits faziam parte de uma branch de feature específica. Ao usar `--no-ff`, você preserva a rastreabilidade, deixando claro no histórico onde a feature começou e onde ela foi integrada, agrupando visualmente os commits relacionados.
 
 ```bash
-# TODO: Quando usar --no-ff
+# Força a criação de um merge commit para manter a rastreabilidade da feature
+git merge --no-ff <nome-da-branch>
 ```
 
 ### --squash
 
-<!-- TODO: Comprimir commits -->
+O `squash` pega todos os commits da branch de `feature` e os comprime em uma única alteração no Working Directory, sem comitá-los automaticamente. Você então faz um único commit na branch principal com todas as novidades agregadas.
 
 ```bash
-# TODO: Exemplo de squash merge
+git merge --squash feature-nome
+git commit -m "feat: pacote de funcionalidades finalizado"
+```
+
+## Rebase: Uma Alternativa ao Merge
+
+O `git rebase` é uma alternativa poderosa ao `git merge`. Enquanto o merge cria um novo commit que une dois históricos, o rebase **reescreve o histórico do projeto**, movendo a base da sua branch atual para o topo de outra branch.
+
+### Como Funciona
+
+Imagine que você criou uma branch `feature` a partir da `main`. Enquanto você trabalhava, novos commits foram adicionados à `main`.
+
+**Situação Inicial:**
+```text
+      A---B---C (main)
+           \
+            D---E (feature)
+```
+
+Se você fizer um **merge** da `main` na `feature`, o Git criará um novo commit de merge (F), preservando o histórico exato de quando as coisas aconteceram:
+```text
+      A---B---C (main)
+           \   \
+            D---E---F (feature)
+```
+
+Se você fizer um **rebase** da `feature` na `main`, o Git "desconecta" os commits D e E, avança a base da `feature` para o commit C (o mais recente da main), e reaplica as suas mudanças no topo. Os commits antigos (D e E) são descartados e novos commits (D' e E') são criados:
+```text
+      A---B---C (main)
+               \
+                D'---E' (feature)
+```
+
+O resultado é um histórico perfeitamente linear, como se você tivesse começado a trabalhar a partir do código mais recente da `main`.
+
+### Vantagens e Desvantagens
+
+**Vantagens:**
+- Mantém o histórico do projeto limpo e linear (sem commits de merge poluindo o log).
+- Facilita a leitura do histórico com ferramentas como `git log` ou `git bisect`.
+- Ajuda a resolver conflitos passo a passo (commit por commit) em vez de todos de uma vez.
+
+**Desvantagens:**
+- Reescreve o histórico do Git (muda os hashes dos commits).
+- Pode ser perigoso se usado incorretamente em branches compartilhadas.
+- Conflitos podem precisar ser resolvidos várias vezes (uma vez para cada commit reaplicado).
+
+### A Regra de Ouro do Rebase
+
+> **NUNCA faça rebase de commits que já foram enviados (pushed) para um repositório público/compartilhado.**
+
+Se você fizer rebase de uma branch que outras pessoas já baixaram, você estará reescrevendo um histórico que os colegas já possuem. Quando eles tentarem sincronizar, o Git ficará confuso, resultando em uma bagunça de commits duplicados e conflitos difíceis de resolver. Use o rebase **apenas para limpar o seu trabalho local** antes de integrá-lo.
+
+### Exemplo Prático de Uso
+
+O cenário mais comum é atualizar sua branch local com as novidades da branch principal antes de abrir um Pull Request:
+
+```bash
+# 1. Garanta que a main local está atualizada
+git checkout main
+git pull origin main
+
+# 2. Volte para a sua branch de feature
+git checkout feature/minha-nova-tela
+
+# 3. Faça o rebase da sua branch no topo da main
+git rebase main
+
+# 4. Se houver conflitos, o Git vai pausar.
+# Resolva os conflitos nos arquivos, adicione-os e continue:
+# git add <arquivo-resolvido>
+# git rebase --continue
+
+# 5. (Opcional) Se precisar enviar para o repositório remoto após um rebase
+# Como o histórico mudou, você precisará forçar o push
+git push origin feature/minha-nova-tela --force-with-lease
 ```
 
 ## Deletando Branches
@@ -367,67 +490,121 @@ git push origin --delete feature/nova-funcionalidade
 
 ## Visualizando o Grafo
 
+O terminal pode desenhar o histórico das branches e seus merges de forma bastante ilustrativa:
+
 ```bash
-# TODO: Ver histórico de branches
-# git log --graph --oneline --all
+git log --graph --oneline --all
 ```
 
 ## Branch Tracking
 
-<!-- TODO: Conceito de tracking branches -->
-
 ### Upstream Branch
 
-<!-- TODO: O que é upstream -->
+Quando você envia uma branch local para o GitHub pela primeira vez, o Git precisa saber qual é a branch "gêmea" dela lá no servidor. Esse link é chamado de configuração de *upstream*.
 
 ```bash
-# TODO: Configurar upstream
-# git branch -u origin/<branch>
-# git push -u origin <branch>
+# Ao fazer push pela primeira vez, cria a branch no remoto e vincula as duas
+git push -u origin <nome-da-branch>
+
+# A partir daí, basta digitar:
+git push
 ```
 
 ## Exemplos Práticos
 
 ### Exemplo 1: Feature Branch Workflow
 
-<!-- TODO: Fluxo completo de desenvolvimento de feature -->
-
 ```bash
-# 1. Criar branch
-# 2. Desenvolver feature
-# 3. Fazer merge
-# 4. Deletar branch
+# Atualiza localmente
+git pull origin main
+
+# Cria a nova branch
+git switch -c feature/dark-mode
+
+# Trabalha...
+git add .
+git commit -m "feat: adiciona tema escuro"
+
+# Retorna e integra
+git switch main
+git merge feature/dark-mode
+
+# Limpa a casa
+git branch -d feature/dark-mode
 ```
 
-### Exemplo 2: Merge de Múltiplas Features
+## Conventional Commits
 
-<!-- TODO: Cenário com várias branches -->
+O padrão **Conventional Commits** é uma convenção simples para formatar as mensagens de commit, tornando-as facilmente compreensíveis tanto para programadores quanto para sistemas automatizados. A estrutura básica é: `<tipo>: <descrição breve>`.
 
-### Exemplo 3: Desfazendo um Merge
-
-<!-- TODO: Como reverter merge (git reset, git revert) -->
+- `feat:` Adiciona uma nova funcionalidade ao projeto.
+- `fix:` Resolve um bug ou erro.
+- `docs:` Altera exclusivamente arquivos de documentação (como o README).
+- `style:` Altera formatação, espaçamento ou indentação (sem mudar a lógica do código).
+- `refactor:` Mudança estrutural no código que não corrige bug nem adiciona funcionalidade.
+- `test:` Adiciona testes ausentes ou corrige testes existentes.
 
 ## Boas Práticas
 
-<!-- TODO: Lista de boas práticas com branches -->
+```bash
+# Remove o último commit (o do merge indesejado) da branch atual
+git reset --hard HEAD~1
+```
 
-- <!-- Manter branches pequenas e focadas -->
-- <!-- Commits frequentes -->
-- <!-- Merge regularmente da main -->
-- <!-- Deletar branches após merge -->
-- <!-- Nomear branches descritivamente -->
+## Boas Práticas
+
+- **Mantenha branches pequenas:** Elas devem durar pouco tempo, de preferência dias, não meses.
+- **Commits frequentes:** Salve o progresso regularmente.
+- **Merge com frequência:** Traga mudanças da `main` para a sua branch (`git merge main`) frequentemente para evitar um acúmulo gigante de alterações conflitantes no final.
+- **Delete após usar:** Fez o merge, apague a branch.
+- **Não comite na main:** Em times profissionais, o fluxo natural é sempre criar branch, aprovar e mergiar.
+
+## Boas Práticas e Integração Contínua (CI/CD)
+
+- **Sempre teste localmente antes do merge:** Nunca integre um código na branch principal sem antes rodar toda a suíte de testes na sua máquina. O código da branch de destino pode ter sido atualizado enquanto você trabalhava, o que pode quebrar a sua funcionalidade durante a junção.
+- **Testes Automáticos em Pull Requests (CI/CD):** Em ambientes de desenvolvimento modernos, os repositórios são configurados com pipelines de Integração Contínua (CI). Isso significa que, ao abrir um Pull Request, robôs executam testes automatizados e validam a qualidade do código de forma independente. Um merge seguro só deve ser permitido pela equipe após o "sinal verde" de todos os testes da esteira de CI/CD.
+
+## Estratégia Oficial da Equipe
+
+Para o desenvolvimento deste projeto de documentação, nossa equipe utiliza a estratégia baseada no **GitHub Flow** combinada com **Squash and Merge**.
+
+Isso significa que todo trabalho de documentação deve nascer em branches curtas e descritivas criadas a partir da `main`. A integração de volta ocorre exclusivamente via Pull Requests e, no momento da aprovação, os commits da branch de trabalho devem ser agrupados (squash) para mantermos um histórico linear, limpo e legível na ramificação principal.
 
 ## Workflows Comuns
 
 ### Feature Branch Workflow
 
-<!-- TODO: Explicar esse workflow -->
+O **Feature Branch Workflow** é o modelo base para a maioria das colaborações modernas no Git (e a base de fluxos como o GitHub Flow). A premissa principal é muito simples: todo novo desenvolvimento (seja uma nova funcionalidade, refatoração ou correção de bug) deve ser feito em uma branch dedicada, e nunca diretamente na branch `main`.
+
+**Como funciona:**
+1. A branch `main` representa o histórico oficial e deve estar sempre em um estado pronto para produção (estável).
+2. Quando iniciar um trabalho, deve ser criada uma nova branch a partir da `main`, com um nome descritivo (ex: `feature/novo-layout`).
+3. Desenvolve e faz os commits de forma isolada nessa nova branch.
+4. Ao finalizar, é dado o push na branch para o repositório remoto e abre um **Pull Request (PR)**.
+5. Após o código ser revisado e aprovado pela equipe, a branch é mesclada (merge) na `main` e, logo depois, pode ser deletada.
+
+Esse fluxo garante que o código principal nunca seja quebrado por trabalhos em andamento e incentiva fortemente a cultura de revisão de código.
 
 ### Gitflow
 
-<!-- TODO: Introdução básica ao Gitflow -->
+O **Gitflow** é um modelo de workflow mais rigoroso e estruturado. Ele é ideal para projetos grandes, com várias equipes trabalhando simultaneamente e que possuem ciclos de lançamento (releases) programados e versionamento muito bem definido.
 
-<!-- (Detalhado no capítulo 07) -->
+Diferente do Feature Branch Workflow, que gira apenas em torno de uma branch principal, o Gitflow utiliza duas branches de longa duração:
+* **`main`**: Armazena *exclusivamente* o histórico de lançamentos oficiais em produção. Cada commit aqui geralmente recebe uma tag de versão.
+* **`develop`**: Serve como a base de integração para todo o código novo. É o "coração" do desenvolvimento diário.
+
+Para organizar o trabalho ao redor dessas duas, o Gitflow define três tipos de branches de suporte com papéis e tempos de vida estritos:
+* **`feature/*`**: Para criar novas funcionalidades (ramificam da `develop` e fazem merge de volta na `develop`).
+* **`release/*`**: Para preparar uma nova versão para produção, permitindo apenas testes e correções finais (ramificam da `develop` e fazem merge na `main` e na `develop`).
+* **`hotfix/*`**: Para correções de bugs urgentes em produção (são as únicas que ramificam direto da `main` e fazem merge na `main` e na `develop`).
+
+### Trunk-Based Development
+
+O **Trunk-Based Development** é um modelo focado em integração contínua extrema. Em vez de manter branches de longa duração, todos os desenvolvedores integram suas pequenas mudanças (commits) diretamente na branch principal (frequentemente chamada de `trunk` ou `main`) várias vezes ao dia.
+
+- Exige um conjunto robusto de testes automatizados para garantir que o *trunk* nunca quebre.
+- Branches, quando existem, duram no máximo algumas horas (por exemplo, a implementação de uma etapa de um `feature/data-pipeline`).
+- Utiliza fortemente *Feature Flags* (bandeiras de funcionalidade) para ocultar no código as funcionalidades que ainda estão inacabadas em produção.
 
 ## Conflitos de Merge
 
@@ -437,72 +614,87 @@ git push origin --delete feature/nova-funcionalidade
 
 ### O que São
 
-<!-- TODO: Quando ocorrem -->
-
-### Exemplo Simples
-
-<!-- TODO: Exemplo básico de conflito e resolução rápida -->
+Conflitos são apenas o Git pedindo a intervenção humana para escolher qual código deve prevalecer. O Git insere marcações visuais (`<<<<<<<`, `=======`, `>>>>>>>`) no código conflitante para que você leia, decida, edite o arquivo apagando os marcadores e depois faça um commit para concluir o merge. (Esse processo é detalhado no Capítulo 06).
 
 ## git stash
 
-<!-- TODO: Salvando mudanças temporariamente -->
+Se você estiver no meio de um trabalho confuso e precisar trocar de branch urgentemente para arrumar um bug rápido na `main`, você pode usar a "gaveta" do Git: o `stash`.
 
 ### Quando Usar Stash
 
-<!-- TODO: Cenários de uso -->
+O comando `stash` pega todas as suas alterações não comitadas e as guarda temporariamente, limpando seu diretório. Assim, você pode trocar de branch livremente. Quando voltar, você as retira da gaveta.
 
 ```bash
-# TODO: Comandos stash básicos
-# git stash
-# git stash pop
-# git stash list
+# Guarda mudanças temporariamente na gaveta
+git stash
+
+# Tira a última coisa guardada da gaveta e aplica nos arquivos
+git stash pop
+
+# Vê o que tem guardado
+git stash list
 ```
 
 ## Comparando Branches
 
+Para ver o que tem de diferente no código da sua branch em relação à `main` antes do merge:
+
 ```bash
-# TODO: Como ver diferenças entre branches
-# git diff <branch1>..<branch2>
+# Mostra o código diferente (diff) entre duas branches
+git diff main..minha-branch
 ```
 
 ## Erros Comuns
 
 ### Erro 1: Merge na Branch Errada
 
-<!-- TODO: Como evitar e como reverter -->
+Você queria fundir na `main`, mas sem perceber estava na branch `teste` e fez o merge nela.
+**Solução:** Use o `git status` ou olhe a indicação no seu terminal para sempre ter certeza de qual branch está (`git switch`) antes de invocar o `git merge`. Se errar, pode ser revertido via `git reset`.
 
 ### Erro 2: Deletar Branch Sem Merge
 
-<!-- TODO: Perda de trabalho, recuperação -->
+Tentar apagar uma branch com código não finalizado usando `git branch -D` (forçado).
+**Solução:** Sempre tente usar `-d` (minúsculo), o Git só permitirá deletar se tiver certeza de que as alterações já estão salvas na branch principal.
 
 ### Erro 3: Não Atualizar a Main Antes de Criar Branch
 
-<!-- TODO: Por que isso causa problemas -->
+Criar uma branch a partir de uma `main` antiga na sua máquina, resultando em dezenas de conflitos na hora de integrar meses depois.
+**Solução:** Sempre rode `git pull origin main` e certifique-se de ter os arquivos atualizados antes de dar o `git switch -c`.
 
 ## Exercícios
 
-<!-- TODO: Exercícios práticos -->
+1. Crie uma nova branch chamada `docs/primeiro-teste` e troque para ela.
+2. Adicione ou altere um arquivo. Faça o `git add` e o `git commit`.
+3. Volte para a branch principal (`git switch main`). Observe que as suas alterações "sumiram" dos arquivos!
+4. Realize a união usando `git merge docs/primeiro-teste` para que a `main` incorpore as mudanças.
+5. Delete a branch usando `git branch -d docs/primeiro-teste`.
 
-1. <!-- Criar branch, fazer commits, fazer merge -->
-2. <!-- Experimentar fast-forward vs three-way merge -->
-3. <!-- Visualizar grafo de branches -->
-4. <!-- Deletar branches após merge -->
+## Tabela de Referência
 
-## Diagrama de Workflow
-
-<!-- TODO: Diagrama visual do fluxo de trabalho com branches -->
+| Comando | Descrição |
+| --- | --- |
+| `git branch` | Lista as branches locais. |
+| `git switch <branch>` | Troca para a branch especificada. |
+| `git switch -c <branch>` | Cria uma nova branch e já troca para ela. |
+| `git merge <branch>` | Junta a branch informada para dentro da branch atual. |
+| `git branch -d <branch>` | Deleta a branch local (se já tiver sido mergiada). |
+| `git stash` | Guarda alterações não comitadas temporariamente na gaveta. |
 
 ## Recursos Adicionais
 
-<!-- TODO: Links sobre branching e merging -->
-
-- [Learn Git Branching](https://learngitbranching.js.org/)
+- [Learn Git Branching (Game interativo incrível!)](https://learngitbranching.js.org/)
 - [Atlassian Git Branching Tutorial](https://www.atlassian.com/git/tutorials/using-branches)
+- [Fluxo de Trabalho Gitflow (Atlassian)](https://www.atlassian.com/br/git/tutorials/comparing-workflows/gitflow-workflow)
+- [GitHub Flow (Documentação Oficial)](https://docs.github.com/pt/get-started/using-github/github-flow)
 - <!-- Mais recursos -->
 
 ## Resumo
 
-<!-- TODO: Pontos principais sobre branches e merge -->
+- **Branches** são universos paralelos de desenvolvimento que isolam as alterações.
+- Use **`git switch`** para viajar entre esses universos.
+- Use **`git merge`** a partir da branch de destino (ex: `main`) para fundir as alterações de outra branch.
+- Sempre tente atualizar sua branch local antes de criar novos trabalhos paralelos para evitar dores de cabeça no futuro.
+- Acostume-se a **deletar** as branches após os merges para manter a organização do time.
 
 ---
 
@@ -511,3 +703,9 @@ git push origin --delete feature/nova-funcionalidade
 Este conteúdo é colaborativo. Contribuidores deste arquivo:
 
 - [@daniballester](https://github.com/daniballester) - Issue #19 - Seção "O que são Branches"
+- [@hailtonDavid](https://github.com/hailtonDavid) - Issue #22 - Seção "Fast-Forward Merge"
+- [@hailtonDavid](https://github.com/hailtonDavid) - Issue #68 - Seção "Rebase"
+
+- [@lukitkat](https://github.com/Lukitkat) - Issue #24 - Seção "Documentar estratégias de merge"
+
+

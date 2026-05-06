@@ -227,39 +227,152 @@ Evite usar `git add .` às cegas. Sempre verifique quais arquivos foram modifica
 
 ## git status
 
-O comando `git status` exibe o estado do diretório de trabalho e da área de preparação. É o comando mais importante e você deve usá-lo o tempo todo!
+O comando `git status` mostra o estado atual do repositório do ponto de vista
+do seu diretório de trabalho. Ele compara o `working directory`, a
+`staging area` e o último commit para indicar o que foi modificado, o que já
+está pronto para commit e o que ainda não está sendo rastreado pelo Git.
+
+### Sintaxe
+
+```bash
+git status
+git status -s
+git status --porcelain
+```
+
+- `git status`: saída completa, pensada para leitura humana.
+- `git status -s`: saída curta (`--short`), útil para inspeção rápida.
+- `git status --porcelain`: formato estável para parsing automático em scripts
+  e ferramentas.
 
 ### O que Mostra
 
-Ele mostra:
-- Arquivos que não estão sendo rastreados (Untracked files).
-- Arquivos modificados que ainda não foram preparados (Changes not staged for commit).
-- Arquivos preparados e prontos para o commit (Changes to be committed).
-- Qual branch você está no momento.
+- A branch atual, por exemplo `On branch main`.
+- O estado do `working directory`, com arquivos modificados mas ainda não
+  adicionados ao stage.
+- O estado da `staging area`, com arquivos que já entrarão no próximo commit.
+- A diferença entre arquivos rastreados (`tracked`) e não rastreados
+  (`untracked`).
+- Se a árvore está limpa, com mensagens como
+  `nothing to commit, working tree clean`.
+
+Um arquivo `tracked` já faz parte do histórico do Git ou já foi adicionado com
+`git add`. Um arquivo `untracked` existe na pasta do projeto, mas o Git ainda
+não acompanha esse arquivo.
 
 ### Exemplo de Saída
 
 ```bash
-$ git status
 On branch main
 Changes to be committed:
   (use "git restore --staged <file>..." to unstage)
-        modified:   index.html
+        modified:   app.js
+        new file:   notas.txt
 
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-        modified:   style.css
+        modified:   README.md
 
 Untracked files:
   (use "git add <file>..." to include in what will be committed)
-        script.js
+        debug.log
+```
+
+- `On branch main`: informa em qual branch você está trabalhando.
+- `Changes to be committed`: arquivos que já estão na `staging area`.
+- `Changes not staged for commit`: mudanças feitas em arquivos rastreados, mas
+  que ainda não foram preparadas com `git add`.
+- `Untracked files`: arquivos novos que o Git ainda não está rastreando.
+
+### Cores e Significado
+
+Na maioria dos terminais, o Git usa cores para destacar o estado dos arquivos:
+
+- Vermelho: arquivos `untracked` ou modificados que ainda não foram adicionados
+  ao stage.
+- Verde: arquivos já adicionados à `staging area` e prontos para entrar no
+  próximo commit.
+
+As cores podem variar conforme o terminal e a configuração do Git, mas a ideia
+principal continua a mesma: vermelho pede atenção, verde indica que o arquivo
+já foi preparado.
+
+### Saída Curta
+
+```bash
+git status -s
+```
+
+```text
+M  app.js
+ M README.md
+?? debug.log
+A  notas.txt
+```
+
+- A primeira coluna representa a `staging area`.
+- A segunda coluna representa o `working directory`.
+- `M  app.js`: arquivo modificado e já adicionado ao stage.
+- ` M README.md`: arquivo modificado, mas ainda não adicionado ao stage.
+- `?? debug.log`: arquivo novo e não rastreado.
+- `A  notas.txt`: arquivo novo já adicionado ao stage.
+
+### Exemplo Passo a Passo
+
+1. Criando um arquivo novo:
+
+```bash
+touch notas.txt
+git status
+```
+
+O Git mostrará `notas.txt` em `Untracked files`, indicando que o arquivo existe,
+mas ainda não está sendo rastreado.
+
+2. Modificando um arquivo já rastreado:
+
+```bash
+echo "Nova linha" >> README.md
+git status
+```
+
+Agora o status mostrará duas situações ao mesmo tempo:
+
+`README.md` aparecerá em `Changes not staged for commit`, enquanto
+`notas.txt` continuará em `Untracked files`.
+
+3. Adicionando as mudanças com `git add`:
+
+```bash
+git add notas.txt README.md
+git status
+```
+
+Depois do `git add`, ambos passarão para `Changes to be committed`, o que
+significa que já estão na `staging area`.
+
+### Parsing Automático
+
+`git status --porcelain` existe para automações. Ele remove textos explicativos
+e mantém um formato previsível, facilitando o uso em scripts, hooks e
+ferramentas de integração.
+
+Se a automação também precisar da branch atual, uma variação comum é:
+
+```bash
+git status --porcelain -b
 ```
 *Na saída acima: `index.html` está na staging area; `style.css` foi modificado, mas não está preparado; `script.js` é um arquivo novo que o Git não conhece.*
 
 ### Quando Usar
 
-Use **antes e depois** de comandos como `git add` e `git commit` para garantir que você não está fazendo nada errado. Se estiver na dúvida sobre o que fazer, rode `git status`.
+- Antes de executar `git add`, para confirmar o que mudou.
+- Antes de `git commit`, para garantir que apenas os arquivos certos entrarão no
+  commit.
+- Depois de merges, rebases ou pulls, para verificar se restou algo pendente.
+- Sempre que houver dúvida sobre a atividade atual no repositório.
+- Em conjunto com `.gitignore`, para evitar que arquivos temporários, logs,
+  builds e dependências poluam o status.
 
 ## git commit
 
@@ -968,9 +1081,16 @@ Fazer um `git add .` às cegas e acidentalmente adicionar senhas, chaves de API 
 
 Legenda de badges:
 
-- ⭐ muito usado
-- ❗ importante
-- ⚠️ cuidado
+| Comando | O que faz | Quando usar |
+|---------|-----------|-------------|
+| `git init` | Cria um novo repositório local | No início de um projeto |
+| `git clone` | Copia um repositório remoto | Ao baixar um projeto do GitHub |
+| `git add` | Adiciona arquivos ao Stage | Antes de cada commit |
+| `git commit` | Salva o histórico | Após terminar uma tarefa lógica |
+| `git status` | Mostra o estado do working directory e da staging area | Antes de adicionar, commitar ou revisar mudanças |
+| `git log` | Lista o histórico | Para revisar o que foi feito |
+| `git diff` | Exibe as alterações textuais entre os estados dos arquivos (quem entrou e quem saiu) | Antes de dar git add para revisar o que você escreveu, ou após o add (com --staged) para validar o pacote |
+| `git restore` | Desfaz alterações no diretório de trabalho ou remove arquivos da área de preparação | Quando você comete um erro no código e quer voltar ao estado do último commit, ou quando adicionou um arquivo ao stage por engano |
 
 Para mais detalhes de qualquer comando, use `git help <comando>` ou `git <comando> --help` (veja também [Obtendo Ajuda](#obtendo-ajuda)).
 
@@ -1061,6 +1181,7 @@ git commit -m "Criei o Guia Completo sobre Comandos Essenciais do Git"
 - [@Tom-Junior](https://github.com/Tom-Junior) - Seção todas
 -->
 - [@Giseleptbr](https://github.com/Giseleptbr) - Seção git commit
+- [@AIWASS23](https://github.com/AIWASS23) - Seção git status
 - [@hailtonDavid](https://github.com/hailtonDavid) - Seção git diff
 - [@esleiu](https://github.com/esleiu) - Seção tabela de referência rápida
 - [@Giseleptbr](https://github.com/Giseleptbr) - Seção git commit
